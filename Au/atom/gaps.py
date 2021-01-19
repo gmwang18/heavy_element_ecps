@@ -10,7 +10,7 @@ df = pd.DataFrame()
 ae = pd.read_csv("AE/dkh/basis/3.csv", sep='\s*,\s*', engine='python')
 df['AE'] = ae['CCSD'].values-ae['CCSD'].values[0]
 
-pps=['UC', 'SBKJC', 'CRENBL', 'LANL2DZ', 'MDFSTU', 'rMDFSTU', 'GW-1', 'GW-2', 'GW-3']
+pps=['UC', 'SBKJC', 'CRENBL', 'LANL2DZ', 'MDFSTU', 'GW-2.2', 'a-1.0']
 
 for pp in pps:
 	ecp = pd.read_csv(pp+'/basis/3.csv', sep='\s*,\s*', engine='python')
@@ -19,14 +19,14 @@ for pp in pps:
 mad = pd.DataFrame(columns=df.columns)
 diffs = 27.211386*df.copy()
 diffs=diffs[1:]   # Getting rid of ground state
-print(diffs)
+#print(diffs)
 
-print("MADS")
+#print("MADS")
 for pp in pps: 
-	print(pp)
+	#print(pp)
 	diffs[pp] = diffs[pp] - diffs['AE']
 	mad.loc['MAD',pp]=diffs[pp].abs().mean()
-	print(diffs[pp].abs().mean())
+	#print(diffs[pp].abs().mean())
 
 print(diffs.to_latex())
 print(mad.to_latex())

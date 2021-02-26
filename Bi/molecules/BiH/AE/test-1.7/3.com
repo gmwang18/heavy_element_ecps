@@ -19,7 +19,7 @@ geometry={
     2
     BiH
     Bi 0.0 0.0 0.0
-    H  0.0 0.0 1.4
+    H  0.0 0.0 1.7
 }
 
 basis={
@@ -42,7 +42,7 @@ include,Bi_aug-cc-pwCVTZ.basis
 include,H_aug-cc-pVTZ.basis
 }
 !{rhf,maxdis=20,iptyp='DIIS',nitord=1,maxit=60; shift,-1.0,-0.5
-{rhf,maxit=60;
+{rhf,maxit=60; shift,-1.0,-0.5
  wf,nelec=ne,spin=ss,sym=symm
  occ,A1,B1,B2,A2
  closed,A1,B1,B2,A2
@@ -51,11 +51,12 @@ include,H_aug-cc-pVTZ.basis
 scf=energy
 
 _CC_NORM_MAX=2.0
+!{rccsd(t),shifts=0.1,shiftp=0.1,thrdis=1.0;diis,1,1,15,1;maxit,100;core
 {rccsd(t),maxit=100;core
  !orbital,ignore_error
 }
 ccsd=energy
 
 table,z,scf,ccsd
-save, 3.csv, new
+save, 3.csv
 

@@ -19,7 +19,7 @@ geometry={
     2
     BiH
     Bi 0.0 0.0 0.0
-    H  0.0 0.0 1.4
+    H  0.0 0.0 1.7
 }
 
 basis={
@@ -32,6 +32,7 @@ include,H_contr_TZ.basis
  wf,nelec=ne,spin=ss,sym=symm
  occ,A1,B1,B2,A2
  closed,A1,B1,B2,A2
+ print,orbitals=2
  !orbital,2101.2
 }
 
@@ -46,16 +47,18 @@ include,H_aug-cc-pVTZ.basis
  wf,nelec=ne,spin=ss,sym=symm
  occ,A1,B1,B2,A2
  closed,A1,B1,B2,A2
+ print,orbitals=2
  !orbital,ignore_error
 }
 scf=energy
 
 _CC_NORM_MAX=2.0
-{rccsd(t),maxit=100;core
+!{rccsd(t),shifts=0.4,shiftp=0.4,thrdis=1.0;diis,1,1,15,1;maxit,100;core,17,9,9,4
+{rccsd(t),maxit=100;core,17,9,9,4
  !orbital,ignore_error
 }
 ccsd=energy
 
 table,z,scf,ccsd
-save, 3.csv, new
+save, 3.csv
 

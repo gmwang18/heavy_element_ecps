@@ -4,7 +4,7 @@ import pickle
 import pandas as pd
 
 #pps=['UC','BFD','MDFSTU','MWBSTU','SBKJC','CRENBS','LANL2','MCB', 'a-3.2']
-pps=['UC','BFD','MDFSTU','MWBSTU','SBKJC','CRENBS','LANL2', 'a-5.2']
+pps=['UC','BFD','MDFSTU','MWBSTU','SBKJC','CRENBS','LANL2']#, 'a-5.2']
 pd.options.display.float_format = '{:,.4f}'.format
 
 ###==================================================

@@ -1,0 +1,17 @@
+#!/bin/bash -l
+#SBATCH -J I2_job
+#SBATCH -q regular
+#SBATCH -N 8
+#SBATCH -C haswell
+#SBATCH -t 1:30:00
+#SBATCH -o so_qwalk.o%j
+
+#srun -n 512 -c 1 --cpu_bind=threads qwalk-so I2.df > DF.log
+
+#srun -n 512 -c 1 --cpu_bind=threads qwalk-so I2.opt > OPT.log
+
+sed 's/OPTIMIZEBASIS//g' I2.opt.wfout > fixed_basis.wfout
+
+srun -n 512 -c 1 --cpu_bind=threads qwalk-so I2.linear > LINEAR.log
+
+srun -n 512 -c 1 --cpu_bind=threads qwalk-so I2.dmc > DMC.log

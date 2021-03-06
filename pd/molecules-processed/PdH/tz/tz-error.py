@@ -97,13 +97,13 @@ work['SBKJC Raw'] = SBKJccsd['tz_ccsd']
 work['SBKJC proc'] = work['SBKJC Raw'].values - -0.49982785 --127.2329491
 
 ff = pd.DataFrame()
-#
-#
-##states=['[Ar]$3d**{10}4s^24p1$','[Ar]$3d^{10}4s^14p2$','[Ar]$3d^{10}4s^2$','[Ar]$3d^{10}4s^14p1$', '[Ar]$3d^{10}4s^1$','[Ar]$3d^{10}$','[Ar]$3d^9$','[Ar]$3d^8$','[Ar]$3d^7$','[Ar]$3d^6$','[Ar]$3d^5$','[Ar]$3d^{10}4s^24p2$']
-##hf['SCF'] = states
-##corr['Correlation'] = states
-#
-#
+
+
+#states=['[Ar]$3d**{10}4s^24p1$','[Ar]$3d^{10}4s^14p2$','[Ar]$3d^{10}4s^2$','[Ar]$3d^{10}4s^14p1$', '[Ar]$3d^{10}4s^1$','[Ar]$3d^{10}$','[Ar]$3d^9$','[Ar]$3d^8$','[Ar]$3d^7$','[Ar]$3d^6$','[Ar]$3d^5$','[Ar]$3d^{10}4s^24p2$']
+#hf['SCF'] = states
+#corr['Correlation'] = states
+
+
 
 
 ff['z'] = aez['tz_z']
@@ -128,35 +128,39 @@ print(fff.to_latex(index=False))
 	
 ecps = ['MDFSTU', 'LANL2', 'SBKJC', 'CRENBL', 'ccECP']
 
+#styles = {
+#        'UC'         :{'label': 'UC',       'color':'#e41a1c','linestyle':'--','dashes': (1000000,1)},
+#        'LANL2'    :{'label': 'LANL2',  'color':'#4daf4a','linestyle':'--','dashes': (13,2,4,2,13,9)},
+#        'SBKJC'        :{'label': 'SBKJC',      'color':'#377eb8','linestyle':'--','dashes': (16,2)      },
+#        'MDFSTU'        :{'label': 'MDFSTU',      'color':'#ff7f00','linestyle':'--','dashes': (7,2)},
+#        'CRENBL'       :{'label': 'CRENBL',    'color':'#984ea3','linestyle':'--','dashes': (2.5,2) },
+#        'ccECP'      :{'label': 'ccECP',    'color':'#193f80','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
+#        }
+
 styles = {
-        'UC'        :{'label': 'UC',       'color':'#e41a1c','linestyle':'--','dashes': (1000000,1)},
-        'LANL2'    :{'label': 'LANL2',  'color':'#4daf4a','linestyle':'--','dashes': (13,2,4,2,13,9)},
-        'SBKJC'        :{'label': 'SBKJC',      'color':'#377eb8','linestyle':'--','dashes': (16,2)      },
-        'MDFSTU'       :{'label': 'MDFSTU',      'color':'#ff7f00','linestyle':'--','dashes': (7,2)},
-        'CRENBL'       :{'label': 'CRENBL',    'color':'#984ea3','linestyle':'--','dashes': (2.5,2) },
-        'ccECP'      :{'label': 'ccECP',    'color':'#193f80','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
-        }
+'UC'        :{'label': 'UC',       'color':'#e41a1c','linestyle':'-'},
+'CRENBL'    :{'label': 'CRENBL','color':'#ff7f00','linestyle':'--','dashes': (8,5,1,3)},
+'LANL2'     :{'label': 'LANL2',    'color':'#377eb8','linestyle':'-','dashes': (3,1,1,2) },
+'MDFSTU'    :{'label': 'MDFSTU',      'color':'#984ea3','linestyle':'--','dashes': (6,3)     },
+'SBKJC'     :{'label': 'SBKJC',    'color':'#DC0174','linestyle':'-','dashes': (3,1,1,2) },
+'ccECP'        :{'label': 'ccECP-AREP',      'color':'#009900','linestyle':'--','dashes': (4,2,1,2)     },
+}
 
 def init():
     font = {'family' : 'serif',
             'size': 20}
-    lines = {'linewidth':3.5,'scale_dashes':False}
+    lines = {'linewidth':2.0}
     axes = {'linewidth': 3}
     tick = {'major.size': 5,
-            'major.width': 2,
-            'labelsize': 18,
-            'direction':'in',
-            }
+            'major.width':2}
     legend = {'frameon':False,
-              'fontsize':15,
-              'handlelength':2.25,
-              'labelspacing':0.25}
+              'fontsize':18}
 
     mpl.rc('font',**font)
     mpl.rc('lines',**lines)
     mpl.rc('axes',**axes)
-    mpl.rc('xtick',top=True,bottom=True,**tick)
-    mpl.rc('ytick',left=True,right=True,**tick)
+    mpl.rc('xtick',**tick)
+    mpl.rc('ytick',**tick)
     mpl.rc('legend',**legend)
 
     mpl.rcParams['text.usetex'] = True
@@ -178,9 +182,11 @@ def plot(df):
         y = (df[ecp].values - df['ae'].values)*toev
         plt.plot(x,y,**styles[ecp])
     ax.set_xlim((x[0],x[-1]))
+    ax.set(title='PdH tz Discrepancies')
     ax.axvline(1.529,color='black',linestyle='--',linewidth=1.5,dashes=(2,2))
-    plt.legend(loc='upper right')
+    plt.legend(loc='best',ncol=2,prop={'size': 12})
     plt.savefig('PdH.pdf')
+    plt.savefig('PdH.png', dpi=800)
     plt.show()
 
 plot(revff)

@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH -J AE_BiH_1.8
+#SBATCH -J AE_1.8
 #SBATCH -q regular
 #SBATCH -N 1
 #SBATCH -C haswell

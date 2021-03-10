@@ -39,7 +39,7 @@ bind['z'] = scf.index.values
 bind.set_index('z',inplace=True)
 bind['bind'] = df['3_ccsd'] - A_cc[0] - B_cc[0]
 print(bind['bind'])
-bind.plot()
-plt.show()
+#bind.plot()
+#plt.show()
 
 bind.to_csv('bind.csv', sep=',')

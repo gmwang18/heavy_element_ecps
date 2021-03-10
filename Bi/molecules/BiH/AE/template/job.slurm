@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH -J AE_BiH_my_geom
+#SBATCH -J AE_my_geom
 #SBATCH -q regular
 #SBATCH -N 1
 #SBATCH -C haswell

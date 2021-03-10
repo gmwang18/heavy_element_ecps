@@ -1,13 +1,13 @@
 #!/bin/bash -l
-#SBATCH -J ECP_index
-#SBATCH -q debug
+#SBATCH -J ECP_5
+#SBATCH -q regular
 #SBATCH -N 1
 #SBATCH -C haswell
-#SBATCH -t 00:20:00
+#SBATCH -t 00:10:00
 #SBATCH -o Bi_DKH.out
 #!SBATCH -o Bi_DKH.o%j
 
 module load molpro
 
-molpro -n 12 -s 3.com
+molpro -n 24 -s 3.com
 

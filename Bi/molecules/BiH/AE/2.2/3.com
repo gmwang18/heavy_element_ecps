@@ -7,12 +7,12 @@ gthresh,twoint=1.0E-15
 set,dkroll=1,dkho=10,dkhp=4
 
 ne    =84
-symm  =1
-ss    =0
+symm  =4
+ss    =2
 
 A1=19
 B1=10
-B2=9
+B2=10
 A2=4
 
 geometry={
@@ -31,7 +31,7 @@ include,H_contr_TZ.basis
 {rhf
  wf,nelec=ne,spin=ss,sym=symm
  occ,A1,B1,B2,A2
- closed,A1,B1,B2,A2
+ closed,A1,B1-1,B2-1,A2
  !orbital,2101.2
 }
 
@@ -44,7 +44,7 @@ include,H_aug-cc-pVTZ.basis
 {rhf,maxdis=20,iptyp='DIIS',nitord=1,maxit=60; shift,-1.0,-0.5
  wf,nelec=ne,spin=ss,sym=symm
  occ,A1,B1,B2,A2
- closed,A1,B1,B2,A2
+ closed,A1,B1-1,B2-1,A2
  !orbital,ignore_error
 }
 scf=energy

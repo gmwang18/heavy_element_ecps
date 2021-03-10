@@ -3,7 +3,7 @@
 #SBATCH -q regular
 #SBATCH -N 1
 #SBATCH -C haswell
-#SBATCH -t 00:20:00
+#SBATCH -t 00:15:00
 #SBATCH -o Bi_DKH.out
 #!SBATCH -o Bi_DKH.o%j
 

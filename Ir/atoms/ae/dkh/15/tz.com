@@ -14,7 +14,7 @@ geometry={
 
 include,states.proc
 
-do i=15,15
+do i=14,14
 
 	if(i.eq.1) then
 		Is2d7
@@ -49,11 +49,11 @@ do i=15,15
 	endif
 	scf(i)=energy
 	_CC_NORM_MAX=2.0
-	{rccsd(t);maxit,100;core}
-        ccscd(i)=energy
+        {rccsd(t);maxit,100;core}
+        ccsd(i)=energy
 enddo
 
-
+!,shifts=0.2,shiftp=0.2,thrdis=0.2;diis,1,1,15,1
 
 table,scf,ccsd
 save

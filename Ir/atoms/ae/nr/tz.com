@@ -1,7 +1,7 @@
 ***, Calculation for Ir groundstate
 memory,1024,m
-gthresh,twoint=1.0E-12
-gthresh,throvl=1.0E-12
+gthresh,twoint=1.0E-15
+gthresh,throvl=1.0E-15
 !symmetry,nosym
 
 !set,dkroll=1,dkho=10,dkhp=4
@@ -14,7 +14,7 @@ geometry={
 
 include,states.proc
 
-do i=8,8
+do i=1,8
 
 	if(i.eq.1) then
 		Is2d7
@@ -46,6 +46,8 @@ do i=8,8
 		X
 	else if(i.eq.15) then
 		XVI
+	else if(i.eq.16) then
+		IXf1
 	endif
 	scf(i)=energy
 	_CC_NORM_MAX=2.0

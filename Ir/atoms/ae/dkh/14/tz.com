@@ -14,7 +14,7 @@ geometry={
 
 include,states.proc
 
-do i=14,14
+do i=16,16
 
 	if(i.eq.1) then
 		Is2d7
@@ -46,11 +46,13 @@ do i=14,14
 		X
 	else if(i.eq.15) then
 		XVI
+	else if(i.eq.16) then
+		IXf1
 	endif
 	scf(i)=energy
 	_CC_NORM_MAX=2.0
 	{rccsd(t);maxit,100;core}
-        ccscd(i)=energy
+        ccsd(i)=energy
 enddo
 
 

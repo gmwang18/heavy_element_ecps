@@ -50,7 +50,7 @@ do i=13,13
 	scf(i)=energy
 	_CC_NORM_MAX=2.0
 	{rccsd(t);maxit,100;core}
-        ccscd(i)=energy
+        ccsd(i)=energy
 enddo
 
 

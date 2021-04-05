@@ -1,0 +1,136 @@
+
+ Primary working directories    : /global/cscratch1/sd/bkincaid
+ Secondary working directories  : /global/cscratch1/sd/bkincaid
+ Wavefunction directory         : /global/homes/b/bkincaid/wfu/
+ Main file repository           : /global/cscratch1/sd/bkincaid/
+
+ SHA1      : 19cd028119e0e09f93f0674bd8af7968d9b3eff6
+ NAME      : 2015.1.36
+ ARCHNAME  : linux/x86_64
+ FC        : /opt/cray/pe/craype/2.5.14/bin/ftn
+ BLASLIB   : -L/opt/intel/compilers_and_libraries_2018.1.163/linux/mkl/lib/intel64 -Wl,-_start-group -lmkl_intel_ilp64 -lmkl_intel_thread -lmkl_core -Wl,-_end-group -liomp5
+ id        : lbl
+
+ Nodes     nprocs
+ nid01397    11
+ Number of processes for MPI-2 version of Molpro:   nprocs(total)=   12   nprocs(compute)=   11   nprocs(helper)=    1
+
+ Using customized tuning parameters: mindgm=7; mindgv=16; mindgc=1; mindgr=1; noblas=0; minvec=7
+ default implementation of scratch files=sf  
+
+ ***,Calculation for IrO groundstate
+ memory,1024,m
+ gthresh,twoint=1.0E-15
+ gthresh,throvl=1.0E-15
+                                                                                 !symmetry,nosym
+ 
+ basis={
+ Including file /global/u1/b/bkincaid/molpro/Ir/molecules/tz/IrO/ecps/debug/bk1.6
+ 
+ Including file /global/u1/b/bkincaid/molpro/Ir/molecules/tz/IrO/ecps/debug/tz.basis
+ 
+ ecp,O,2,1,0
+ 3
+ 1,  12.30997,  6.000000
+ 3,  14.76962,  73.85984
+ 2,  13.71419, -47.87600
+ 1
+ 2,  13.65512,  85.86406
+ 
+ Including file /global/u1/b/bkincaid/molpro/Ir/molecules/tz/IrO/ecps/debug/O-aug-cc-CVTZ.basis
+ }
+ 
+ ne = 23
+ 
+ A1=7
+ B1=3
+ B2=3
+ A2=1
+ 
+ 
+ do i=1,3
+         if(i.eq.1) then
+                 z(i) = 1.787
+         else if(i.eq.2) then
+                 z(i) = 1.987
+         else if(i.eq.3) then
+                 z(i) = 2.187
+         endif
+ 
+ geometry={
+ 2
+ IrO
+ Ir 0.0 0.0 0.0
+ O 0.0 0.0 z(i)
+ }
+ basis={
+ Including file /global/u1/b/bkincaid/molpro/Ir/molecules/tz/IrO/ecps/debug/bk1.6
+ 
+ Including file /global/u1/b/bkincaid/molpro/Ir/molecules/tz/IrO/ecps/debug/tz.basis
+ 
+ ecp,O,2,1,0
+ 3
+ 1,  12.30997,  6.000000
+ 3,  14.76962,  73.85984
+ 2,  13.71419, -47.87600
+ 1
+ 2,  13.65512,  85.86406
+ 
+ Including file /global/u1/b/bkincaid/molpro/Ir/molecules/tz/IrO/ecps/debug/O-aug-cc-CVTZ.basis
+ }
+         {rks,pbe0
+         wf,nele=ne,spin=5,sym=4
+         occ,A1,B1,B2,A2
+         closed,A1-3,B1-1,B2-1,A2
+         }
+         {rhf
+         occ,A1,B1,B2,A2
+         frozen,A1-3,B1-1,B2-1,A2
+         wf,nelec=ne,spin=5,sym=4
+         }
+ pop
+ basis={
+ Including file /global/u1/b/bkincaid/molpro/Ir/molecules/tz/IrO/ecps/debug/lanl2
+ 
+ Including file /global/u1/b/bkincaid/molpro/Ir/molecules/tz/IrO/ecps/debug/tz.basis
+ 
+ ecp,O,2,1,0
+ 3
+ 1,  12.30997,  6.000000
+ 3,  14.76962,  73.85984
+ 2,  13.71419, -47.87600
+ 1
+ 2,  13.65512,  85.86406
+ 
+ Including file /global/u1/b/bkincaid/molpro/Ir/molecules/tz/IrO/ecps/debug/O-aug-cc-CVTZ.basis
+ }
+         {multi
+         occ,A1,B1,B2,A2
+         closed,A1-3,B1-1,B2-1,A2
+         wf,nelec=ne,spin=5,sym=4
+         }
+         {rhf,nitord=1,maxit=0
+         wf,nele=ne,spin=5,sym=4
+         occ,A1,B1,B2,A2
+         closed,A1-3,B1-1,B2-1,A2
+         }
+ scf(i)=energy
+ _CC_NORM_MAX=2.0
+                                                                                 !{rccsd(t);maxit,100;core}
+                                                                                 !ccsd(i)=energy
+ enddo
+ 
+ table,z,scf                                                                     !,ccsd
+ save
+ type,csv
+ 
+
+ Variables initialized (889), CPU time= 0.00 sec
+ Commands  initialized (702), CPU time= 0.01 sec, 572 directives.
+ Default parameters read. Elapsed time= 0.22 sec
+
+ Checking input...
+
+ Unknown directive FROZEN for command RHF-SCF
+
+ GLOBAL ERROR checkinp on processor   0                                       

@@ -1,9 +1,9 @@
 #!/bin/bash -l
-#SBATCH -J AE_BiH_2.2
+#SBATCH -J AE_2.2
 #SBATCH -q regular
 #SBATCH -N 1
 #SBATCH -C haswell
-#SBATCH -t 02:30:00
+#SBATCH -t 04:00:00
 #SBATCH -o Bi_DKH.out
 #!SBATCH -o Bi_DKH.o%j
 

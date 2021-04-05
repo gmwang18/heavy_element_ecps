@@ -1,9 +1,9 @@
 #!/bin/bash -l
-#SBATCH -J ECP_index
-#SBATCH -q regular
+#SBATCH -J ECP_1
+#SBATCH -q debug
 #SBATCH -N 1
 #SBATCH -C haswell
-#SBATCH -t 00:20:00
+#SBATCH -t 00:30:00
 #SBATCH -o Bi_DKH.out
 #!SBATCH -o Bi_DKH.o%j
 

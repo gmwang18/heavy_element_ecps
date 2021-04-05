@@ -7,8 +7,8 @@ Pd  0.0 0.0 0.0
 }
 
 basis={
-include,ccECP
-include,5z.basis
+include,mdfstu
+include,aug-cc-pwCVTZ.basis
 }
 
 include,states.proc

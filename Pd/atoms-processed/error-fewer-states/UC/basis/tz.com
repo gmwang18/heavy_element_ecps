@@ -1,5 +1,8 @@
 ***,Calculation for Ag atom, singlet and triplet
 memory,512,m
+
+set,dkroll=1,dkho=10,dkhp=4
+
 geometry={
 1
 Pd
@@ -7,8 +10,7 @@ Pd  0.0 0.0 0.0
 }
 
 basis={
-include,ccECP
-include,5z.basis
+include,aug-cc-pwCVTZ.basis
 }
 
 include,states.proc
@@ -43,7 +45,7 @@ do i=1,13
     endif
     scf(i)=energy
     _CC_NORM_MAX=2.0
-   {rccsd(t),maxit=100;core}
+   {rccsd(t),maxit=100;core,5,2,2,1,2,1,1,0}
     ccsd(i)=energy
 enddo
 

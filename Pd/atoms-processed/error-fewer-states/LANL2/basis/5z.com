@@ -7,7 +7,7 @@ Pd  0.0 0.0 0.0
 }
 
 basis={
-include,ccECP
+include,lanl2
 include,5z.basis
 }
 

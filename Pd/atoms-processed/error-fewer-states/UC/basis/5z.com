@@ -7,7 +7,6 @@ Pd  0.0 0.0 0.0
 }
 
 basis={
-include,ccECP
 include,5z.basis
 }
 
@@ -43,7 +42,7 @@ do i=1,13
     endif
     scf(i)=energy
     _CC_NORM_MAX=2.0
-   {rccsd(t),maxit=100;core}
+   {rccsd(t),maxit=100;core;core,5,2,2,1,2,1,1,0}
     ccsd(i)=energy
 enddo
 

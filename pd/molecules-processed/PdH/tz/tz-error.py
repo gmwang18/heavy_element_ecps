@@ -118,6 +118,7 @@ revff = ff.iloc[::-1]
 fff = pd.DataFrame()
 
 fff['z'] = ff['z']
+fff['AE BE'] = ff['ae'].values*toev
 fff['MDFSTU error'] = (ff['MDFSTU'].values -ff['ae'].values)*toev
 fff['CRENBL error'] = (ff['CRENBL'].values -ff['ae'].values)*toev
 fff['LANL2 error'] = (ff['LANL2'].values -ff['ae'].values)*toev

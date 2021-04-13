@@ -183,6 +183,15 @@ for basis in ['tz']:
 fin_bk2_6 = dfbk2_6.filter(regex='ccsd')
 
 
+##bk2.7##
+dfbk2_7=pd.DataFrame()
+
+for basis in ['tz']:
+	bk2_7 = pd.read_csv('./'+basis+'.bk2.7.csv',skip_blank_lines=True,skipinitialspace=True)
+	dfbk2_7[basis+'_ccsd'] = bk2_7['CCSD']
+
+fin_bk2_7 = dfbk2_7.filter(regex='ccsd')
+
 
 ##Extrapolation is done here. I am doing formating for the SCF Table, namely hf and Correlation Table, namely corr
 
@@ -229,6 +238,8 @@ ccsd['bk2.4'] = dfbk2_4['tz_ccsd']
 ccsd['bk2.4 gaps'] = ccsd['bk2.4'].values - ccsd['bk2.4'].values[0]
 ccsd['bk2.6'] = dfbk2_6['tz_ccsd']
 ccsd['bk2.6 gaps'] = ccsd['bk2.6'].values - ccsd['bk2.6'].values[0]
+ccsd['bk2.7'] = dfbk2_7['tz_ccsd']
+ccsd['bk2.7 gaps'] = ccsd['bk2.7'].values - ccsd['bk2.7'].values[0]
 
 
 scf = pd.DataFrame()
@@ -253,6 +264,7 @@ scf_gaps['bk1.9'] = (bk1_9['SCF'].values - bk1_9['SCF'].values[0])*toev
 scf_gaps['bk2.3'] = (bk2_3['SCF'].values - bk2_3['SCF'].values[0])*toev
 scf_gaps['bk2.4'] = (bk2_4['SCF'].values - bk2_4['SCF'].values[0])*toev
 scf_gaps['bk2.6'] = (bk2_6['SCF'].values - bk2_6['SCF'].values[0])*toev
+scf_gaps['bk2.7'] = (bk2_7['SCF'].values - bk2_7['SCF'].values[0])*toev
 
 
 ccsd_gaps = pd.DataFrame()
@@ -273,6 +285,7 @@ ccsd_gaps['bk1.9'] = ccsd['bk1.9 gaps'].values*toev
 ccsd_gaps['bk2.3'] = ccsd['bk2.3 gaps'].values*toev
 ccsd_gaps['bk2.4'] = ccsd['bk2.4 gaps'].values*toev
 ccsd_gaps['bk2.6'] = ccsd['bk2.6 gaps'].values*toev
+ccsd_gaps['bk2.7'] = ccsd['bk2.7 gaps'].values*toev
 
 corr = pd.DataFrame()
 corr['UC'] = ccsd_gaps['UC'].values - scf_gaps['UC'].values
@@ -290,6 +303,7 @@ corr['bk1.9'] = ccsd_gaps['bk1.9'].values - scf_gaps['bk1.9'].values
 corr['bk2.3'] = ccsd_gaps['bk2.3'].values - scf_gaps['bk2.3'].values
 corr['bk2.4'] = ccsd_gaps['bk2.4'].values - scf_gaps['bk2.4'].values
 corr['bk2.6'] = ccsd_gaps['bk2.6'].values - scf_gaps['bk2.6'].values
+corr['bk2.7'] = ccsd_gaps['bk2.7'].values - scf_gaps['bk2.7'].values
 
 
 
@@ -311,29 +325,39 @@ er['MDFSTU'] = ccsd_gaps['MDFSTU'].values -ccsd_gaps['all electron'].values
 #er['bk2.3 error'] = ccsd_gaps['bk2.3'].values - ccsd_gaps['all electron'].values
 #er['bk2.4 error'] = ccsd_gaps['bk2.4'].values - ccsd_gaps['all electron'].values
 er['ccECP-AREP'] = ccsd_gaps['bk2.6'].values - ccsd_gaps['all electron'].values
+er['bk2.7 error'] = ccsd_gaps['bk2.7'].values - ccsd_gaps['all electron'].values
+er = er[1:]
 
-mads = er.mad(axis=0)
+ae_gaps = er['AE gaps']
+weight = ae_gaps.abs()
 
-weight_er = pd.DataFrame()
+mad = er.copy().abs().mean()
+er.loc['MAD'] = mad
 
-weight_er['UC error'] = (ccsd_gaps['UC'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-weight_er['CRENBL error'] = (ccsd_gaps['CRENBL'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-weight_er['LANL2 error'] = (ccsd_gaps['LANL2'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-weight_er['SBKJC error'] = (ccsd_gaps['SBKJC'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-weight_er['MDFSTU error'] = (ccsd_gaps['MDFSTU'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['reg-MDFSTU error'] = (ccsd_gaps['reg-MDFSTU'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['bk1.3 error'] = (ccsd_gaps['bk1.3'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['bk1.4 error'] = (ccsd_gaps['bk1.4'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['bk1.5 error'] = (ccsd_gaps['bk1.5'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['bk1.6 error'] = (ccsd_gaps['bk1.6'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['bk1.7 error'] = (ccsd_gaps['bk1.7'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['ccECP error'] = (ccsd_gaps['bk1.8'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['bk1.9 error'] = (ccsd_gaps['bk1.9'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['bk2.3 error'] = (ccsd_gaps['bk2.3'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-#weight_er['bk2.4 error'] = (ccsd_gaps['bk2.4'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
-weight_er['ccECP error'] = (ccsd_gaps['bk2.6'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+wmad = er.copy().abs().div(weight, axis=0).mean()*100
+er.loc['wMAD'] = wmad
 
-weight_mads = weight_er.mad(axis=0)
+#weight_er = pd.DataFrame()
+#
+#weight_er['UC error'] = (ccsd_gaps['UC'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+#weight_er['CRENBL error'] = (ccsd_gaps['CRENBL'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+#weight_er['LANL2 error'] = (ccsd_gaps['LANL2'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+#weight_er['SBKJC error'] = (ccsd_gaps['SBKJC'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+#weight_er['MDFSTU error'] = (ccsd_gaps['MDFSTU'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['reg-MDFSTU error'] = (ccsd_gaps['reg-MDFSTU'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['bk1.3 error'] = (ccsd_gaps['bk1.3'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['bk1.4 error'] = (ccsd_gaps['bk1.4'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['bk1.5 error'] = (ccsd_gaps['bk1.5'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['bk1.6 error'] = (ccsd_gaps['bk1.6'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['bk1.7 error'] = (ccsd_gaps['bk1.7'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['ccECP error'] = (ccsd_gaps['bk1.8'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['bk1.9 error'] = (ccsd_gaps['bk1.9'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['bk2.3 error'] = (ccsd_gaps['bk2.3'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+##weight_er['bk2.4 error'] = (ccsd_gaps['bk2.4'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+#weight_er['ccECP error'] = (ccsd_gaps['bk2.6'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+#weight_er['bk2.7 error'] = (ccsd_gaps['bk2.7'].values - ccsd_gaps['all electron'].values)/ccsd_gaps['all electron'].values
+#
+#weight_mads = weight_er.mad(axis=0)
 
 
 opt = pd.DataFrame()
@@ -360,9 +384,6 @@ opt['bk2.6'] = ccsd_gaps['all electron'].values - corr['bk2.6'].values
 
 
 print(er.to_latex(index=False))
-print(mads.to_latex(index=False))
-
-print(weight_mads.to_latex(index=False))
 #print(opt.to_latex(index=False))
 	
 

@@ -123,6 +123,16 @@ for basis in ['tz']:
 
 bk2_6ccsd = dfbk2_6.filter(regex='ccsd')
 
+##bk2.7##
+dfbk2_7=pd.DataFrame()
+
+for basis in ['tz']:
+        bk2_7 = pd.read_csv('./'+basis+'.bk2.7.csv',skip_blank_lines=True,skipinitialspace=True)
+        dfbk2_7[basis+'_z'] = bk2_7['Z']
+        dfbk2_7[basis+'_ccsd'] = bk2_7['CCSD']
+
+bk2_7ccsd = dfbk2_7.filter(regex='ccsd')
+
 ##CRENBL##
 dfCRENBL=pd.DataFrame()
 
@@ -187,6 +197,8 @@ work['bk2.5 Raw'] = bk2_5ccsd['tz_ccsd']
 work['bk2.5 proc'] = work['bk2.5 Raw'].values --15.86568094 --104.3617643
 work['bk2.6 Raw'] = bk2_6ccsd['tz_ccsd']
 work['bk2.6 proc'] = work['bk2.6 Raw'].values --15.86568094 --104.3776773
+work['bk2.7 Raw'] = bk2_7ccsd['tz_ccsd']
+work['bk2.7 proc'] = work['bk2.7 Raw'].values --15.86568094 --104.3768578
 work['CRENBL Raw'] = CRENccsd['tz_ccsd']
 work['CRENBL proc'] = work['CRENBL Raw'].values --15.86568094 --104.5952082
 work['LANL2 Raw'] = LANLccsd['tz_ccsd']
@@ -219,6 +231,7 @@ ff['bk2.3'] = work['bk2.3 proc']
 ff['bk2.4'] = work['bk2.4 proc']
 ff['bk2.5'] = work['bk2.5 proc']
 ff['bk2.6'] = work['bk2.6 proc']
+ff['bk2.7'] = work['bk2.7 proc']
 
 fff = pd.DataFrame()
 
@@ -237,10 +250,11 @@ fff['bk2.3 error'] =  (  ff['bk2.3'].values- ff['ae'].values )*toev
 fff['bk2.4 error'] =  (  ff['bk2.4'].values- ff['ae'].values )*toev  
 fff['bk2.5 error'] =  (  ff['bk2.5'].values- ff['ae'].values )*toev  
 fff['bk2.6 error'] =  (  ff['bk2.6'].values- ff['ae'].values )*toev  
+fff['bk2.7 error'] =  (  ff['bk2.7'].values- ff['ae'].values )*toev  
 #print(fff.iloc[::-1])
 print(fff.to_latex(index=False))
 	
-ecps = ['MDFSTU', 'LANL2', 'SBKJC', 'CRENBL','bk2.6', 'UC']
+ecps = ['MDFSTU', 'LANL2', 'SBKJC', 'CRENBL', 'bk2.7', 'UC']
 
 styles = {
         'UC'        :{'label': 'UC',       'color':'#e41a1c','linestyle':'--','dashes': (1000000,1)},
@@ -248,9 +262,7 @@ styles = {
         'SBKJC'        :{'label': 'SBKJC',      'color':'#377eb8','linestyle':'--','dashes': (16,2)      },
         'MDFSTU'       :{'label': 'MDFSTU',      'color':'#ff7f00','linestyle':'--','dashes': (7,2)},
         'CRENBL'       :{'label': 'CRENBL',    'color':'#984ea3','linestyle':'--','dashes': (2.5,2) },
-        'bk1.7'      :{'label': 'bk1.7',  'color':'#1bbbbb','linestyle':'--','dashes': (13,2,4,2,13,9)},
-        'bk1.9'      :{'label': 'bk1.9',  'color':'#100000','linestyle':'--','dashes': (13,2,4,2,13,9)},
-        'bk2.6'      :{'label': 'ccECP',  'color':'#193f80','linestyle':'--','dashes': (13,2,4,2,13,9)},
+        'bk2.7'      :{'label': 'ccECP',  'color':'#193f80','linestyle':'--','dashes': (13,2,4,2,13,9)},
         }
 
 def init():

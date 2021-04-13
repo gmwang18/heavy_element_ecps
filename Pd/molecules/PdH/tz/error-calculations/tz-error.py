@@ -43,75 +43,35 @@ for basis in ['tz']:
 
 stuccsd = dfstu.filter(regex='ccsd')
 
-##bk8.4.1##
-dfbk8_4_1=pd.DataFrame()
+##ccECP##
+dfccecp=pd.DataFrame()
 
 for basis in ['tz']:
-        c4 = pd.read_csv('./'+basis+'.bk8.4.1.csv',skip_blank_lines=True,skipinitialspace=True)
-        dfbk8_4_1[basis+'_z'] = c4['Z']
-        dfbk8_4_1[basis+'_ccsd'] = c4['CCSD']
+        ccecp = pd.read_csv('./'+basis+'.ccECP.csv',skip_blank_lines=True,skipinitialspace=True)
+        dfccecp[basis+'_z'] = ccecp['Z']
+        dfccecp[basis+'_ccsd'] = ccecp['CCSD']
 
-bk4ccsd = dfbk8_4_1.filter(regex='ccsd')
+ccecpccsd = dfccecp.filter(regex='ccsd')
 
-##bk9.5.1##
-dfbk9_5_1=pd.DataFrame()
-
-for basis in ['tz']:
-        c5 = pd.read_csv('./'+basis+'.bk9.5.1.csv',skip_blank_lines=True,skipinitialspace=True)
-        dfbk9_5_1[basis+'_z'] = c5['Z']
-        dfbk9_5_1[basis+'_ccsd'] = c5['CCSD']
-
-bk5ccsd = dfbk9_5_1.filter(regex='ccsd')
-
-##bkc1.1##
-dfbkc1_1=pd.DataFrame()
+##bk16.1##
+dfbk16_1=pd.DataFrame()
 
 for basis in ['tz']:
-        bkc1_1 = pd.read_csv('./'+basis+'.bkc1.1.csv',skip_blank_lines=True,skipinitialspace=True)
-        dfbkc1_1[basis+'_z'] = bkc1_1['Z']
-        dfbkc1_1[basis+'_ccsd'] = bkc1_1['CCSD']
+        bk16_1 = pd.read_csv('./'+basis+'.bk16.1.csv',skip_blank_lines=True,skipinitialspace=True)
+        dfbk16_1[basis+'_z'] = bk16_1['Z']
+        dfbk16_1[basis+'_ccsd'] = bk16_1['CCSD']
 
-bkc1_1ccsd = dfbkc1_1.filter(regex='ccsd')
+bk16_1ccsd = dfbk16_1.filter(regex='ccsd')
 
-##bkc5.1.1##
-dfbkc5_1_1=pd.DataFrame()
-
-for basis in ['tz']:
-        bkc5_1_1 = pd.read_csv('./'+basis+'.bkc5.1.1.csv',skip_blank_lines=True,skipinitialspace=True)
-        dfbkc5_1_1[basis+'_z'] = bkc5_1_1['Z']
-        dfbkc5_1_1[basis+'_ccsd'] = bkc5_1_1['CCSD']
-
-bkc5_1_1ccsd = dfbkc5_1_1.filter(regex='ccsd')
-
-##bkc4.1##
-dfbkc4_1=pd.DataFrame()
+##bk24.1##
+dfbk24_1=pd.DataFrame()
 
 for basis in ['tz']:
-        bkc4_1 = pd.read_csv('./'+basis+'.bkc4.1.csv',skip_blank_lines=True,skipinitialspace=True)
-        dfbkc4_1[basis+'_z'] = bkc4_1['Z']
-        dfbkc4_1[basis+'_ccsd'] = bkc4_1['CCSD']
+        bk24_1 = pd.read_csv('./'+basis+'.bk24.1.csv',skip_blank_lines=True,skipinitialspace=True)
+        dfbk24_1[basis+'_z'] = bk24_1['Z']
+        dfbk24_1[basis+'_ccsd'] = bk24_1['CCSD']
 
-bkc4_1ccsd = dfbkc4_1.filter(regex='ccsd')
-
-##bkc5.1##
-dfbkc5_1=pd.DataFrame()
-
-for basis in ['tz']:
-        bkc5_1 = pd.read_csv('./'+basis+'.bkc5.1.csv',skip_blank_lines=True,skipinitialspace=True)
-        dfbkc5_1[basis+'_z'] = bkc5_1['Z']
-        dfbkc5_1[basis+'_ccsd'] = bkc5_1['CCSD']
-
-bkc5_1ccsd = dfbkc5_1.filter(regex='ccsd')
-
-##bkc1.1-4.1##
-dfbkc1_1_4_1=pd.DataFrame()
-
-for basis in ['tz']:
-        bkc1_1_4_1 = pd.read_csv('./'+basis+'.bkc1.1-4.1.csv',skip_blank_lines=True,skipinitialspace=True)
-        dfbkc1_1_4_1[basis+'_z'] = bkc1_1_4_1['Z']
-        dfbkc1_1_4_1[basis+'_ccsd'] = bkc1_1_4_1['CCSD']
-
-bkc1_1_4_1ccsd = dfbkc1_1_4_1.filter(regex='ccsd')
+bk24_1ccsd = dfbk24_1.filter(regex='ccsd')
 
 ##CRENBL##
 dfCRENBL=pd.DataFrame()
@@ -147,20 +107,12 @@ SBKJccsd = dfSBKJC.filter(regex='ccsd')
 work = pd.DataFrame()
 work['MDFSTU Raw'] = stuccsd['tz_ccsd'] 
 work['MDFSTU proc'] = work['MDFSTU Raw'].values - -0.49982785 - -127.36411989
-work['bk8.4.1 Raw'] = bk4ccsd['tz_ccsd']
-work['bk8.4.1 proc'] = work['bk8.4.1 Raw'].values - -0.49982785 - -127.86642345
-work['bk9.5.1 Raw'] = bk5ccsd['tz_ccsd']
-work['bk9.5.1 proc'] = work['bk9.5.1 Raw'].values - -0.49982785 - -128.03219838
-work['bkc1.1 Raw'] = bkc1_1ccsd['tz_ccsd']
-work['bkc1.1 proc'] = work['bkc1.1 Raw'].values - -0.49982785 - -127.27054181
-work['bkc4.1 Raw'] = bkc4_1ccsd['tz_ccsd']
-work['bkc4.1 proc'] = work['bkc4.1 Raw'].values - -0.49982785 - -127.30464831
-work['bkc5.1 Raw'] = bkc5_1ccsd['tz_ccsd']
-work['bkc5.1 proc'] = work['bkc5.1 Raw'].values - -0.49982785 - -127.38233810
-work['bkc5.1.1 Raw'] = bkc5_1_1ccsd['tz_ccsd']
-work['bkc5.1.1 proc'] = work['bkc5.1.1 Raw'].values - -0.49982785 - -127.38498389
-work['bkc1.1-4.1 Raw'] = bkc1_1_4_1ccsd['tz_ccsd']
-work['bkc1.1-4.1 proc'] = work['bkc1.1-4.1 Raw'].values - -0.49982785 - -127.07496639
+work['ccECP Raw'] = ccecpccsd['tz_ccsd']
+work['ccECP proc'] = work['ccECP Raw'].values - -0.49982785 - -127.38233810
+work['bk16.1 Raw'] = bk16_1ccsd['tz_ccsd']
+work['bk16.1 proc'] = work['bk16.1 Raw'].values - -0.49982785 --127.64119876
+work['bk24.1 Raw'] = bk24_1ccsd['tz_ccsd']
+work['bk24.1 proc'] = work['bk24.1 Raw'].values - -0.49982785 --127.63756444
 work['CRENBL Raw'] = CRENccsd['tz_ccsd']
 work['CRENBL proc'] = work['CRENBL Raw'].values - -0.49982785 - -127.2680058
 work['LANL2 Raw'] = LANLccsd['tz_ccsd']
@@ -184,13 +136,9 @@ ff['MDFSTU'] = work['MDFSTU proc']
 ff['CRENBL'] = work['CRENBL proc']
 ff['LANL2'] = work['LANL2 proc']
 ff['SBKJC'] = work['SBKJC proc']
-ff['bk8.4.1'] = work['bk8.4.1 proc']
-ff['bk9.5.1'] = work['bk9.5.1 proc']
-ff['bkc1.1'] = work['bkc1.1 proc']
-ff['bkc4.1'] = work['bkc4.1 proc']
-ff['bkc5.1'] = work['bkc5.1 proc']
-ff['bkc5.1.1'] = work['bkc5.1.1 proc']
-ff['bkc1.1-4.1'] = work['bkc1.1-4.1 proc']
+ff['ccECP'] = work['ccECP proc']
+ff['bk16.1'] = work['bk16.1 proc']
+ff['bk24.1'] = work['bk24.1 proc']
 revff = ff.iloc[::-1]
 
 fff = pd.DataFrame()
@@ -200,17 +148,13 @@ fff['MDFSTU error'] = (ff['MDFSTU'].values -ff['ae'].values)*toev
 fff['CRENBL error'] = (ff['CRENBL'].values -ff['ae'].values)*toev
 fff['LANL2 error'] = (ff['LANL2'].values -ff['ae'].values)*toev
 fff['SBKJC error'] = (ff['SBKJC'].values -ff['ae'].values)*toev
-fff['bk8.4.1 error'] = (ff['bk8.4.1'].values -ff['ae'].values)*toev
-fff['bk9.5.1 error'] = (ff['bk9.5.1'].values -ff['ae'].values)*toev
-fff['bkc1.1 error'] = (ff['bkc1.1'].values -ff['ae'].values)*toev
-fff['bkc4.1 error'] = (ff['bkc4.1'].values -ff['ae'].values)*toev
-fff['bkc5.1 error'] = (ff['bkc5.1'].values -ff['ae'].values)*toev
-fff['bkc5.1.1 error'] = (ff['bkc5.1.1'].values -ff['ae'].values)*toev
-fff['bkc1.1-4.1 error'] = (ff['bkc1.1-4.1'].values -ff['ae'].values)*toev
+fff['ccECP error'] = (ff['ccECP'].values -ff['ae'].values)*toev
+fff['bk16.1 error'] = (ff['bk16.1'].values -ff['ae'].values)*toev
+fff['bk24.1 error'] = (ff['bk24.1'].values -ff['ae'].values)*toev
 #print(fff.iloc[::-1])
 print(fff.to_latex(index=False))
 	
-ecps = ['MDFSTU', 'LANL2', 'SBKJC', 'CRENBL', 'bkc5.1']
+ecps = ['MDFSTU', 'LANL2', 'SBKJC', 'CRENBL', 'ccECP', 'bk16.1', 'bk24.1']
 
 styles = {
         'UC'        :{'label': 'UC',       'color':'#e41a1c','linestyle':'--','dashes': (1000000,1)},
@@ -218,12 +162,9 @@ styles = {
         'MDFSTU'       :{'label': 'MDFSTU',      'color':'#ff7f00','linestyle':'--','dashes': (7,2)},
         'CRENBL'       :{'label': 'CRENBL',    'color':'#984ea3','linestyle':'--','dashes': (2.5,2) },
         'LANL2'      :{'label': 'LANL2',  'color':'#4daf4a','linestyle':'--','dashes': (13,2,4,2,13,9)},
-        'bk9.5.1'      :{'label': 'bk9.5.1',    'color':'#DC0174','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
-        'bkc1.1'      :{'label': 'bkc1.1',    'color':'#34eb3a','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
-        'bkc4.1'      :{'label': 'bkc4.1',    'color':'#2c8019','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
-        'bkc5.1'      :{'label': 'ccECP',    'color':'#193f80','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
-        'bkc5.1.1'      :{'label': 'bkc5.1.1',    'color':'#ac2adb','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
-#        'bkc1.1-4.1'      :{'label': 'bkc1.1-4.1',    'color':'#c92828','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
+        'bk16.1'      :{'label': 'bk16.1',    'color':'#34eb3a','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
+        'bk24.1'      :{'label': 'bk24.1',    'color':'#2c8019','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
+        'ccECP'      :{'label': 'ccECP',    'color':'#193f80','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
         }
 
 def init():

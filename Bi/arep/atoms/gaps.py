@@ -29,7 +29,7 @@ diffs.loc['MAD'] = mad
 
 weight = ae_gaps.abs()
 wmad = diffs.copy().abs().div(weight, axis=0).mean()*100
-diffs.loc['wMAD'] = wmad
+diffs.loc['WMAD'] = wmad
 
 diffs['AE'] = ae_gaps  # Revert back to AE gaps
 

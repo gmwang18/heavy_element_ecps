@@ -18,7 +18,7 @@ styles={
 'CRENBS'	:{'label':'CRENBS',	'color':'#2f4f4f','linestyle':'--','dashes':(6,3)	},
 'SBKJC'		:{'label':'SBKJC',	'color':'#1e90ff','linestyle':'--','dashes':(2,1,8,1)	},
 'LANL2'		:{'label':'LANL2',	'color':'#a52a2a','linestyle':'--','dashes':(1,1)	},
-'a-28.1'	:{'label':'ccECP',	'color':'#33cc33','linestyle':'--','dashes':(8,1,1,1,1,1)},
+'ccECP'	        :{'label':'ccECP',	'color':'#33cc33','linestyle':'--','dashes':(8,1,1,1,1,1)},
 }
 
 toeV = 27.211386
@@ -35,6 +35,8 @@ for mol in systems:
 req = {
 'BiH_TZ': 1.8, # Tentative
 'BiO_TZ': 1.9, # Tentative
+'MoO_TZ': 1.7,
+'MoH_TZ': 2.12,
 }
 
 def init():

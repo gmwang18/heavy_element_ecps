@@ -119,19 +119,19 @@ df_cc = pd.read_csv("ccsd-t-arep-mdfstu/qz.csv", index_col=False, engine='python
 
 print(df_cc)
 
-bind_cc = df_cc['CCSD'] - df_cc['A_CCSD'].iloc[0] - df_cc['B_CCSD'].iloc[0]
-bind_cc = bind_cc.values
+#bind_cc = df_cc['BIND']
+#bind_cc = bind_cc.values
 df_binding['Z'] = df_cc['Z']
-df_binding['CC'] = bind_cc
+#df_binding['CC'] = bind_cc
 
-#df_coscidmc = raw2unc('FPSODMC/mdfstu/raw_opt.dat')
-#atom_coscidmc = ufloat(-11.36700536, 0.0001918225539)
-#df_binding['COSCIDMC'] = df_coscidmc['energy'].values - 2.0*atom_coscidmc
+df_coscidmc = raw2unc('FPSODMC/mdfstu/raw_opt.dat')
+atom_coscidmc = ufloat(-146.9285883, 0.00080755025)
+df_binding['COSCIDMC'] = df_coscidmc['energy'].values - 2.0*atom_coscidmc
 
-#df_cc_ccECP = pd.read_csv("ccsd-t_arep_so_ccECP/Ag2/5z.csv", index_col=False, engine='python', sep='\s*,\s*')
-#bind_cc_ccECP = df_cc_ccECP['CCSD'] - df_cc_ccECP['A_CCSD'].iloc[0] - df_cc_ccECP['B_CCSD'].iloc[0]
-#bind_cc_ccECP = bind_cc_ccECP.values
-#df_binding['CC-so-ccECP'] = bind_cc_ccECP
+df_cc_ccECP = pd.read_csv("ccsd-t-arep-ccECP/qz.csv", index_col=False, engine='python', sep='\s*,\s*')
+bind_cc_ccECP = df_cc_ccECP['BIND']
+bind_cc_ccECP = bind_cc_ccECP.values
+df_binding['CC-so-ccECP'] = bind_cc_ccECP
 
 df_ccECP_coscidmc = raw2unc('FPSODMC/so-ccECP/raw_opt.dat')
 atom_ccECP_coscidmc = ufloat(-146.9137764, 0.000902765404)
@@ -153,10 +153,10 @@ wconv=tocm*bohr/np.sqrt(amu)
 styles = {
 #'CC'           :{'label':'UCCSD(T)/RHF (AREP-MDFSTU)', 'color':'#984ea3', 'fmt':'s',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 #'CC_fit'       :{                               'color':'#984ea3',               'linestyle':'--','dashes': (8,2),                                                                },
-#'COSCIDMC'     :{'label':'FPSODMC/COSCI (REP-MDFSTU)', 'color':'#984ea3', 'fmt':'o',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
-#'COSCIDMC_fit' :{                               'color':'#984ea3',               'linestyle':'--','dashes': (1,1),                                                                },
-#'CC-so-ccECP'           :{'label':'UCCSD(T)/RHF/ (AREP-ccECP)', 'color':'#339933', 'fmt':'.',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
-#'CC-so-ccECP_fit'       :{                               'color':'#339933',               'linestyle':'--','dashes': (8,2),                                                                },
+'COSCIDMC'     :{'label':'FPSODMC/COSCI (REP-MDFSTU)', 'color':'#984ea3', 'fmt':'o',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
+'COSCIDMC_fit' :{                               'color':'#984ea3',               'linestyle':'--','dashes': (1,1),                                                                },
+'CC-so-ccECP'           :{'label':'UCCSD(T)/RHF/ (AREP-ccECP)', 'color':'#339933', 'fmt':'.',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
+'CC-so-ccECP_fit'       :{                               'color':'#339933',               'linestyle':'--','dashes': (8,2),                                                                },
 'ccECP_COSCIDMC'     :{'label':'FPSODMC/COSCI (REP-so-ccECP)', 'color':'#339933', 'fmt':'*',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'ccECP_COSCIDMC_fit' :{                               'color':'#339933',               'linestyle':'--','dashes': (1,1),                                                                },
         }
@@ -171,6 +171,8 @@ ax.set_ylabel('Binding energy $-D_e$ [eV]')
 De_exp = -1.66
 ax.axhline(De_exp, color='r', linestyle='-', linewidth=0.7, label='Exper. $-D_{e}$')
 ax.axvline(2.6549, color='r', linestyle='-', linewidth=0.7, label='Exper. $r_{eq}$')
+ax.axvline(2.48, color='r', linestyle='-', linewidth=0.7)
+ax.axvline(2.53350, color='r', linestyle='-', linewidth=0.7)
 
 for column in df_binding:
         if column == "Z":
@@ -181,13 +183,16 @@ for column in df_binding:
                 ax.errorbar(xdata, ydata*toev, **styles[column])
         else:
                 print(column)
-                initial=[df_binding['CC'].iloc[3], 2.00, df_binding['Z'].iloc[3]]  # initial guess
+                initial=[-0.06, 2.00, 2.6]  # initial guess
+                print(initial)
+#                initial=[df_binding['CC'].iloc[3], 2.00, df_binding['Z'].iloc[3]]  # initial guess
                 xdata = df_binding['Z'].values
                 ydata = unumpy.nominal_values(list(df_binding[column]))
                 yerr = unumpy.std_devs(list(df_binding[column]))
                 if column=='CC' or 'CC-so-ccECP' or 'ccECP_COSCIDMC':
                         yerr = yerr + 1.000
                 popt_m, pcov_m = curve_fit(morse, xdata, ydata, sigma=yerr, p0=initial)
+                #popt_m, pcov_m = curve_fit(morse, xdata, ydata, sigma=yerr)
                 std=np.sqrt(np.diag(pcov_m))
                 if column == 'COSCIDMC':
                     stu_bind_geo = popt_m[2]

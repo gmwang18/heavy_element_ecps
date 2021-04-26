@@ -13,18 +13,18 @@ import pandas as pd
 
 toev=27.21138602
 
-ecps = ['uc', 'crenbl', 'lanl2dz', 'mdfstu','sbkjc', 'w2', 'comb-w0-w11']#, 'w3', 'w6', 'w9']
+ecps = ['UC', 'CRENBS', 'LANL2', 'MDFSTU','SBKJC', 'ccECP']#, 'w3', 'w6', 'w9']
 styles = {
-'uc'        :{'label': 'UC',       'color':'#e41a1c','linestyle':'-'},
-'crenbl'    :{'label': 'CRENBL','color':'#ff7f00','linestyle':'--','dashes': (8,5,1,3)},
-'lanl2dz'   :{'label': 'LANL2DZ',    'color':'#377eb8','linestyle':'-','dashes': (3,1,1,2) },
-'mdfstu'    :{'label': 'MDFSTU',      'color':'#984ea3','linestyle':'--','dashes': (6,3)     },
-'sbkjc'     :{'label': 'SBKJC',    'color':'#DC0174','linestyle':'-','dashes': (3,1,1,2) },
+'UC'        :{'label': 'UC',       'color':'#e41a1c','linestyle':'-'},
+'CRENBS'    :{'label': 'CRENBS','color':'#ff7f00','linestyle':'--','dashes': (8,5,1,3)},
+'LANL2'   :{'label': 'LANL2',    'color':'#377eb8','linestyle':'-','dashes': (3,1,1,2) },
+'MDFSTU'    :{'label': 'MDFSTU',      'color':'#984ea3','linestyle':'--','dashes': (6,3)     },
+'SBKJC'     :{'label': 'SBKJC',    'color':'#DC0174','linestyle':'-','dashes': (3,1,1,2) },
 #'sub0'       :{'label': 'Sub0',      'color':'#6600ff','linestyle':'--','dashes': (3,2)      },
 #'smal-se3'     :{'label': 'energy3',      'color':'#006666','linestyle':'--','dashes': (4,3)     },
 #
-'w2'     :{'label': 'w2',      'color':'#008000','linestyle':'--','dashes': (6,6)     },
-'comb-w0-w11'      :{'label': 'refine-w2',    'color':'#00FFFF','linestyle':'--','dashes': (4,2,1,2) },
+'ccECP'     :{'label': 'ccECP',      'color':'#008000','linestyle':'--','dashes': (6,6)     },
+#'comb-w0-w11'      :{'label': 'refine-w2',    'color':'#00FFFF','linestyle':'--','dashes': (4,2,1,2) },
 #'w2'      :{'label': 'w2',    'color':'#cc0099','linestyle':'--','dashes': (4,2,1,2) },
 #'w2'      :{'label': 'w2',    'color':'#39e600','linestyle':'--','dashes': (4,2,1,2) },
 #'w2'     :{'label': 'w2',      'color':'#4daf4a','linestyle':'-','dashes': (2,3)     },
@@ -55,11 +55,11 @@ def init():
 
 def get_data():
     data = pd.DataFrame()
-    df = pd.read_csv("ae/tzbind", delim_whitespace=True)
+    df = pd.read_csv("AE/bind.csv", delim_whitespace=True)
     data['r']= df['r']
-    data['ae']= df['bind']
+    data['AE']= df['bind']
     for ecp in ecps:
-        df = pd.read_csv("%s/tzbind" % ecp, delim_whitespace=True)
+        df = pd.read_csv("%s/bind.csv" % ecp, delim_whitespace=True)
         data[ecp] = df['bind']
     return data
 
@@ -75,7 +75,7 @@ def plot():
     ax.set_ylabel('Discrepancy (eV)')
     for i,ecp in enumerate(ecps):
         x = data['r']
-        y = (data[ecp] - data['ae'])*toev
+        y = (data[ecp] - data['AE'])*toev
         plt.plot(x,y,**styles[ecp])
     ax.set_xlim((1.30,1.90))
 #    ax.set_ylim((-0.25,0.25))

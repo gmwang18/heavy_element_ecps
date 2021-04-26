@@ -6,7 +6,7 @@ import pandas as pd
 import pickle
 import sys
 
-ecps = ['UC', 'BFD', 'MDFSTU','MWBSTU','CRENBS','SBKJC','LANL2', 'a-28.1']
+ecps = ['UC', 'BFD', 'MDFSTU','MWBSTU','CRENBS','SBKJC','LANL2', 'ccECP']
 styles = {
 'UC'		:{'label':'UC',		'color':'#e41a1c','linestyle':'-'                  },
 'MDFSTU'	:{'label':'MDFSTU',	'color':'#ff7f00','linestyle':'--','dashes': (7,2) },
@@ -15,7 +15,7 @@ styles = {
 'SBKJC'		:{'label':'SBKJC',	'color':'#377eb8','linestyle':'--','dashes': (16,2)}, 
 'LANL2'		:{'label':'LANL2',	'color':'#b3b300','linestyle':'--','dashes': (5,5) },
 'BFD'		:{'label':'BFD',	'color':'#003366','linestyle':'--','dashes': (3,3) },
-'a-28.1'	:{'label':'a-28.1',	'color':'#009900','linestyle':'--','dashes': (3,3) },
+'ccECP'		:{'label':'ccECP',	'color':'#009900','linestyle':'--','dashes': (3,3) },
 }
 
 Req=1.912

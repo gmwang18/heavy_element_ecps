@@ -16,9 +16,10 @@ styles={
 'MDFSTU'	:{'label':'MDFSTU',	'color':'#ff6600','linestyle':'--','dashes':(4,1)	},
 'MWBSTU'	:{'label':'MWBSTU',	'color':'#ff33cc','linestyle':'--','dashes':(4,1,1,1)	},
 'CRENBS'	:{'label':'CRENBS',	'color':'#2f4f4f','linestyle':'--','dashes':(6,3)	},
+'CRENBL'	:{'label':'CRENBL',	'color':'#2f4f4f','linestyle':'--','dashes':(6,3)	},
 'SBKJC'		:{'label':'SBKJC',	'color':'#1e90ff','linestyle':'--','dashes':(2,1,8,1)	},
 'LANL2'		:{'label':'LANL2',	'color':'#a52a2a','linestyle':'--','dashes':(1,1)	},
-'ccECP'	        :{'label':'ccECP',	'color':'#33cc33','linestyle':'--','dashes':(8,1,1,1,1,1)},
+'ccECP'	        :{'label':'ccECP',	'color':'#009900','linestyle':'--','dashes':(8,1,1,1,1,1)},
 }
 
 toeV = 27.211386
@@ -41,7 +42,7 @@ req = {
 
 def init():
     font   = {'family' : 'serif', 'size': 17}
-    lines  = {'linewidth': 2.0}
+    lines  = {'linewidth': 2.2}
     axes   = {'linewidth': 2.0}    # border width
     tick   = {'major.size': 2, 'major.width':2}
     legend = {'frameon':True, 'fontsize':16.0, 'handlelength':2.30, 'labelspacing':0.30, 'handletextpad':0.4, 'loc':'best', 'facecolor':'white', 'framealpha':1.00, 'edgecolor':'#f2f2f2'}

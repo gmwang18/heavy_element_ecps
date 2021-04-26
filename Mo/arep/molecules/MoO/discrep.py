@@ -6,12 +6,13 @@ import pandas as pd
 import pickle
 import sys
 
-ecps = ['UC', 'BFD', 'MDFSTU','MWBSTU','CRENBS','SBKJC','LANL2', 'ccECP']
+ecps = ['CRENBL', 'LANL2', 'MDFSTU','UC','MWBSTU','ccECP']
 styles = {
 'UC'		:{'label':'UC',		'color':'#e41a1c','linestyle':'-'                  },
 'MDFSTU'	:{'label':'MDFSTU',	'color':'#ff7f00','linestyle':'--','dashes': (7,2) },
 'MWBSTU'	:{'label':'MWBSTU',	'color':'#9966ff','linestyle':'--','dashes': (4,2) },
 'CRENBS'	:{'label':'CRENBS',	'color':'#993300','linestyle':'--','dashes': (3,2) },
+'CRENBL'	:{'label':'CRENBL',	'color':'#993300','linestyle':'--','dashes': (3,2) },
 'SBKJC'		:{'label':'SBKJC',	'color':'#377eb8','linestyle':'--','dashes': (16,2)}, 
 'LANL2'		:{'label':'LANL2',	'color':'#b3b300','linestyle':'--','dashes': (5,5) },
 'BFD'		:{'label':'BFD',	'color':'#003366','linestyle':'--','dashes': (3,3) },
@@ -42,10 +43,10 @@ def init():
 	return fig,ax1
 
 def get_data():
-	ae = pd.read_csv('AE/bind.csv',sep=',', index_col='z')
+	ae = pd.read_csv('AE/bind.csv', delim_whitespace=True, index_col='r')
 	dfs = pd.DataFrame()
 	for ecp in ecps:
-		df = pd.read_csv(ecp+'/bind.csv',sep=',')
+		df = pd.read_csv(ecp+'/bind.csv', delim_whitespace=True)
 		dfs[ecp] = df['bind']
 	dfs = dfs.set_index(ae.index)
 	#ha = dfs.copy()
@@ -55,13 +56,14 @@ def get_data():
 	return ae,dfs
 
 def write_data(name):
-	ae = pd.read_csv('AE/bind.csv',sep=',', index_col='z')
+	ae = pd.read_csv('AE/bind.csv', delim_whitespace=True, index_col='r')
 	dfs = pd.DataFrame()
 	for ecp in ecps:
-		df = pd.read_csv(ecp+'/bind.csv',sep=',')
+		df = pd.read_csv(ecp+'/bind.csv', delim_whitespace=True)
 		dfs[ecp] = df['bind']
 	dfs = dfs.set_index(ae.index)
 	dfs['AE'] = ae['bind']
+	dfs = dfs.rename_axis("z")
 	dfs.to_csv(name, float_format = "%.6f")
 	return dfs
 
@@ -97,4 +99,4 @@ if __name__ == '__main__':
 		plot(r0=float(sys.argv[1]))
 	else:
 		plot()
-		write_data('BiH_TZ.csv')
+		write_data('MoO_TZ.csv')

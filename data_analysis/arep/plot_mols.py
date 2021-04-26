@@ -45,6 +45,8 @@ req = {
 'AgH_5Z': 1.6, # Tentative
 'AgO_5Z': 2.0, # Tentative
 >>>>>>> da3b1e97595d15f0f5e392b467f25a3ff8685195
+'IH_TZ':1.6020789274002896,
+'IO_TZ':1.8388286072136575,
 }
 
 def init():

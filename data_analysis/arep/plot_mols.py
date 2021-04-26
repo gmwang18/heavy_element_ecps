@@ -38,6 +38,8 @@ req = {
 'BiO_TZ': 1.9, # Tentative
 'MoO_TZ': 1.7,
 'MoH_TZ': 2.12,
+'AgH_5Z': 1.6, # Tentative
+'AgO_5Z': 2.0, # Tentative
 }
 
 def init():

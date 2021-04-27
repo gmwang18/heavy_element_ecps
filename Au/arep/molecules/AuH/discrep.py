@@ -1,26 +1,24 @@
+#!/usr/bin/env python
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pandas as pd
 import pickle
 import sys
 
-#ecps = ['MDFSTU','rMDFSTU','CRENBL','SBKJC','LANL2DZ','GW-1','GW-2','GW-3']
-ecps = ['MDFSTU','rMDFSTU','CRENBL','SBKJC','LANL2DZ','GW-2',]
+ecps = ['MDFSTU','CRENBL','SBKJC','LANL2','ccECP',]
 styles = {
-'UC'		:{'label': 'UC',	'color':'#e41a1c','linestyle':'-'                  	},
-'MDFSTU'	:{'label': 'MDFSTU',	'color':'#ff7f00','linestyle':'--','dashes': (7,2)	},
-'rMDFSTU'	:{'label': 'rMDFSTU',	'color':'#9966ff','linestyle':'--','dashes': (4,2)	},
-'CRENBL'	:{'label': 'CRENBL',	'color':'#993300','linestyle':'--','dashes': (3,2)	},
-'SBKJC'		:{'label': 'SBKJC',	'color':'#377eb8','linestyle':'--','dashes': (16,2) 	}, 
-'LANL2DZ'	:{'label': 'LANL2DZ',	'color':'#b3b300','linestyle':'--','dashes': (5,5)	},
-'GW-1'	        :{'label': 'GW-1',	'color':'#009900','linestyle':'--','dashes': (3,3)	},
-'GW-2'	        :{'label': 'GW-2',	'color':'#6600ff','linestyle':'--','dashes': (3,3)	},
-'GW-3'	        :{'label': 'GW-3',	'color':'#003366','linestyle':'--','dashes': (3,3)	},
-#'ccECP'		:{'label': 'ccECP','color':'#009933','linestyle':'--','dashes': (10,1)},
+'UC'		:{'label':'UC',		'color':'#e41a1c','linestyle':'-'                  },
+'MDFSTU'	:{'label':'MDFSTU',	'color':'#ff7f00','linestyle':'--','dashes': (7,2) },
+'MWBSTU'	:{'label':'MWBSTU',	'color':'#9966ff','linestyle':'--','dashes': (4,2) },
+'CRENBL'	:{'label':'CRENBL',	'color':'#993300','linestyle':'--','dashes': (3,2) },
+'SBKJC'		:{'label':'SBKJC',	'color':'#377eb8','linestyle':'--','dashes': (16,2)}, 
+'LANL2'		:{'label':'LANL2',	'color':'#b3b300','linestyle':'--','dashes': (5,5) },
+'BFD'		:{'label':'BFD',	'color':'#003366','linestyle':'--','dashes': (3,3) },
+'ccECP'		:{'label':'ccECP',	'color':'#009900','linestyle':'--','dashes': (3,3) },
 }
 
-Req=1.589
-
+Req=1.912
 
 def init():
 	font = {'family' : 'serif', 'size': 16}
@@ -39,7 +37,7 @@ def init():
 	mpl.rcParams['text.usetex'] = True
 	mpl.rcParams.update({'figure.autolayout':True})
 	fig = plt.figure()
-	fig.set_size_inches(7.00, 5.00)   # Default 6.4, 4.8
+	fig.set_size_inches(8.50, 6.50)   # Default 6.4, 4.8
 	ax1 = fig.add_subplot(111)
 	return fig,ax1
 
@@ -49,12 +47,24 @@ def get_data():
 	for ecp in ecps:
 		df = pd.read_csv(ecp+'/bind.csv',sep=',')
 		dfs[ecp] = df['bind']
-	ha = dfs.copy()
-	ha.index = ae.index
-	ha['ae'] = ae['bind']
 	dfs = dfs.set_index(ae.index)
-	ha.to_csv('CaH_5Z.csv')
+	#ha = dfs.copy()
+	#ha.index = ae.index
+	#ha['ae'] = ae['bind']
+	#ha.to_csv('BiO_TZ.csv', float_format = "%.6f")
 	return ae,dfs
+
+def write_data(name):
+	ae = pd.read_csv('AE/bind.csv',sep=',', index_col='z')
+	dfs = pd.DataFrame()
+	for ecp in ecps:
+		df = pd.read_csv(ecp+'/bind.csv',sep=',')
+		dfs[ecp] = df['bind']
+	dfs = dfs.set_index(ae.index)
+	dfs['AE'] = ae['bind']
+	dfs.to_csv(name, float_format = "%.6f")
+	return dfs
+
 
 def plot(r0=None):
 	fig,ax = init()
@@ -79,7 +89,7 @@ def plot(r0=None):
             	#arrowprops=dict(arrowstyle='->',color='red'),)
 
 	plt.legend(loc='best')
-	plt.savefig('discrep.pdf')
+	#plt.savefig('discrep.pdf')
 	plt.show()
 
 if __name__ == '__main__':
@@ -87,3 +97,4 @@ if __name__ == '__main__':
 		plot(r0=float(sys.argv[1]))
 	else:
 		plot()
+		write_data('AuH_TZ.csv')

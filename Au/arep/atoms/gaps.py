@@ -3,30 +3,35 @@
 import pickle 
 import pandas as pd
 
-pd.options.display.float_format = '{:,.5f}'.format
+pps = ['UC','MDFSTU','CRENBL','SBKJC','LANL2','ccECP']
+pd.options.display.float_format = '{:,.4f}'.format
+
+###==================================================
+toev = 27.211386245988
 
 df = pd.DataFrame()
 
 ae = pd.read_csv("AE/dkh/basis/3.csv", sep='\s*,\s*', engine='python')
 df['AE'] = ae['CCSD'].values-ae['CCSD'].values[0]
 
-pps=['UC', 'SBKJC', 'CRENBL', 'LANL2DZ', 'MDFSTU', 'GW-2.2', 'a-1.0']
-
 for pp in pps:
 	ecp = pd.read_csv(pp+'/basis/3.csv', sep='\s*,\s*', engine='python')
 	df[pp] = ecp['CCSD'].values-ecp['CCSD'].values[0]
 
-mad = pd.DataFrame(columns=df.columns)
-diffs = 27.211386*df.copy()
-diffs=diffs[1:]   # Getting rid of ground state
+diffs = df.copy()*toev
+diffs = diffs[1:]  # Getting rid of ground state
+ae_gaps = diffs['AE']  # Save AE values before subtracting
+diffs = diffs.sub(ae_gaps, axis=0)
+
+mad = diffs.copy().abs().mean()
+diffs.loc['MAD'] = mad
+
+weight = ae_gaps.abs()
+wmad = diffs.copy().abs().div(weight, axis=0).mean()*100
+diffs.loc['WMAD'] = wmad
+
+diffs['AE'] = ae_gaps  # Revert back to AE gaps
+
 #print(diffs)
-
-#print("MADS")
-for pp in pps: 
-	#print(pp)
-	diffs[pp] = diffs[pp] - diffs['AE']
-	mad.loc['MAD',pp]=diffs[pp].abs().mean()
-	#print(diffs[pp].abs().mean())
-
 print(diffs.to_latex())
-print(mad.to_latex())
+

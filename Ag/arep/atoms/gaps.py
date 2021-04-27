@@ -3,7 +3,7 @@
 import pickle 
 import pandas as pd
 
-pps=['UC','BFD','MDFSTU','MWBSTU','CRENBS','SBKJC','LANL2','ccECP']
+pps = ['UC','MDFSTU','CRENBL','SBKJC','LANL2','ccECP']
 pd.options.display.float_format = '{:,.4f}'.format
 
 ###==================================================
@@ -11,11 +11,11 @@ toev = 27.211386245988
 
 df = pd.DataFrame()
 
-ae = pd.read_csv("AE/dkh/basis/3.csv", sep='\s*,\s*', engine='python')
+ae = pd.read_csv("AE/dkh/basis/5z.table1.csv", sep='\s*,\s*', engine='python')
 df['AE'] = ae['CCSD'].values-ae['CCSD'].values[0]
 
 for pp in pps:
-	ecp = pd.read_csv(pp+'/basis/3.csv', sep='\s*,\s*', engine='python')
+	ecp = pd.read_csv(pp+'/basis/5z.table1.csv', sep='\s*,\s*', engine='python')
 	df[pp] = ecp['CCSD'].values-ecp['CCSD'].values[0]
 
 diffs = df.copy()*toev

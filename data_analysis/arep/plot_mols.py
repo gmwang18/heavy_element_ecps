@@ -34,19 +34,19 @@ for mol in systems:
 
 ### === Equilibrium positions to be plotted === 
 req = {
+'AgH_5Z': 1.6, # Tentative
+'AgO_5Z': 2.0, # Tentative
+'AuH_TZ': 1.6, # Tentative
+'AuO_TZ': 1.9, # Tentative
 'BiH_TZ': 1.8, # Tentative
 'BiO_TZ': 1.9, # Tentative
 'MoO_TZ': 1.7,
 'MoH_TZ': 2.12,
-<<<<<<< HEAD
-'WH_TZ': 1.7003525781479623,
-'WO_TZ': 1.66381039175619,
-=======
-'AgH_5Z': 1.6, # Tentative
-'AgO_5Z': 2.0, # Tentative
->>>>>>> da3b1e97595d15f0f5e392b467f25a3ff8685195
-'IH_TZ':1.6020789274002896,
-'IO_TZ':1.8388286072136575,
+'IH_QZ' : 1.6020789274002896,
+'IO_QZ' : 1.8388286072136575,
+
+'WH_TZ' : 1.7003525781479623,
+'WO_TZ' : 1.66381039175619,
 }
 
 def init():

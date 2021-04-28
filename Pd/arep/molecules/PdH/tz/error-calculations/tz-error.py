@@ -43,6 +43,16 @@ for basis in ['tz']:
 
 stuccsd = dfstu.filter(regex='ccsd')
 
+##UC##
+dfuc=pd.DataFrame()
+
+for basis in ['tz']:
+        uc = pd.read_csv('./'+basis+'.uc.csv',skip_blank_lines=True,skipinitialspace=True)
+        dfuc[basis+'_z'] = uc['Z']
+        dfuc[basis+'_ccsd'] = uc['CCSD']
+
+ucccsd = dfuc.filter(regex='ccsd')
+
 ##ccECP##
 dfccecp=pd.DataFrame()
 
@@ -62,6 +72,26 @@ for basis in ['tz']:
         dfbk16_1[basis+'_ccsd'] = bk16_1['CCSD']
 
 bk16_1ccsd = dfbk16_1.filter(regex='ccsd')
+
+##bk16.12##
+dfbk16_12=pd.DataFrame()
+
+for basis in ['tz']:
+        bk16_12 = pd.read_csv('./'+basis+'.bk16.12.csv',skip_blank_lines=True,skipinitialspace=True)
+        dfbk16_12[basis+'_z'] = bk16_12['Z']
+        dfbk16_12[basis+'_ccsd'] = bk16_12['CCSD']
+
+bk16_12ccsd = dfbk16_12.filter(regex='ccsd')
+
+##bk16.14##
+dfbk16_14=pd.DataFrame()
+
+for basis in ['tz']:
+        bk16_14 = pd.read_csv('./'+basis+'.bk16.14.csv',skip_blank_lines=True,skipinitialspace=True)
+        dfbk16_14[basis+'_z'] = bk16_14['Z']
+        dfbk16_14[basis+'_ccsd'] = bk16_14['CCSD']
+
+bk16_14ccsd = dfbk16_14.filter(regex='ccsd')
 
 ##bk24.1##
 dfbk24_1=pd.DataFrame()
@@ -105,12 +135,18 @@ SBKJccsd = dfSBKJC.filter(regex='ccsd')
 ###Extrapolation is done here. I am doing formating for the SCF Table, namely hf and Correlation Table, namely corr
 #
 work = pd.DataFrame()
+work['UC Raw'] = ucccsd['tz_ccsd'] 
+work['UC proc'] = work['UC Raw'].values - -0.49982785 - -5043.565379
 work['MDFSTU Raw'] = stuccsd['tz_ccsd'] 
 work['MDFSTU proc'] = work['MDFSTU Raw'].values - -0.49982785 - -127.36411989
 work['ccECP Raw'] = ccecpccsd['tz_ccsd']
 work['ccECP proc'] = work['ccECP Raw'].values - -0.49982785 - -127.38233810
 work['bk16.1 Raw'] = bk16_1ccsd['tz_ccsd']
 work['bk16.1 proc'] = work['bk16.1 Raw'].values - -0.49982785 --127.64119876
+work['bk16.12 Raw'] = bk16_12ccsd['tz_ccsd']
+work['bk16.12 proc'] = work['bk16.12 Raw'].values - -0.49982785 --127.26049020
+work['bk16.14 Raw'] = bk16_14ccsd['tz_ccsd']
+work['bk16.14 proc'] = work['bk16.14 Raw'].values - -0.49982785 --127.21373712
 work['bk24.1 Raw'] = bk24_1ccsd['tz_ccsd']
 work['bk24.1 proc'] = work['bk24.1 Raw'].values - -0.49982785 --127.63756444
 work['CRENBL Raw'] = CRENccsd['tz_ccsd']
@@ -132,29 +168,35 @@ ff = pd.DataFrame()
 
 ff['z'] = aez['tz_z']
 ff['ae'] = aebe['tz_BE']
+ff['UC'] = work['UC proc']
 ff['MDFSTU'] = work['MDFSTU proc']
 ff['CRENBL'] = work['CRENBL proc']
 ff['LANL2'] = work['LANL2 proc']
 ff['SBKJC'] = work['SBKJC proc']
 ff['ccECP'] = work['ccECP proc']
 ff['bk16.1'] = work['bk16.1 proc']
+ff['bk16.12'] = work['bk16.12 proc']
+ff['bk16.14'] = work['bk16.14 proc']
 ff['bk24.1'] = work['bk24.1 proc']
 revff = ff.iloc[::-1]
 
 fff = pd.DataFrame()
 
 fff['z'] = ff['z']
+fff['UC error'] = (ff['UC'].values -ff['ae'].values)*toev
 fff['MDFSTU error'] = (ff['MDFSTU'].values -ff['ae'].values)*toev
 fff['CRENBL error'] = (ff['CRENBL'].values -ff['ae'].values)*toev
 fff['LANL2 error'] = (ff['LANL2'].values -ff['ae'].values)*toev
 fff['SBKJC error'] = (ff['SBKJC'].values -ff['ae'].values)*toev
 fff['ccECP error'] = (ff['ccECP'].values -ff['ae'].values)*toev
-fff['bk16.1 error'] = (ff['bk16.1'].values -ff['ae'].values)*toev
-fff['bk24.1 error'] = (ff['bk24.1'].values -ff['ae'].values)*toev
+#fff['bk16.1 error'] = (ff['bk16.1'].values -ff['ae'].values)*toev
+fff['bk16.12 error'] = (ff['bk16.12'].values -ff['ae'].values)*toev
+#fff['bk16.14 error'] = (ff['bk16.14'].values -ff['ae'].values)*toev
+#fff['bk24.1 error'] = (ff['bk24.1'].values -ff['ae'].values)*toev
 #print(fff.iloc[::-1])
 print(fff.to_latex(index=False))
 	
-ecps = ['MDFSTU', 'LANL2', 'SBKJC', 'CRENBL', 'ccECP', 'bk16.1', 'bk24.1']
+ecps = ['UC', 'MDFSTU', 'LANL2', 'SBKJC', 'CRENBL', 'ccECP', 'bk16.12']
 
 styles = {
         'UC'        :{'label': 'UC',       'color':'#e41a1c','linestyle':'--','dashes': (1000000,1)},
@@ -163,8 +205,9 @@ styles = {
         'CRENBL'       :{'label': 'CRENBL',    'color':'#984ea3','linestyle':'--','dashes': (2.5,2) },
         'LANL2'      :{'label': 'LANL2',  'color':'#4daf4a','linestyle':'--','dashes': (13,2,4,2,13,9)},
         'bk16.1'      :{'label': 'bk16.1',    'color':'#34eb3a','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
-        'bk24.1'      :{'label': 'bk24.1',    'color':'#2c8019','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
         'ccECP'      :{'label': 'ccECP',    'color':'#193f80','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
+        'bk16.12'      :{'label': 'bk16.12',    'color':'#34eb3a','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
+        'bk16.14'      :{'label': 'bk16.14',    'color':'#2c8019','linestyle':'--','dashes': (10,2,4,2,4,2,10,9)     },
         }
 
 def init():

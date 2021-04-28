@@ -18,6 +18,9 @@ for pp in pps:
 	ecp = pd.read_csv(pp+'/basis/5z.table1.csv', sep='\s*,\s*', engine='python')
 	df[pp] = ecp['CCSD'].values-ecp['CCSD'].values[0]
 
+### Drop some undesired states:
+df = df.drop(index=[10,11,12,13,14,15,16,17])
+
 diffs = df.copy()*toev
 diffs = diffs[1:]  # Getting rid of ground state
 ae_gaps = diffs['AE']  # Save AE values before subtracting

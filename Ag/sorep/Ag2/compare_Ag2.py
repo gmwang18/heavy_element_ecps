@@ -119,10 +119,10 @@ df_cc = pd.read_csv("ccsd-t-arep-mdfstu/qz.csv", index_col=False, engine='python
 
 print(df_cc)
 
-#bind_cc = df_cc['BIND']
-#bind_cc = bind_cc.values
+bind_cc = df_cc['BIND']
+bind_cc = bind_cc.values
 df_binding['Z'] = df_cc['Z']
-#df_binding['CC'] = bind_cc
+df_binding['CC'] = bind_cc
 
 df_coscidmc = raw2unc('FPSODMC/mdfstu/raw_opt.dat')
 atom_coscidmc = ufloat(-146.9285883, 0.00080755025)
@@ -151,8 +151,8 @@ mu=m1*m2/(m1+m2)
 wconv=tocm*bohr/np.sqrt(amu)
 
 styles = {
-#'CC'           :{'label':'UCCSD(T)/RHF (AREP-MDFSTU)', 'color':'#984ea3', 'fmt':'s',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
-#'CC_fit'       :{                               'color':'#984ea3',               'linestyle':'--','dashes': (8,2),                                                                },
+'CC'           :{'label':'UCCSD(T)/RHF (AREP-MDFSTU)', 'color':'#984ea3', 'fmt':'s',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
+'CC_fit'       :{                               'color':'#984ea3',               'linestyle':'--','dashes': (8,2),                                                                },
 'COSCIDMC'     :{'label':'FPSODMC/COSCI (REP-MDFSTU)', 'color':'#984ea3', 'fmt':'o',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'COSCIDMC_fit' :{                               'color':'#984ea3',               'linestyle':'--','dashes': (1,1),                                                                },
 'CC-so-ccECP'           :{'label':'UCCSD(T)/RHF/ (AREP-ccECP)', 'color':'#339933', 'fmt':'.',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
@@ -195,9 +195,13 @@ for column in df_binding:
                 #popt_m, pcov_m = curve_fit(morse, xdata, ydata, sigma=yerr)
                 std=np.sqrt(np.diag(pcov_m))
                 if column == 'COSCIDMC':
-                    stu_bind_geo = popt_m[2]
+                    stu_dmc_bind_geo = popt_m[2]
+                if column == 'CC':
+                    stu_cc_bind_geo = popt_m[2]
                 if column == 'ccECP_COSCIDMC':
-                    ccecp_bind_geo = popt_m[2]
+                    ccecp_dmc_bind_geo = popt_m[2]
+                if column == 'CC-so-ccECP':
+                    ccecp_cc_bind_geo = popt_m[2]
                 print("popt_m:", popt_m)
                 print("STD:", std)
                 D=ufloat(popt_m[0], std[0])
@@ -218,8 +222,10 @@ for column in df_binding:
                 y=morse(x, *popt_m)
                 ax.plot(x, y*toev, **styles[column+'_fit'])
                 
-ax.axvline(stu_bind_geo, color='#984ea3', linestyle='--', linewidth=0.7, dashes=(4,4), label='MDFSTU. $r_{eq}$')
-ax.axvline(ccecp_bind_geo, color='#339933', linestyle='--', linewidth=0.7, dashes=(4,4), label='so-ccECP. $r_{eq}$')
+ax.axvline(stu_dmc_bind_geo, color='#984ea3', linestyle='--', linewidth=0.7, dashes=(4,4), label='MDFSTU. $r_{eq}$')
+ax.axvline(ccecp_dmc_bind_geo, color='#339933', linestyle='--', linewidth=0.7, dashes=(4,4), label='so-ccECP. $r_{eq}$')
+ax.axvline(stu_cc_bind_geo, color='#984ea3', linestyle='-', linewidth=0.7, label='MDFSTU. $r_{eq}$')
+ax.axvline(ccecp_cc_bind_geo, color='#339933', linestyle='-', linewidth=0.7, label='so-ccECP. $r_{eq}$')
 #ax.legend(loc='best', prop={'size': 12})
 ax.legend(loc='upper right', prop={'size': 10.5})
 ax.tick_params(direction='in', length=6.0)

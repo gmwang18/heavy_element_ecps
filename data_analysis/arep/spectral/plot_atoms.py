@@ -95,7 +95,7 @@ def plot(atom):
 	ax2.legend(lines, labels, frameon=True, fontsize=16.0, handlelength=2.50, labelspacing=0.40, handletextpad=0.4, loc='best', facecolor='white', framealpha=1.0, edgecolor='#f2f2f2')
 	#ax2.annotate("%s" % atom, xy=(0.05, 0.15), xycoords='axes fraction')
 	#plt.legend(loc='best', ncol=1)
-	plt.savefig('atom_figs/'+atom+'.pdf')
+	plt.savefig('atom_figs/'+atom+'_spectrum.pdf')
 	plt.show()
 
 for atom in atoms:

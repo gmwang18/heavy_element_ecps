@@ -5,7 +5,7 @@ import pandas as pd
 
 ###==================================================
 
-pps=['UC','MDFSTU','CRENBL','SBKJC','LANL2','ccECP']
+pps=['UC','BFD','MDFSTU','MWBSTU','CRENBL','SBKJC','LANL2','ccECP']
 remove_index = [10]
 lmad_index = [2,3,6]
 

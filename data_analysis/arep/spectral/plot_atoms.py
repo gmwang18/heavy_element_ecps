@@ -101,3 +101,15 @@ def plot(atom):
 for atom in atoms:
 	plot(atom)
 
+
+#### Average MADs plot
+#
+#df = pd.DataFrame()
+#for atom in atoms:
+#	elem = get_data(atom)
+#	print(elem)
+#	df = pd.concat((df, elem))
+#
+#df = df.groupby(df.index).mean()
+#print(df)
+#

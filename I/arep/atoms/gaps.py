@@ -43,9 +43,9 @@ diffs.loc['WMAD'] = wmad
 
 diffs['AE'] = ae_gaps  # Revert back to AE gaps
 
-### Sorting everything except AE and UC
-ecp_sorted = diffs.iloc[:,2:].sort_values(by="MAD", ascending=False, axis=1)
-final_sorted = pd.concat([diffs.iloc[:,0:2], ecp_sorted], axis=1)
+### Sorting everything except AE
+ecp_sorted = diffs.iloc[:,1:].sort_values(by="MAD", ascending=False, axis=1)
+final_sorted = pd.concat([diffs.iloc[:,0:1], ecp_sorted], axis=1)
 #print(final_sorted)
 print(final_sorted.to_latex())
 

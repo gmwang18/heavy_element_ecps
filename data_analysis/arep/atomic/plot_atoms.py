@@ -75,7 +75,7 @@ def plot(atom):
 	y2 = df["LMAD"].values
 	ax1.plot(x,y1,**styles["MAD"])
 	ax1.plot(x,y2,**styles["LMAD"])
-	plt.xticks(rotation = 35, fontsize=15)
+	plt.xticks(rotation = 45, fontsize=15)
 
 	ax1 = plt.gca()
 	ax2 = ax1.twinx()
@@ -110,7 +110,7 @@ for atom in atoms:
 	df = pd.concat((df, elem))
 
 df = df.groupby(df.index).mean()
-df = df.sort_values(by="LMAD", ascending=False, axis=0)
+df = df.sort_values(by="MAD", ascending=False, axis=0)
 #print(df)
 df.to_csv("all.csv", float_format="%.4f")
 atoms.append("all")

@@ -18,6 +18,7 @@ styles={
 toeV = 27.211386
 
 ### === Get the molecule names in the path ===
+os.system("rm all.csv")  ### Needs to be updated each time
 systems = glob.glob("*.csv")
 atoms=[]
 ### Get rid of csv extension
@@ -74,7 +75,7 @@ def plot(atom):
 	y2 = df["LMAD"].values
 	ax1.plot(x,y1,**styles["MAD"])
 	ax1.plot(x,y2,**styles["LMAD"])
-	plt.xticks(rotation = 25, fontsize=15)
+	plt.xticks(rotation = 35, fontsize=15)
 
 	ax1 = plt.gca()
 	ax2 = ax1.twinx()
@@ -92,24 +93,29 @@ def plot(atom):
 	lines = lines_1 + lines_2
 	labels = labels_1 + labels_2
 
-	ax2.legend(lines, labels, frameon=True, fontsize=16.0, handlelength=2.50, labelspacing=0.40, handletextpad=0.4, loc='best', facecolor='white', framealpha=1.0, edgecolor='#f2f2f2')
+	ax2.legend(lines, labels, frameon=True, fontsize=16.0, handlelength=2.50, labelspacing=0.40, handletextpad=0.4, loc='best', facecolor='white', framealpha=1.00, edgecolor='#f2f2f2')
 	#ax2.annotate("%s" % atom, xy=(0.05, 0.15), xycoords='axes fraction')
 	#plt.legend(loc='best', ncol=1)
 	plt.savefig('atom_figs/'+atom+'_spectrum.pdf')
 	plt.show()
 
+
+#### Average MADs plot
+
+df = pd.DataFrame()
+for atom in atoms:
+	elem = get_data(atom)
+	elem = elem.rename(index={"CRENBL":"CRENB(L/S)", "CRENBS":"CRENB(L/S)"})
+	#print(elem)
+	df = pd.concat((df, elem))
+
+df = df.groupby(df.index).mean()
+df = df.sort_values(by="LMAD", ascending=False, axis=0)
+#print(df)
+df.to_csv("all.csv", float_format="%.4f")
+atoms.append("all")
+
 for atom in atoms:
 	plot(atom)
 
 
-#### Average MADs plot
-#
-#df = pd.DataFrame()
-#for atom in atoms:
-#	elem = get_data(atom)
-#	print(elem)
-#	df = pd.concat((df, elem))
-#
-#df = df.groupby(df.index).mean()
-#print(df)
-#

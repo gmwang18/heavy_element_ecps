@@ -1,5 +1,5 @@
 ***,Calculation for Mo atom, singlet and triplet
-memory,1,g
+memory,2,g
 
 gthresh,twoint=1.0E-15
 gthresh,oneint=1.0E-15
@@ -78,8 +78,7 @@ do i=1,16
     endif
     scf(i)=energy
     _CC_NORM_MAX=2.0
-    {rccsd(t),shifts=0.2,shiftp=0.2,thrdis=1.0;diis,1,1,15,1;maxit,100;core
-    orbital,ignore_error}
+    {rccsd(t),shifts=0.5,shiftp=0.5,thrdis=1.0;diis,1,1,15,1;maxit,100;core}
     ccsd(i)=energy
 enddo
 

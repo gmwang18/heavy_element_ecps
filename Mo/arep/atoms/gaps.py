@@ -7,7 +7,7 @@ import pandas as pd
 
 pps=['UC','MDFSTU','MWBSTU','CRENBL','LANL2','ccECP']
 remove_index = []
-lmad_index = [1,3,5]
+lmad_index = [3,5,7]
 
 ###==================================================
 
@@ -16,11 +16,11 @@ pd.options.display.float_format = '{:,.4f}'.format
 
 df = pd.DataFrame()
 
-ae = pd.read_csv("AE/dkh/tz.table1.csv", sep='\s*,\s*', engine='python')
+ae = pd.read_csv("AE/dkh/3.csv", sep='\s*,\s*', engine='python')
 df['AE'] = ae['CCSD'].values-ae['CCSD'].values[0]
 
 for pp in pps:
-	ecp = pd.read_csv(pp+'/tz.table1.csv', sep='\s*,\s*', engine='python')
+	ecp = pd.read_csv(pp+'/3.csv', sep='\s*,\s*', engine='python')
 	df[pp] = ecp['CCSD'].values-ecp['CCSD'].values[0]
 
 ### Drop some undesired states:

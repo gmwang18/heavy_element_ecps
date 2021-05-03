@@ -41,7 +41,7 @@ def init():
 	mpl.rcParams['text.usetex'] = True
 	mpl.rcParams.update({'figure.autolayout':True})
 	fig = plt.figure()
-	fig.set_size_inches(7.17, 5.38)   # Default 6.4, 4.8
+	fig.set_size_inches(7.04, 5.28)   # Default 6.4, 4.8
 	ax1 = fig.add_subplot(111) # row, column, nth plot
 	ax1.tick_params(direction='in', length=6, width=2, which='major', pad=6)
 	ax1.tick_params(direction='in', length=4, width=1, which='minor', pad=6)
@@ -50,7 +50,7 @@ def init():
 	return fig, ax1
 
 def get_data(atom):
-	files = glob.glob(atom+'*.csv')
+	files = glob.glob(atom+'.csv')
 	if len(files) > 1:
 	    print('Too many csv files for {}'.format(atom))
 	    sys.exit()
@@ -110,7 +110,7 @@ for atom in atoms:
 	df = pd.concat((df, elem))
 
 df = df.groupby(df.index).mean()
-df = df.sort_values(by="MAD", ascending=False, axis=0)
+df = df.sort_values(by="WMAD", ascending=False, axis=0)
 #print(df)
 df.to_csv("all.csv", float_format="%.4f")
 atoms.append("all")

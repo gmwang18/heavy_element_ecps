@@ -1,6 +1,7 @@
 #!/bin/bash -l
 #SBATCH -J CRENBL
 #SBATCH -q regular
+#!SBATCH -q debug
 #SBATCH -N 1
 #SBATCH -C haswell
 #SBATCH -t 01:30:00

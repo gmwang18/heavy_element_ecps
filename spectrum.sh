@@ -4,7 +4,7 @@ HOME=`pwd`
 #echo ${HOME}
 
 #declare -a atoms=("Ag" "Au" "Bi" "I" "Ir" "Mo" "Pd" "W")
-declare -a atoms=("Ag" "Bi" "I" "Ir" "Mo" "W")
+declare -a atoms=("Ag" "Bi" "I" "Ir" "Mo" "W" "Pd")
 
 for i in "${atoms[@]}"
 do

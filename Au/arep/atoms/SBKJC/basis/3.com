@@ -1,5 +1,9 @@
 ***,Calculation for Au atom
-memory,512,m
+memory,1,g
+
+gthresh,twoint=1.0E-15
+gthresh,oneint=1.0E-15
+
 geometry={
 1
 Au
@@ -45,7 +49,8 @@ do i=1,14
     endif
     scf(i)=energy
     _CC_NORM_MAX=2.0
-    {rccsd(t),maxit=100;core}
+    !{rccsd(t),maxit=100;core}
+    {rccsd(t),shifts=0.3,shiftp=0.3,thrdis=1.0;diis,1,1,15,1;maxit,100;core}
     ccsd(i)=energy
 enddo
 

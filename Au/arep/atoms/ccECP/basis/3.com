@@ -1,5 +1,7 @@
 ***,Calculation for Au atom
 memory,512,m
+
+
 geometry={
 1
 Au
@@ -13,7 +15,7 @@ include,aug-cc-pwCVTZ.basis
 
 include,states.proc
 
-do i=1,14
+do i=1,15
     if (i.eq.1) then
         Is1dten
     else if (i.eq.2) then
@@ -42,6 +44,8 @@ do i=1,14
         XVp3
     else if (i.eq.14) then
         XVIIIs2
+    else if (i.eq.15) then
+        VIId5f1
     endif
     scf(i)=energy
     _CC_NORM_MAX=2.0

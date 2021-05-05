@@ -1,9 +1,9 @@
 #!/bin/bash -l
-#SBATCH -J GW-2.2
-#SBATCH -q regular
+#SBATCH -J ccECP
+#SBATCH -q debug
 #SBATCH -N 1
 #SBATCH -C haswell
-#SBATCH -t 01:00:00
+#SBATCH -t 00:30:00
 #SBATCH -o test_molpro.o%j
 
 module load molpro

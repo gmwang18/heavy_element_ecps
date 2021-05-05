@@ -75,7 +75,7 @@ def plot(atom):
 	y2 = df["LMAD"].values
 	ax1.plot(x,y1,**styles["MAD"])
 	ax1.plot(x,y2,**styles["LMAD"])
-	plt.xticks(rotation = 45, fontsize=15)
+	plt.xticks(rotation = 35, fontsize=15)
 
 	ax1 = plt.gca()
 	ax2 = ax1.twinx()

@@ -27,7 +27,7 @@ for atom in systems:
 #print(atoms)
 
 def init():
-	font   = {'family' : 'serif', 'size': 17}
+	font   = {'family' : 'serif', 'size': 16}
 	lines  = {'linewidth': 2.2}
 	axes   = {'linewidth': 2.0}    # border width
 	tick   = {'major.size': 2, 'major.width':2}
@@ -75,7 +75,7 @@ def plot(atom):
 	y2 = df["LMAD"].values
 	ax1.plot(x,y1,**styles["MAD"])
 	ax1.plot(x,y2,**styles["LMAD"])
-	plt.xticks(rotation = 35, fontsize=15)
+	plt.xticks(rotation = 35, fontsize=16)
 
 	ax1 = plt.gca()
 	ax2 = ax1.twinx()
@@ -117,5 +117,4 @@ atoms.append("all")
 
 for atom in atoms:
 	plot(atom)
-
 

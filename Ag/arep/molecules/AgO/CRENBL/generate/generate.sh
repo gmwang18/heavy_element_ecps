@@ -6,7 +6,7 @@ d=$(echo "0.10" | bc -l)
 HOME=`pwd`
 
 basefolder=$HOME/../
-n=8
+n=10
 
 for ((i=0; i<=n; i++))
 do

@@ -1,6 +1,5 @@
 ***,Calculation for Ag atom, singlet and triplet
 memory,512,m
-
 geometry={
 1
 Pd
@@ -8,41 +7,42 @@ Pd  0.0 0.0 0.0
 }
 
 basis={
-include,crenbl
 include,5z.basis
 }
 
+set,dkroll=1,dkho=10,dkhp=4
+
 include,states.proc
 
-do i=1,14
+do i=14,14
     if (i.eq.1) then
         Idten
     else if (i.eq.2) then
-        EAs1dten
-    else if (i.eq.3) then
         EAs2d9
-    else if (i.eq.4) then
+    else if (i.eq.3) then
         Is1d9
-    else if (i.eq.5) then
+    else if (i.eq.4) then
         Is2d8
-    else if (i.eq.6) then
+    else if (i.eq.5) then
         IId9
-    else if (i.eq.7) then
+    else if (i.eq.6) then
         IIs1d8
-    else if (i.eq.8) then
+    else if (i.eq.7) then
         IIId8
-    else if (i.eq.9) then
+    else if (i.eq.8) then
         IVd7
-    else if (i.eq.10) then
+    else if (i.eq.9) then
         Vd6
-    else if (i.eq.11) then
+    else if (i.eq.10) then
         VId5
-    else if (i.eq.12) then
+    else if (i.eq.11) then
         XIKr
-    else if (i.eq.13) then
+    else if (i.eq.12) then
         XIVp3
-    else if (i.eq.14) then
+    else if (i.eq.13) then
         XVIIs2
+    else if (i.eq.14) then
+        EAs1dten
     endif
     scf(i)=energy
     _CC_NORM_MAX=2.0

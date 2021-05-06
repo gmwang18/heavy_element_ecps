@@ -14,32 +14,34 @@ include,5z.basis
 
 include,states.proc
 
-do i=1,13
+do i=1,14
     if (i.eq.1) then
         Idten
     else if (i.eq.2) then
-        EAs2d9
+        EAs1dten
     else if (i.eq.3) then
-        Is1d9
+        EAs2d9
     else if (i.eq.4) then
-        Is2d8
+        Is1d9
     else if (i.eq.5) then
-        IId9
+        Is2d8
     else if (i.eq.6) then
-        IIs1d8
+        IId9
     else if (i.eq.7) then
-        IIId8
+        IIs1d8
     else if (i.eq.8) then
-        IVd7
+        IIId8
     else if (i.eq.9) then
-        Vd6
+        IVd7
     else if (i.eq.10) then
-        VId5
+        Vd6
     else if (i.eq.11) then
-        XIKr
+        VId5
     else if (i.eq.12) then
-        XIVp3
+        XIKr
     else if (i.eq.13) then
+        XIVp3
+    else if (i.eq.14) then
         XVIIs2
     endif
     scf(i)=energy

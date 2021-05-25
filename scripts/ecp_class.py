@@ -114,6 +114,7 @@ class ECP:
 		n_so = int(n_so)
 		nterms = []
 		nterms_so = []
+		assert (n-n_so) == 2, "It seems there are not enough SOC terms!"
 		line = f.readline().split()
 		for i in range(n):
 			nterms.append(int(line[i]))

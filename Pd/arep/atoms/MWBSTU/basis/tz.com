@@ -7,7 +7,7 @@ Pd  0.0 0.0 0.0
 }
 
 basis={
-include,bk16.12
+include,MWBSTU
 include,aug-cc-pwCVTZ.basis
 }
 

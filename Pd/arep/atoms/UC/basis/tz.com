@@ -15,7 +15,7 @@ include,aug-cc-pwCVTZ.basis
 
 include,states.proc
 
-do i=1,13
+do i=1,1
     if (i.eq.1) then
         Idten
     else if (i.eq.2) then

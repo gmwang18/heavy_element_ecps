@@ -1,5 +1,5 @@
 ***,Calculation for PdH groundstate
-memory,512,m
+memory,1024,m
 gthresh,twoint=1.0E-15
 gthresh,throvl=1.0E-15
 
@@ -27,7 +27,7 @@ A2=2
 
 
 
-do i=1,9
+do i=10,11
         if(i.eq.1) then
                 z(i) = 1.485
         else if(i.eq.2) then
@@ -46,6 +46,10 @@ do i=1,9
                 z(i) = 1.835
         else if(i.eq.9) then
                 z(i) = 1.885
+        else if(i.eq.10) then
+                z(i) = 1.935
+        else if(i.eq.11) then
+                z(i) = 1.985
         endif
 
         geometry={
@@ -54,11 +58,19 @@ do i=1,9
                 Pd 0.0 0.0 0.0
                 O 0.0 0.0 z(i)
         }
+
+	{rks,pbe0
+	wf,nele=ne,spin=2,sym=2
+	occ,A1,B1,B2,A2
+	closed,A1-1,B1-1,B2,A2
+	}
+	
 	{rhf
 	wf,nelec=ne,spin=2,sym=2
 	occ,A1,B1,B2,A2
 	closed,A1-1,B1-1,B2,A2
 	}
+
 	scf(i)=energy
 	_CC_NORM_MAX=2.0
 	{rccsd(t);maxit,100;core,8,3,3,1}

@@ -48,14 +48,16 @@ req = {
 'WO_TZ' : 1.66381039175619,
 'IrH_TZ': 1.5,
 'IrO_TZ': 1.7,
+'PdH_TZ': 1.5,
+'PdO_TZ': 1.8,
 }
 
 def init():
     font   = {'family' : 'serif', 'size': 17}
-    lines  = {'linewidth': 2.2}
+    lines  = {'linewidth': 2.5}
     axes   = {'linewidth': 2.0}    # border width
     tick   = {'major.size': 2, 'major.width':2}
-    legend = {'frameon':True, 'fontsize':16.0, 'handlelength':2.30, 'labelspacing':0.30, 'handletextpad':0.4, 'loc':'best', 'facecolor':'white', 'framealpha':1.00, 'edgecolor':'#f2f2f2'}
+    legend = {'frameon':True, 'fontsize':15.0, 'handlelength':2.30, 'labelspacing':0.30, 'handletextpad':0.4, 'loc':'best', 'facecolor':'white', 'framealpha':1.00, 'edgecolor':'#f2f2f2'}
     mpl.rc('font',**font)
     mpl.rc('lines',**lines)
     mpl.rc('axes',**axes)

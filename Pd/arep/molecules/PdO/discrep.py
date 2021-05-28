@@ -64,6 +64,7 @@ def write_data(name):
 		dfs[ecp] = df['bind']
 	dfs = dfs.set_index(ae.index)
 	dfs['AE'] = ae['bind']
+	dfs = dfs.sort_index()
 	dfs.to_csv(name, float_format = "%.6f")
 	return dfs
 

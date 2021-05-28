@@ -114,8 +114,9 @@ class ECP:
 		n_so = int(n_so)
 		nterms = []
 		nterms_so = []
-		assert (n-n_so) == 2, "It seems there are not enough SOC terms!"
+		assert (n-n_so) == 2, "Number of AREP channels and SOC channels seem incompatible! Please check if SOC terms are correctly provided."
 		line = f.readline().split()
+		assert (n_so + n) == len(line), "Total number of AREP+SOC terms incompatible in the header section of the ECP! Please check for consistency."
 		for i in range(n):
 			nterms.append(int(line[i]))
 		for i in range(n, n_so+n):

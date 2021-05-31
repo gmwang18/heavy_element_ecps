@@ -1,0 +1,18 @@
+#!/bin/bash -l
+#SBATCH -J W_OPT
+#SBATCH -q regular
+#SBATCH -N 8
+#SBATCH -C haswell
+#SBATCH -t 00:50:00
+#SBATCH -o so_qwalk.o%j
+
+HOME=`pwd`
+
+
+srun -n 512 -c 1 --cpu_bind=threads qwalk-so W.opt 
+
+sed 's/OPTIMIZEBASIS//g' W.opt.wfout > fixed_basis.wfout
+
+srun -n 512 -c 1 --cpu_bind=threads qwalk-so W.linear 
+
+sbatch $HOME/jobdmc

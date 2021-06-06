@@ -36,3 +36,15 @@ for i in range(len(det_strings)):
         if det_strings[i][j] == "1":
             print(valence_string[j], end=" ")
     print()
+
+sign = 1
+if weight_strings[0] < 0:
+    sign = -1
+for i in range(len(weight_strings)):
+    s_weight = weight_strings[i]*sign
+    if s_weight > 0:
+        print('',"{:.4f}".format(s_weight))
+    else:
+        print("{:.4f}".format(s_weight))
+
+print()

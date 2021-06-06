@@ -3,30 +3,39 @@
 HOME=`pwd`
 rm states*
 rm spectra.dat
+rm *.spect
+#rm *.out
+rm *DFCOEF*
 
-#calc="ae"
+calc="ae"
 
-declare -a states=("gs" "ex" "ip1" "ip2")
-declare -a mult_num=(6 2 6 6)
+num_charge_choice=5
+
+declare -a states=("gs" "ea" "ex" "ip1" "ip2" "s2-p-ex" "s2-f-ex" "s2p5")
+declare -a mult_num=(6 1 2 6 6 2 2 2)
+
+
+#pam --noarch --gb=6.0 --inp=core.inp --mol=$calc.mol --get "DFCOEF=coreDFCOEF"
 
 num_states=${#states[@]}
 #for i in "${states[@]}"
 for (( i=0; i<$num_states; i++ ))
 do
 	state=${states[$i]}
+	#pam --noarch --gb=2.0 --inp=$state.inp --mol=$calc.mol --put "coreDFCOEF=DFCOEF"
 
-	lineBegin=$(grep -n 'Total Energy'  $state''*.out | head -n 1 | cut -d: -f1)
-	lineEnd=$(grep -n 'Total average' $state''*.out | head -n 1 | cut -d: -f1)
+	lineBegin=$(grep -n 'Total Energy'  $state''_$calc.out | head -n 1 | cut -d: -f1)
+	lineEnd=$(grep -n 'Total average' $state''_$calc.out | head -n 1 | cut -d: -f1)
 	
 	if [ -z $lineBegin ]
 	then
 		#### Read the calculation without SO splitting ####
 		echo "$state state, No SO splitting in this state"
-		grep 'Total energy' $state''*.out | head -n 1  > energy_$state.dat
+		grep 'Total energy' $state''_$calc.out | head -n 1  > energy_$state.dat
 	else
 		#### Read the calculation with SO splitting ####
 		echo "$state state, SO split reading..."
-		awk "NR>=$lineBegin&&NR<=$lineEnd{print}" $state''*.out > energy_$state.dat
+		awk "NR>=$lineBegin&&NR<=$lineEnd{print}" $state''_$calc.out > energy_$state.dat
 	fi
 	#### I have captured the calculation results from each state #####
 	#### Now I will capture the multiplit energies from each state ####
@@ -76,8 +85,10 @@ done
 gs=`awk 'NR==1{print $1}' states_${states[0]}.spect`
 for i in "${states[@]}"
 do
-	awk -v ref=$gs 'NR==1{printf("%.6f\n",($1-ref)*27.211386)}' states_$i.spect >> spectra.dat
+	awk -v ref=$gs 'NR==1{printf("%.6f\n",($1-ref)*27.211386)}' states_$i.spect >> charged_states.spect
 done
+
+awk "NR<=$num_charge_choice{print $1}" charged_states.spect > spectra.dat
 
 for i in "${states[@]}"
 do
@@ -89,7 +100,9 @@ do
 	fi
 done
 
-rm mult_*
-rm -r DIRAC*
 
+
+rm mult_*
+rm energy*.dat
+rm -r DIRAC*
 

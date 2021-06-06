@@ -128,6 +128,8 @@ df_pbe0dmc = raw2unc('FPSODMC/pbe0-mdfstu/raw_opt.dat')
 atom_pbe0dmc = ufloat(-146.9285883, 0.00080755025)
 df_binding['PBE0DMC'] = df_pbe0dmc['energy'].values - 2.0*atom_pbe0dmc
 
+print(df_pbe0dmc)
+
 df_cc_ccECP = pd.read_csv("ccsd-t-arep-ccECP/qz.csv", index_col=False, engine='python', sep='\s*,\s*')
 bind_cc_ccECP = df_cc_ccECP['BIND']
 bind_cc_ccECP = bind_cc_ccECP.values

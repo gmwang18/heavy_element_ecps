@@ -134,7 +134,7 @@ bind_cc_ccECP = bind_cc_ccECP.values
 df_binding['CC-so-ccECP'] = bind_cc_ccECP
 
 df_ccECP_pbe0dmc = raw2unc('FPSODMC/pbe0-so-ccECP/raw_opt.dat')
-atom_ccECP_pbe0dmc = ufloat(-67.19964164, 0.0005694517443)
+atom_ccECP_pbe0dmc = ufloat(-67.28848623, 0.0005845388684)
 df_binding['ccECP_PBE0DMC'] = df_ccECP_pbe0dmc['energy'].values - 2.0*atom_ccECP_pbe0dmc
 
 
@@ -181,7 +181,7 @@ for column in df_binding:
                 ax.errorbar(xdata, ydata*toev, **styles[column])
         else:
                 print(column)
-                initial=[-0.06, 2.00, 2.0]  # initial guess
+                initial=[0.20, 2.00, 2.0]  # initial guess
                 print(initial)
 #                initial=[df_binding['CC'].iloc[3], 2.00, df_binding['Z'].iloc[3]]  # initial guess
                 xdata = df_binding['Z'].values

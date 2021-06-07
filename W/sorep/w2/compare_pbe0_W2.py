@@ -220,9 +220,9 @@ for column in df_binding:
                 y=morse(x, *popt_m)
                 ax.plot(x, y*toev, **styles[column+'_fit'])
                 
-ax.axvline(stu_dmc_bind_geo, color='#984ea3', linestyle='--', linewidth=0.7, dashes=(4,4), label='MDFSTU. $r_{eq}$')
+#ax.axvline(stu_dmc_bind_geo, color='#984ea3', linestyle='--', linewidth=0.7, dashes=(4,4), label='MDFSTU. $r_{eq}$')
 #ax.axvline(ccecp_dmc_bind_geo, color='#339933', linestyle='--', linewidth=0.7, dashes=(4,4), label='so-ccECP. $r_{eq}$')
-ax.axvline(stu_cc_bind_geo, color='#984ea3', linestyle='-', linewidth=0.7, label='MDFSTU. $r_{eq}$')
+#ax.axvline(stu_cc_bind_geo, color='#984ea3', linestyle='-', linewidth=0.7, label='MDFSTU. $r_{eq}$')
 #ax.axvline(ccecp_cc_bind_geo, color='#339933', linestyle='-', linewidth=0.7, label='so-ccECP. $r_{eq}$')
 #ax.legend(loc='best', prop={'size': 12})
 ax.legend(loc='upper right', prop={'size': 10.5})

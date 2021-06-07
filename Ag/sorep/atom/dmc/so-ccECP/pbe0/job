@@ -1,0 +1,48 @@
+#!/bin/bash
+#COBALT -t 03:00:00
+#COBALT -n 128
+#COBALT -A PSFMat_2               
+#COBALT -o myqwalk.o%j         
+#COBALT -q default
+#COBALT --attrs mcdram=cache:numa=quad
+
+HOME=`pwd`
+
+
+
+cd /projects/PSFMat_2/gwang18/projects/so-ccecp/ag-soc/atom/so-dmc/so-ccECP/pbe0/gs/state1/
+
+aprun -n 8192 -N 64 qwalk-so Ag.hf
+aprun -n 8192 -N 64 qwalk-so Ag.opt 
+
+sed 's/OPTIMIZEBASIS//g' Ag.opt.wfout > fixed_basis.wfout
+
+aprun -n 8192 -N 64 qwalk-so Ag.linear
+
+aprun -n 8192 -N 64 qwalk-so Ag.dmc
+
+
+
+cd /projects/PSFMat_2/gwang18/projects/so-ccecp/ag-soc/atom/so-dmc/so-ccECP/pbe0/ip1/state1/
+
+aprun -n 8192 -N 64 qwalk-so Ag.hf
+aprun -n 8192 -N 64 qwalk-so Ag.opt 
+
+sed 's/OPTIMIZEBASIS//g' Ag.opt.wfout > fixed_basis.wfout
+
+aprun -n 8192 -N 64 qwalk-so Ag.linear
+
+aprun -n 8192 -N 64 qwalk-so Ag.dmc
+
+
+cd /projects/PSFMat_2/gwang18/projects/so-ccecp/ag-soc/atom/so-dmc/so-ccECP/pbe0/ea/state1/
+
+aprun -n 8192 -N 64 qwalk-so Ag.hf
+aprun -n 8192 -N 64 qwalk-so Ag.opt 
+
+sed 's/OPTIMIZEBASIS//g' Ag.opt.wfout > fixed_basis.wfout
+
+aprun -n 8192 -N 64 qwalk-so Ag.linear
+
+aprun -n 8192 -N 64 qwalk-so Ag.dmc
+

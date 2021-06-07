@@ -1,0 +1,19 @@
+#!/bin/bash -l
+#COBALT -t 00:40:00
+#COBALT -n 8
+#COBALT -A PSFMat_2
+#COBALT -o myqwalk.o%j
+#COBALT -q debug-flat-quad
+#COBALT --attrs mcdram=cache:numa=quad
+
+HOME=`pwd`
+
+
+aprun -n 512 -N 64 qwalk-so Ag.opt 
+
+sed 's/OPTIMIZEBASIS//g' Ag.opt.wfout > fixed_basis.wfout
+
+aprun -n 512 -N 64 qwalk-so Ag.linear
+
+
+sbatch $HOME/jobdmc

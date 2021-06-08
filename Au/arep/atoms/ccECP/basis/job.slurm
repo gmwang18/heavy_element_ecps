@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH -J ccECP
+#SBATCH -J bk1.5-atom
 #SBATCH -q debug
 #SBATCH -N 1
 #SBATCH -C haswell

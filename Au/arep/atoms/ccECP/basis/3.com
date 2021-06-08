@@ -1,7 +1,5 @@
 ***,Calculation for Au atom
 memory,512,m
-
-
 geometry={
 1
 Au
@@ -9,7 +7,7 @@ Au  0.0 0.0 0.0
 }
 
 basis={
-include,ccECP
+include,bk1.5
 include,aug-cc-pwCVTZ.basis
 }
 
@@ -55,5 +53,5 @@ enddo
 
 
 table,scf,ccsd
-save, 3.csv,new
+save, 3.csv
 

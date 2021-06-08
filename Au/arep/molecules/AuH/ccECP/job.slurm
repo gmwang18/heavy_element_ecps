@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH -J AuH_GW2.2
+#SBATCH -J AuH_bk1.5
 #SBATCH -q regular
 #SBATCH -N 1
 #SBATCH -C haswell

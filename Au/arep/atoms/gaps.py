@@ -7,7 +7,7 @@ import numpy as np
 ###==================================================
 
 pps=['UC','MWBSTU','MDFSTU','CRENBL','SBKJC','LANL2','ccECP']
-remove_index = []
+remove_index = [12,13]
 lmad_index = [1,4,6]
 
 ###==================================================

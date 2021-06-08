@@ -2,7 +2,7 @@
 
 rm 3.csv
 
-for ((i=1; i<=16; i++))
+for ((i=1; i<=18; i++))
 do
 	echo ${i}
 	cd ${i}

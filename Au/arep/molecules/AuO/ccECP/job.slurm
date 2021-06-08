@@ -1,9 +1,9 @@
 #!/bin/bash -l
-#SBATCH -J GW-2.2
+#SBATCH -J bk1.5-AuO
 #SBATCH -q regular
 #SBATCH -N 1
 #SBATCH -C haswell
-#SBATCH -t 05:00:00
+#SBATCH -t 03:00:00
 #SBATCH -o job.out
 
 module load molpro

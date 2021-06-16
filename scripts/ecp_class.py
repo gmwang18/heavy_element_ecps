@@ -229,6 +229,41 @@ class ECP:
 				f.write('{}, {:0.6f}, {:0.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
 		f.close()
 
+	def write_nwchem(self,filename):
+		f = open(filename,'w')
+		### Write Header
+		f.write('{} {} {}\n'.format(self.element,"nelec",str(self.core)))
+		### Write Gaussians
+		n = self.n  # A pointer to self.n
+		n = n.insert(0, n.pop()) # Move last item to the front
+		alpha = self.alpha
+		alpha = alpha.insert(0, alpha.pop())
+		coeff = self.coeff
+		coeff = coeff.insert(0, coeff.pop())
+		ell = ["ul", "s", "p", "d", "f", "g", "h", "i"]
+		for i in range(len(self.n)):
+			f.write('{} {}\n'.format(self.element, ell[i]))
+			for j in range(len(self.n[i])):
+				f.write('{} {:0.6f} {:0.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+		f.close()
+
+	def write_gamess(self,filename):
+		f = open(filename,'w')
+		### Write Header
+		f.write('{} {} {} {}\n'.format(self.element+"-ccECP","GEN",str(self.core),str(len(self.n)-1)))
+		### Write Gaussians
+		n = self.n  # A pointer to self.n
+		n = n.insert(0, n.pop()) # Move last item to the front
+		alpha = self.alpha
+		alpha = alpha.insert(0, alpha.pop())
+		coeff = self.coeff
+		coeff = coeff.insert(0, coeff.pop())
+		for i in range(len(self.n)):
+			f.write('{}\n'.format(len(self.n[i])))
+			for j in range(len(self.n[i])):
+				f.write('{:0.6f} {} {:0.6f}\n'.format(self.coeff[i][j],self.n[i][j],self.alpha[i][j]))
+		f.close()
+
 	def write_qwalk(self,filename):
 		f = open(filename,'w')
 		### Write Header
@@ -287,20 +322,33 @@ class ECP:
 my_ecp = ECP(element='Bi',core=78)
 my_ecp.read_ecp('pp.d')
 my_ecp.write_molpro('ecp.molpro')
-os.system('cat ecp.molpro')
-print("\n")
+#os.system('cat ecp.molpro')
+#print("\n")
 
 #### Dirac
 my_ecp = ECP(element='Bi',core=78)
 my_ecp.read_ecp_so('pp.d')
 my_ecp.write_dirac('ecp.dirac')
-os.system('cat ecp.dirac')
-print("\n")
+#os.system('cat ecp.dirac')
+#print("\n")
 
 #### SO-QWalk
 my_ecp = ECP(element='Bi',core=78)
 my_ecp.read_ecp_so('pp.d')
 my_ecp.write_qwalk('ecp.qwalk')
-os.system('cat ecp.qwalk')
-print("\n")
+#os.system('cat ecp.qwalk')
+#print("\n")
 
+### Nwchem
+my_ecp = ECP(element='Bi',core=78)
+my_ecp.read_ecp('pp.d')
+my_ecp.write_nwchem('ecp.nwchem')
+#os.system('cat ecp.nwchem')
+#print("\n")
+
+### Gamess
+my_ecp = ECP(element='Bi',core=78)
+my_ecp.read_ecp('pp.d')
+my_ecp.write_gamess('ecp.gamess')
+#os.system('cat ecp.gamess')
+#print("\n")

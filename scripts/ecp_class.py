@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 ### Written by Cody. A. Melton
 ### Expanded by A. Annaberdiyev
@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 
 # A class that takes numHF ECP format as input. Useful for code format conversions using the same "pp.d" file. The style for numHF ECP should be as:
 # ==============
-# Zeff n_channels_AREP n_channels_SOC
-# n_terms_AREP_s n_terms_AREP_p ... n_terms_AREP_local   n_terms_SOC_p n_terms_SOC_d ...
+# Zeff n_channels_AREP n_channels_SOREP
+# n_terms_AREP_s n_terms_AREP_p ... n_terms_AREP_local   n_terms_SOREP_p n_terms_SOREP_d ...
 # AREP_terms
-# SOC_terms
+# SOREP_terms
 # ==============
 # An example "pp.d" file for Bi:
 # ==============
@@ -45,7 +45,7 @@ import matplotlib.pyplot as plt
 # 2  0.95943686 -1.64544080
 # 4  1.00489490 0.00755595
 # ==============
-# If there are no SOC terms, the corresponding sections can be omitted.
+# If there are no SOREP terms, the corresponding sections can be omitted.
 
 
 class ECP:
@@ -114,9 +114,9 @@ class ECP:
 		n_so = int(n_so)
 		nterms = []
 		nterms_so = []
-		assert (n-n_so) == 2, "Number of AREP channels and SOC channels seem incompatible! Please check if SOC terms are correctly provided."
+		assert (n-n_so) == 2, "Number of AREP channels and SOREP channels seem incompatible! Please check if SOREP terms are correctly provided."
 		line = f.readline().split()
-		assert (n_so + n) == len(line), "Total number of AREP+SOC terms incompatible in the header section of the ECP! Please check for consistency."
+		assert (n_so + n) == len(line), "Total number of AREP+SOREP terms incompatible in the header section of the ECP! Please check for consistency."
 		for i in range(n):
 			nterms.append(int(line[i]))
 		for i in range(n, n_so+n):
@@ -226,7 +226,7 @@ class ECP:
 		for i in range(len(self.n)):
 			f.write('{}\n'.format(len(self.n[i])))
 			for j in range(len(self.n[i])):
-				f.write('{}, {:0.6f}, {:0.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+				f.write('{}, {:11.6f}, {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
 		f.close()
 
 	def write_nwchem(self,filename):
@@ -244,7 +244,7 @@ class ECP:
 		for i in range(len(self.n)):
 			f.write('{} {}\n'.format(self.element, ell[i]))
 			for j in range(len(self.n[i])):
-				f.write('{} {:0.6f} {:0.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+				f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
 		f.close()
 
 	def write_gamess(self,filename):
@@ -261,7 +261,7 @@ class ECP:
 		for i in range(len(self.n)):
 			f.write('{}\n'.format(len(self.n[i])))
 			for j in range(len(self.n[i])):
-				f.write('{:0.6f} {} {:0.6f}\n'.format(self.coeff[i][j],self.n[i][j],self.alpha[i][j]))
+				f.write('{:11.6f} {} {:11.6f}\n'.format(self.coeff[i][j],self.n[i][j],self.alpha[i][j]))
 		f.close()
 
 	def write_qwalk(self,filename):
@@ -269,7 +269,7 @@ class ECP:
 		### Write Header
 		f.write('{} {}\n'.format(0.0,str(len(self.n) + len(self.n_so))))
 		for i in range(len(self.n)):
-			if i==0 or i==len(self.n)-1: # ell=s or ell=local. No SOC
+			if i==0 or i==len(self.n)-1: # ell=s or ell=local. No SOREP
 				f.write('{} '.format(str(len(self.n[i]))))
 			else:
 				f.write('{} '.format(str(len(self.n[i])+len(self.n_so[i-1])))) # (ell + 1/2)
@@ -277,18 +277,18 @@ class ECP:
 		f.write('\n')
 		### Write Gaussians
 		for i in range(len(self.n)):
-			if i==0 or i==len(self.n)-1: # ell=s or ell=local. No SOC
+			if i==0 or i==len(self.n)-1: # ell=s or ell=local. No SOREP
 				for j in range(len(self.n[i])):
-					f.write('{} {:0.6f} {:0.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
 			else:
 				for j in range(len(self.n[i])): # Unchanged AREP part for (ell + 1/2)
-					f.write('{} {:0.6f} {:0.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
-				for k in range(len(self.n_so[i-1])): # SOC contribution to (ell + 1/2)
-					f.write('{} {:0.6f} {:0.6f}\n'.format(self.n_so[i-1][k],self.alpha_so[i-1][k],(i/2)*self.coeff_so[i-1][k]))
+					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+				for k in range(len(self.n_so[i-1])): # SOREP contribution to (ell + 1/2)
+					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n_so[i-1][k],self.alpha_so[i-1][k],(i/2)*self.coeff_so[i-1][k]))
 				for j in range(len(self.n[i])): # Unchanged AREP part for (ell - 1/2)
-					f.write('{} {:0.6f} {:0.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
-				for k in range(len(self.n_so[i-1])): # SOC contribution to (ell - 1/2)
-					f.write('{} {:0.6f} {:0.6f}\n'.format(self.n_so[i-1][k],self.alpha_so[i-1][k],(-(i+1)/2)*self.coeff_so[i-1][k]))
+					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+				for k in range(len(self.n_so[i-1])): # SOREP contribution to (ell - 1/2)
+					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n_so[i-1][k],self.alpha_so[i-1][k],(-(i+1)/2)*self.coeff_so[i-1][k]))
 		f.close()
 
 	def write_dirac(self,filename):
@@ -307,48 +307,38 @@ class ECP:
 			f.write('{}\n'.format(ell[i]))
 			f.write('{}\n'.format(len(self.n[i])))
 			for j in range(len(self.n[i])):
-				f.write('{} {:0.6f} {:0.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
-		### Write SOC Gaussians
+				f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+		### Write SOREP Gaussians
 		f.write("$SPIN-ORBIT\n")
 		for i in range(len(self.n_so)):
 			f.write('{}\n'.format(ell[i+2]))
 			f.write('{}\n'.format(len(self.n_so[i])))
 			for j in range(len(self.n_so[i])):
-				f.write('{} {:0.6f} {:0.6f}\n'.format(self.n_so[i][j],self.alpha_so[i][j],self.coeff_so[i][j]))
+				f.write('{} {:11.6f} {:11.6f}\n'.format(self.n_so[i][j],self.alpha_so[i][j],self.coeff_so[i][j]))
 		f.close()
 ### End of class defintion
 
-### Molpro
-my_ecp = ECP(element='Bi',core=78)
-my_ecp.read_ecp('pp.d')
-my_ecp.write_molpro('ecp.molpro')
-#os.system('cat ecp.molpro')
-#print("\n")
+my_element = "Bi"
+my_core = 78
 
-#### Dirac
-my_ecp = ECP(element='Bi',core=78)
+### AREP ECPs
+my_ecp = ECP(element = my_element, core = my_core)
+my_ecp.read_ecp('pp.d')
+my_ecp.write_molpro('pp.molpro')
+
+my_ecp = ECP(element = my_element, core = my_core)
+my_ecp.read_ecp('pp.d')
+my_ecp.write_nwchem('pp.nwchem')
+
+my_ecp = ECP(element = my_element, core = my_core)
+my_ecp.read_ecp('pp.d')
+my_ecp.write_gamess('pp.gamess')
+
+#### REP ECPs
+my_ecp = ECP(element = my_element, core = my_core)
 my_ecp.read_ecp_so('pp.d')
-my_ecp.write_dirac('ecp.dirac')
-#os.system('cat ecp.dirac')
-#print("\n")
+my_ecp.write_dirac('pp.dirac')
 
-#### SO-QWalk
-my_ecp = ECP(element='Bi',core=78)
+my_ecp = ECP(element = my_element, core = my_core)
 my_ecp.read_ecp_so('pp.d')
-my_ecp.write_qwalk('ecp.qwalk')
-#os.system('cat ecp.qwalk')
-#print("\n")
-
-### Nwchem
-my_ecp = ECP(element='Bi',core=78)
-my_ecp.read_ecp('pp.d')
-my_ecp.write_nwchem('ecp.nwchem')
-#os.system('cat ecp.nwchem')
-#print("\n")
-
-### Gamess
-my_ecp = ECP(element='Bi',core=78)
-my_ecp.read_ecp('pp.d')
-my_ecp.write_gamess('ecp.gamess')
-#os.system('cat ecp.gamess')
-#print("\n")
+my_ecp.write_qwalk('pp.qwalk')

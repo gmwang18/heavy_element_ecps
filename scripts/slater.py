@@ -37,21 +37,31 @@ def find_det(out):
 ###Find the sections with slater information###
 def find_slater(out,det_range):
     d_out=open(out,'r')
-    content=d_out.readlines()
-    patt=re.compile("\s{23,24}\d+\s{2}\d+\s{16}")
-    new_content = list(filter(patt.match,content[det_range[0]:det_range[1]]))
+    patt=re.compile("\s{23,24}\d{1,2}\s{2}\d+")
+    new_content=[]
+    new_line_num=[]
+    new_line_break=[]
     slater_block=[]
     slater_block_element=[]
-    for i in range(len(new_content)-1):
-        oldlines = new_content[i]
-        lines = new_content[i+1]
-       #print(int(oldlines.split()[0]))
-        if int(lines.split()[0]) <= int(oldlines.split()[0]):
-            slater_block_element.append(oldlines.split())
+    for line_num,lines in enumerate(d_out):
+        if patt.search(lines):
+            new_line_num.append(line_num)
+            new_content.append(lines)
+    if len(new_line_num) ==1:
+        slater_block_element.append(new_content[0].split())
+        slater_block.append(slater_block_element)
+    else:
+        for i in range(len(new_line_num)-1):
+            if new_line_num[i] + 1 != new_line_num[i+1]:
+                new_line_break.append(i)
+        new_line_break.append(len(new_line_num)-1)
+        i = 0
+        for elements in new_line_break:
+            while i <= elements:
+                slater_block_element.append(new_content[i].split())
+                i += 1
             slater_block.append(slater_block_element)
             slater_block_element = []
-        else:
-            slater_block_element.append(oldlines.split())
     return (slater_block)
     d_out.close()
 

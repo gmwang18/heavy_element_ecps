@@ -44,9 +44,10 @@ def find_slater(out,det_range):
     slater_block=[]
     slater_block_element=[]
     for line_num,lines in enumerate(d_out):
-        if patt.search(lines):
-            new_line_num.append(line_num)
-            new_content.append(lines)
+        while line_num > det_range[0] and line_num < det_range[1]:
+            if patt.search(lines):
+                new_line_num.append(line_num)
+                new_content.append(lines)
     if len(new_line_num) ==1:
         slater_block_element.append(new_content[0].split())
         slater_block.append(slater_block_element)

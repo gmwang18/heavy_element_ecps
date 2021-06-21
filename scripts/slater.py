@@ -35,7 +35,7 @@ def find_det(out):
 
 ###############################################
 ###Find the sections with slater information###
-def find_slater(out,det_range):
+def find_slater(out):
     d_out=open(out,'r')
     patt=re.compile("\s{23,24}\d{1,2}\s{2}\d+")
     new_content=[]
@@ -44,10 +44,9 @@ def find_slater(out,det_range):
     slater_block=[]
     slater_block_element=[]
     for line_num,lines in enumerate(d_out):
-        while line_num > det_range[0] and line_num < det_range[1]:
-            if patt.search(lines):
-                new_line_num.append(line_num)
-                new_content.append(lines)
+        if patt.search(lines):
+            new_line_num.append(line_num)
+            new_content.append(lines)
     if len(new_line_num) ==1:
         slater_block_element.append(new_content[0].split())
         slater_block.append(slater_block_element)
@@ -131,8 +130,8 @@ out = input("The path of the dirac output file:")
 num_state =input("The number of multiplets for the given state:")
 ################################################
 NCLOSE = read_NCLOSE(inp)
-det_range = find_det(out)
-slater_block=find_slater(out,det_range)
+#det_range = find_det(out)
+slater_block=find_slater(out)
 for i in range(int(num_state)):
     occupation,coeff,nmo = convert_slater(slater_block,i,NCLOSE)
     s=slater(coeff,occupation,nmo,name)

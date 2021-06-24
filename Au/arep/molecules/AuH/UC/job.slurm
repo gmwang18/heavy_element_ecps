@@ -1,9 +1,9 @@
 #!/bin/bash -l
 #SBATCH -J AuH_UC
-#SBATCH -q regular
+#SBATCH -q debug
 #SBATCH -N 1
 #SBATCH -C haswell
-#SBATCH -t 07:00:00
+#SBATCH -t 00:30:00
 #SBATCH -o Au_DKH.out
 #!SBATCH -o Au_DKH.o%j
 

@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH -J ECP_7
+#SBATCH -J bk2.7.8.3_7
 #SBATCH -q regular
 #!SBATCH -q debug
 #SBATCH -N 1

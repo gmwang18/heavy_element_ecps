@@ -1,11 +1,11 @@
 #!/bin/bash -l
-#SBATCH -J ECP_1
+#SBATCH -J bk2.7.8.3_1
 #SBATCH -q regular
 #!SBATCH -q debug
 #SBATCH -N 1
 #!SBATCH -n 16
 #SBATCH -C haswell
-#SBATCH -t 0:25:00
+#SBATCH -t 0:15:00
 #SBATCH -o slurm.o%j
 
 module load molpro

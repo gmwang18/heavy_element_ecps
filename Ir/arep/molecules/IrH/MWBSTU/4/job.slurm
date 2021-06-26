@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH -J ECP_4
+#SBATCH -J MWBSTU_4
 #SBATCH -q regular
 #!SBATCH -q debug
 #SBATCH -N 1

@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH -J ECP_index
+#SBATCH -J bk2.7.8.3_index
 #SBATCH -q regular
 #!SBATCH -q debug
 #SBATCH -N 1

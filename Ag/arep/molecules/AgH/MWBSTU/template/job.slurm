@@ -1,0 +1,14 @@
+#!/bin/bash -l
+#SBATCH -J AgH-MWB_index
+#SBATCH -q regular
+#!SBATCH -q debug
+#SBATCH -N 1
+#!SBATCH -n 16
+#SBATCH -C haswell
+#SBATCH -t 1:00:00
+#SBATCH -o slurm.o%j
+
+module load molpro
+
+molpro -n 12 5.com
+

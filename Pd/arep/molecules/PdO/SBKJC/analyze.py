@@ -42,4 +42,4 @@ print(bind['bind'])
 #bind.plot()
 #plt.show()
 
-bind.to_csv('bind.csv', sep=',', float_format = "%.6f")
+bind.to_csv('bind.csv', sep=',')

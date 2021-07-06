@@ -13,12 +13,13 @@ import pandas as pd
 
 toev=27.21138602
 
-ecps = ['UC', 'CRENBS', 'LANL2', 'MDFSTU','SBKJC', 'ccECP']#, 'w3', 'w6', 'w9']#,'i0','i7', 'i6']#'sub0','smal-se3','se3','se4']
+ecps = ['UC', 'CRENBS', 'LANL2','MWBSTU', 'MDFSTU','SBKJC', 'ccECP']#, 'w3', 'w6', 'w9']#,'i0','i7', 'i6']#'sub0','smal-se3','se3','se4']
 styles = {
 'UC'        :{'label': 'UC',       'color':'#e41a1c','linestyle':'-'},
 'CRENBS'    :{'label': 'CRENBS','color':'#ff7f00','linestyle':'--','dashes': (8,5,1,3)},
 'LANL2'   :{'label': 'LANL2',    'color':'#377eb8','linestyle':'-','dashes': (3,1,1,2) },
 'MDFSTU'    :{'label': 'MDFSTU',      'color':'#984ea3','linestyle':'--','dashes': (6,3)     },
+'MWBSTU'        :{'label':'MWBSTU',     'color':'#9966ff','linestyle':'--','dashes': (4,2) },
 'SBKJC'     :{'label': 'SBKJC',    'color':'#DC0174','linestyle':'-','dashes': (3,1,1,2) },
 #'sub0'       :{'label': 'Sub0',      'color':'#6600ff','linestyle':'--','dashes': (3,2)      },
 #'smal-se3'     :{'label': 'energy3',      'color':'#006666','linestyle':'--','dashes': (4,3)     },

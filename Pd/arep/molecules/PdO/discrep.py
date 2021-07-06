@@ -6,7 +6,7 @@ import pandas as pd
 import pickle
 import sys
 
-ecps = ['UC','MDFSTU','CRENBL','SBKJC','LANL2', 'ccECP']
+ecps = ['UC','MDFSTU','MWBSTU','CRENBL','SBKJC','LANL2', 'ccECP']
 styles = {
 'UC'		:{'label':'UC',		'color':'#e41a1c','linestyle':'-'                  },
 'MDFSTU'	:{'label':'MDFSTU',	'color':'#ff7f00','linestyle':'--','dashes': (7,2) },
@@ -92,7 +92,7 @@ def plot(r0=None):
             	#arrowprops=dict(arrowstyle='->',color='red'),)
 
 	plt.legend(loc='best')
-	#plt.savefig('discrep.pdf')
+	plt.savefig('discrep.pdf')
 	plt.show()
 
 if __name__ == '__main__':

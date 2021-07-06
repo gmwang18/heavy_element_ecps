@@ -6,7 +6,7 @@ import pandas as pd
 import pickle
 import sys
 
-ecps = ['UC','MDFSTU','CRENBL','SBKJC','LANL2', 'ccECP']
+ecps = ['UC','MWBSTU','MDFSTU','CRENBL','SBKJC','LANL2', 'ccECP']
 styles = {
 'UC'		:{'label':'UC',		'color':'#e41a1c','linestyle':'-'                  },
 'MDFSTU'	:{'label':'MDFSTU',	'color':'#ff7f00','linestyle':'--','dashes': (7,2) },

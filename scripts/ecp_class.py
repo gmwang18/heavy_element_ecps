@@ -321,6 +321,8 @@ class ECP:
 my_element = "Bi"
 my_core = 78
 
+### WARNING: For now, read_ecp() should be called every time before write_* functions. This is because some of those functions modify the data structure. This needs to be fixed later.
+
 ### AREP ECPs
 my_ecp = ECP(element = my_element, core = my_core)
 my_ecp.read_ecp('pp.d')

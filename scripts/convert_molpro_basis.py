@@ -25,17 +25,36 @@ def write_dirac(basis, atom):
 	filename = sys.argv[1].split('.')[0]
 	cardinal = sys.argv[1].split('.')[1]
 	f = open(filename+"."+cardinal+".dirac",'w')
-	ell_lengths = np.zeros(basis[-1][0]+1, dtype=np.int8) # Assumes last element is highest L function
+	max_ell = max(np.array(basis, dtype=list)[:,0])
+	ell_lengths = np.zeros(max_ell + 1, dtype=np.int8)
 	for i in range(len(basis)):
 		index = basis[i][0]
 		ell_lengths[index] = ell_lengths[index] + 1
 	labels=['s','p','d','f','g','h','i','k']
-	f.write('LARGE EXPLICIT {} {}\n'.format(basis[-1][0]+1, str(ell_lengths).replace('[','').replace(']','')))
+	f.write('LARGE EXPLICIT {} {}\n'.format(max_ell + 1, str(ell_lengths).replace('[','').replace(']','')))
 	for c in basis:
 		f.write('{} {} {}\n'.format('#', labels[c[0]], 'functions'))
 		f.write('{}  {}  {}\n'.format('f', len(c[1]), 1))
 		for i in range(len(c[1])):
 			f.write('{:15.7f} {:10.7f}\n'.format(c[1][i],c[2][i]))
+	f.close()
+
+def write_dirac_compact(basis, atom):
+	filename = sys.argv[1].split('.')[0]
+	cardinal = sys.argv[1].split('.')[1]
+	f = open(filename+"."+cardinal+".dirac_compact",'w')
+	max_ell = max(np.array(basis, dtype=list)[:,0])
+	ell_lengths = np.ones(max_ell + 1, dtype=np.int8)
+	labels=['s','p','d','f','g','h','i','k']
+	f.write('LARGE EXPLICIT {} {}\n'.format(max_ell + 1, str(ell_lengths).replace('[','').replace(']','')))
+	for l in range(max_ell + 1):
+		basis_array = np.array(basis, dtype=list)
+		basis_array = basis_array[basis_array[:,0] == l]
+		n_funcs = len(basis_array)
+		f.write('{} {} {}\n'.format('#', labels[l], 'functions'))
+		f.write('{}  {}  {}\n'.format('f', n_funcs, 0))
+		for c in basis_array[basis_array[:,0] == l]:
+			f.write('{:15.7f}\n'.format(c[1][0]))
 	f.close()
 
 def write_gamess(basis, atom):
@@ -112,4 +131,4 @@ if __name__ == "__main__":
 	write_nwchem(basis, atom)
 	write_gamess(basis, atom)
 	write_dirac(basis, atom)
-
+	write_dirac_compact(basis, atom)

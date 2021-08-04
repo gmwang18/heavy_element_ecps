@@ -72,21 +72,24 @@ def pd_mad(errors):	# Handle MAD with error bars
 
 toev = 27.211386245988
 pd.options.display.float_format = "{:,.4f}".format
+elements = ["I", "Bi"]
 ecps = ["STU", "ccECP"]
 
 ### =======================================
 
-df = pd.read_csv("I.csv", delim_whitespace=True, engine='python')
-df = pd_s2f(df)
+for element in elements:
+	print(element)
+	df = pd.read_csv(element+".csv", delim_whitespace=True, engine='python')
+	df = pd_s2f(df)
 
-for ecp in ecps:
-	df["COSCI/" + ecp] = df["COSCI/AE"] - df["COSCI/" + ecp] 
-	df["FPSODMC/" + ecp] = df["Expt."] - df["FPSODMC/" + ecp] 
-
-	df.loc["MAD", "COSCI/" + ecp] = df[df["Ref"] == 0]["COSCI/" + ecp].abs().mean()
-	df.loc["MAD", "FPSODMC/" + ecp] = pd_mad(df[df["Ref"] == 0]["FPSODMC/" + ecp].values)
-
-del df["Ref"]
-df = df.fillna(' ')
-df = pd_f2s(df)
-print(df.to_latex(escape=False))
+	for ecp in ecps:
+		df["COSCI/" + ecp] = df["COSCI/AE"] - df["COSCI/" + ecp] 
+		df["FPSODMC/" + ecp] = df["Expt."] - df["FPSODMC/" + ecp] 
+	
+		df.loc["MAD", "COSCI/" + ecp] = df[df["Ref"] == 0]["COSCI/" + ecp].abs().mean()
+		df.loc["MAD", "FPSODMC/" + ecp] = pd_mad(df[df["Ref"] == 0]["FPSODMC/" + ecp].values)
+	
+	del df["Ref"]
+	df = df.fillna(' ')
+	df = pd_f2s(df)
+	print(df.to_latex(escape=False))

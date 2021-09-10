@@ -16,14 +16,14 @@ basfile = "basis.nwchem"  # Name of file to write the basis
 N = 11   # Number of primitives in a contraction
 
 params = np.array([   # These are the parameters we are optimizing
-0.05,   # Smallest s exponent
-2.10,   # Ration between s exponents
+0.04,   # Smallest s exponent
+2.00,   # Ration between s exponents
 
-0.05,   # Smallest p exponent
-2.10,   # Ration between p exponents
+0.04,   # Smallest p exponent
+2.00,   # Ration between p exponents
 
-0.05,   # Smallest d exponent
-2.10,   # Ration between d exponents
+0.04,   # Smallest d exponent
+2.00,   # Ration between d exponents
 ])
 
 def generate_primitives(params):   # Generate primitives and write to file
@@ -94,13 +94,13 @@ def run_hf(params):   # Ruh HF using the ECP and basis files
 	#~~~Run HF on molecule~~~~
 	hf = scf.ROHF(mol)
 	hf.irrep_nelec = {
-	'Ag' : (4,2),   # s    
+	'Ag' : (4,4),   # s    
 	'B3u': (1,1),   # x    1
 	'B1u': (1,1),   # z    0
 	'B2u': (1,1),   # y   -1
 	'B2g': (1,0),   # xz   1
-	'B3g': (1,1),   # yz  -1
-	'B1g': (1,1),   # xy  -2
+	'B3g': (1,0),   # yz  -1
+	'B1g': (1,0),   # xy  -2
 	#'Au' : (0,0)    # xyz  
 	}
 	hf.verbose=3
@@ -119,17 +119,17 @@ def hf_energy(params):   # Wrapper to run_hf to get only the energy
 en_initial = hf_energy(params)  # Initial energy for comparison
 
 x0=list(params)  # Initial parameters
-eps_list=[1e-4,1e-5]  # Step sizes in optimization to be used
+eps_list=[1e-2,1e-3,1e-4]  # Step sizes in optimization to be used
 
 # We would like to put some boundaries to the parameters 
 # so that they don't go to unreasonable values
 limit=(   
-(0.02, 0.10),   # Smallest s exponent (min, max)
-(2.00, 2.50),   # Ratio of s (min, max)
-(0.02, 0.10),   # Smallest p exponent (min, max)
-(2.00, 2.50),   # Ratio of p (min, max)
-(0.02, 0.10),   # Smallest d exponent (min, max)
-(2.00, 2.50),   # Ratio of d (min, max)
+(0.02, 0.20),   # Smallest s exponent (min, max)
+(1.90, 2.50),   # Ratio of s (min, max)
+(0.02, 0.20),   # Smallest p exponent (min, max)
+(1.90, 2.50),   # Ratio of p (min, max)
+(0.02, 0.20),   # Smallest d exponent (min, max)
+(1.90, 2.50),   # Ratio of d (min, max)
 )
 #print(len(limit))
 

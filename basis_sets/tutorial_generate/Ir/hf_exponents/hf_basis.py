@@ -13,16 +13,16 @@ atom = "Ir"   # Element name
 ecpfile = "ecp.nwchem"   # File containing the ECP
 basfile = "basis.nwchem"  # Name of file to write the basis
 
-N = 11   # Number of primitives in a contraction
+N = 12   # Number of primitives in a contraction
 
 params = np.array([   # These are the parameters we are optimizing
-0.04,   # Smallest s exponent
+0.03,   # Smallest s exponent
 2.00,   # Ration between s exponents
 
-0.04,   # Smallest p exponent
+0.03,   # Smallest p exponent
 2.00,   # Ration between p exponents
 
-0.04,   # Smallest d exponent
+0.03,   # Smallest d exponent
 2.00,   # Ration between d exponents
 ])
 
@@ -106,7 +106,7 @@ def run_hf(params):   # Ruh HF using the ECP and basis files
 	hf.verbose=3
 	hf.max_cycle=100
 	en = hf.kernel()
-	#print(params)
+	print(params)
 	return en, hf
 #run_hf(params)
 
@@ -124,11 +124,11 @@ eps_list=[1e-2,1e-3,1e-4]  # Step sizes in optimization to be used
 # We would like to put some boundaries to the parameters 
 # so that they don't go to unreasonable values
 limit=(   
-(0.02, 0.20),   # Smallest s exponent (min, max)
+(0.01, 0.20),   # Smallest s exponent (min, max)
 (1.90, 2.50),   # Ratio of s (min, max)
-(0.02, 0.20),   # Smallest p exponent (min, max)
+(0.01, 0.20),   # Smallest p exponent (min, max)
 (1.90, 2.50),   # Ratio of p (min, max)
-(0.02, 0.20),   # Smallest d exponent (min, max)
+(0.01, 0.20),   # Smallest d exponent (min, max)
 (1.90, 2.50),   # Ratio of d (min, max)
 )
 #print(len(limit))

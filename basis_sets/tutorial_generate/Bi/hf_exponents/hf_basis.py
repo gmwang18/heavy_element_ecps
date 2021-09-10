@@ -13,14 +13,14 @@ atom = "Bi"   # Element name
 ecpfile = "ecp.nwchem"   # File containing the ECP
 basfile = "basis.nwchem"  # Name of file to write the basis
 
-N = 9   # Number of primitives in a contraction
+N = 10   # Number of primitives in a contraction
 
 params = np.array([   # These are the parameters we are optimizing
-0.07,   # Smallest s exponent
-2.40,   # Ration between s exponents
+0.06,   # Smallest s exponent
+2.10,   # Ration between s exponents
 
-0.07,   # Smallest p exponent
-2.40,   # Ration between p exponents
+0.06,   # Smallest p exponent
+2.10,   # Ration between p exponents
 ])
 
 def generate_primitives(params):   # Generate primitives and write to file

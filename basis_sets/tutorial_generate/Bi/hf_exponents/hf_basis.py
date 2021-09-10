@@ -109,9 +109,9 @@ eps_list=[1e-3,1e-4,1e-5]  # Step sizes in optimization to be used
 # We would like to put some boundaries to the parameters 
 # so that they don't go to unreasonable values
 limit=(   
-(0.05, 0.20),   # Smallest s exponent (min, max)
+(0.02, 0.20),   # Smallest s exponent (min, max)
 (2.00, 2.50),   # Ratio of s (min, max)
-(0.05, 0.20),   # Smallest p exponent (min, max)
+(0.02, 0.20),   # Smallest p exponent (min, max)
 (2.00, 2.50),   # Ratio of p (min, max)
 )
 #print(len(limit))

@@ -1,7 +1,7 @@
 GENERATING CORRELATION CONSISTENT BASIS SETS FOR MAIN-GROUP ELEMENT ECPs
 =========================================================================
 
-The basis structure of basis sets in main-group elements is as follows.
+The basic structure of basis sets in main-group elements is as follows.
 For each occupied orbital, we will need a contraction using HF orbitals.
 For instance in Bi, we have 6s2 and 6p3 so we need one contracted `s` 
 basis and one contracted `p` basis. Now to form a DZ quality basis set

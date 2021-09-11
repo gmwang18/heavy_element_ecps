@@ -20,4 +20,5 @@ aug-cc-pCVTZ, namely, the most accurate basis sets for a given
 cardinal number n=T.
 
 To continue, start with Bi folder then go to Ir.
-We will use `PySCF` and `Molpro` in this tutorial.
+You will need `PySCF` and `Molpro` in this tutorial.
+

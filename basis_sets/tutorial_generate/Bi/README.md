@@ -11,7 +11,7 @@ of basis terms (where one of 2s and 2p are contracted). For TZ, we
 need to add one more to each type of basis and add a new polarization
 term. So Bi/cc-pVTZ will have [3s, 3p, 2d, 1f] number of terms.
 QZ, 5Z, 6Z will keep growing accordingly. In general, a Bi/cc-pVnZ
-will have [ns, np, (n-1)d, (n-2)f, (n-3)g, (n-4)h, ...].
+will have [ns, np, (n-1)d, (n-2)f, (n-3)g, (n-4)h, ...] terms.
 Also, we use the so-called even-tempered scheme which means that the
 ratio between exponents are constant and one needs to optimize
 only the smallest/highest exponent and the ratio of exponents.
@@ -48,7 +48,7 @@ basis set energy. In this case the uncontracted AE TZ basis yields
 the HF contraction and this contraction will be used for all `n` values.
 
 4. Next go to `cc_tz` folder. Here you will see a Molpro input that will
-optimize additional primitives as descrived above using CCSD(T).
+optimize additional primitives mentioned above using CCSD(T).
 Once these parameters are optimized, copy the optimal values to `write_cc.py`
 which will output the additional terms we need to add to our basis 
 (see the `cc.molpro` and `aug-cc.molpro` files).
@@ -56,13 +56,13 @@ which will output the additional terms we need to add to our basis
 5. The above additional terms are added and stored in `basis` folder.
 This concludes `cc-pVTZ` and `aug-cc-pVTZ` basis sets. 
 
-Note: To optimize higher quality basis sets, these scripts require
+Note: To optimize higher quality (QZ, 5Z, ...) basis sets, these scripts require
 minor changes which should be clear. Also note that if we had used a
 small-core rather than large-core, we would need to add core excitation terms
 to form aug-cc-pCVTZ. Addition of these `C` terms is very similar.
 First, above steps are done by only correlating corresponding valence space.
 Then all the excitations are turned on and we add one extra (large)
-exponents to each basis type at every `n` increment to optimize via CCSD(T). 
+exponents to each basis type at every increment of `n` to optimize via CCSD(T). 
 For instance,  cc-pCVTZ will now have [4s, 4p, 3d, 2f] and aug-cc-pCVTZ 
 will have [5s, 5p, 4d, 3f] terms.
 

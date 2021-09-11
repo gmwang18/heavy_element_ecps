@@ -56,6 +56,6 @@ pop
  print,orbitals=2
 }
 
-{ci;maxit,100;core,1,1,1,1,1,1,1,0}
+{ci;maxit,100;core,1,1,1,0,1,0,0,0
  natorb,ci,print=15
 }

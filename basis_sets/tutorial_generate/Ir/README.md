@@ -44,15 +44,17 @@ close to 1.0.
 4. Next we go to `cc_tz` and we add the missing polarization terms similar
 to Bi case.
 
-5. Finally, go to `core_tz` to add [2s, 2p, 2d, 1f, 1g] core terms
+5. We uncontract the smallest exponent in each channel and add it to our basis.
+
+6. Finally, go to `core_tz` to add [2s, 2p, 2d, 1f, 1g] core terms
 by turning on all excitations. Here the number of core terms added
 is usually kept the same for all cardianal numbers. Namely, only the
 values of the [2s, 2p, 2d, 1f, 1g] terms will change and we don't have
 to increase the size of it as opposed to usual approach. (One can do usual
 increments but you get very close exponents for large basis sets).
 
-6. For clarity all finalized basis sets are located at `basis` folder.
+7. For clarity all finalized basis sets are located at `basis` folder.
 
-Note: steps 4 and 5 can be taken from other ECPs, say STU.
+Note: steps 4 and 6 can be taken from other ECPs, say STU.
 This is usually safe since these terms don't change much from one
 ECP to another ECP.

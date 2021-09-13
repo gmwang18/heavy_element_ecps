@@ -52,6 +52,8 @@ optimize additional primitives mentioned above using CCSD(T).
 Once these parameters are optimized, copy the optimal values to `write_cc.py`
 which will output the additional terms we need to add to our basis 
 (see the `cc.molpro` and `aug-cc.molpro` files).
+The augmented terms are generated simply by dividing the smallest term by 2.5
+(there are other approaches but this is usually good enough).
 
 5. The above additional terms are added and stored in `basis` folder.
 This concludes `cc-pVTZ` and `aug-cc-pVTZ` basis sets. 

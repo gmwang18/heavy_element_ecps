@@ -3,7 +3,7 @@
 #SBATCH -q debug
 #SBATCH -N 1
 #SBATCH -C haswell
-#SBATCH -t 00:25:00
+#SBATCH -t 00:29:00
 #SBATCH -o slurm.out
 
 module load molpro

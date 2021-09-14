@@ -9,9 +9,9 @@ N=2  # Number of exp in s and p
 atom = "Ir"
 
 params = np.array([
-0.390216,	# Lowest f exponent
-3.003201,	# Ratio for f exponents
-0.968390,	# Lowest g exponent
+0.389778,	# Lowest f exponent
+2.997866,	# Ratio for f exponents
+0.967527,	# Lowest g exponent
 2.500000,	# Ratio for g exponents
 ])
 

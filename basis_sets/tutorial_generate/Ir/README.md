@@ -30,7 +30,7 @@ the next two for TZ. When looking at `s` (symmetry 1) we have to be careful
 because there will be `d` mixing. Essentially we should skip all orbitals 
 that have major `d` contributions (the same thing appears in 1.6).
 For instance, in `atom.out` the `s`-like orbitals are
-`1,4,5,10,13,16,19`. We skip `1, 4` and take `5,10` for TZ.
+`1,4,5,10,13,16,19`. We skip `1,4` and take `5,10` for TZ.
 QZ will be `5,10,13`, 5Z will be `5,10,13,16`, etc. 
 
 3. Now go to `check_contractions`. Here I have edited `basis.molpro`
@@ -46,12 +46,18 @@ to Bi case.
 
 5. We uncontract the smallest exponent in each channel and add it to our basis.
 
-6. Finally, go to `core_tz` to add [2s, 2p, 2d, 1f, 1g] core terms
-by turning on all excitations. Here the number of core terms added
-is usually kept the same for all cardianal numbers. Namely, only the
-values of the [2s, 2p, 2d, 1f, 1g] terms will change and we don't have
-to increase the size of it as opposed to usual approach. (One can do usual
-increments but you get very close exponents for large basis sets).
+6. Finally, go to `core_tz` to add core terms by turning on all excitations. 
+Here the number of core terms added to each symmetry channel
+is scaled differently than what we had in main group elements.
+Specifically, the added core terms will be as such for different basis sets:
+DZ: [1s, 1p, 1d, 1f].
+TZ: [2s, 2p, 2d, 1f, 1g].
+QZ: [2s, 2p, 2d, 1f, 1g, 1h].
+5Z: [2s, 2p, 2d, 1f, 1g, 1h, 1i].
+etc.
+In this case, if you look at the output `atom.out`, the optimized values
+for `s` are very close to each other (`1.348406, 1.359006`). To avoid linear dependency issues,
+I will be adding only one of these.
 
 7. For clarity all finalized basis sets are located at `basis` folder.
 

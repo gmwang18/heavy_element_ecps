@@ -1,9 +1,9 @@
 #!/bin/bash -l
 #SBATCH -J cc_tz
-#SBATCH -q debug
+#SBATCH -q regular
 #SBATCH -N 1
 #SBATCH -C haswell
-#SBATCH -t 00:30:00
+#SBATCH -t 04:00:00
 #SBATCH -o slurm.out
 
 module load molpro

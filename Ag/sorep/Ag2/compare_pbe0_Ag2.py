@@ -125,7 +125,8 @@ df_binding['Z'] = df_cc['Z']
 df_binding['CC'] = bind_cc
 
 df_pbe0dmc = raw2unc('FPSODMC/pbe0-mdfstu/raw_opt.dat')
-atom_pbe0dmc = ufloat(-146.9381103, 0.0007327914073)
+#atom_pbe0dmc = ufloat(-146.9381103, 0.0007327914073)
+atom_pbe0dmc = ufloat(-146.9341101, 0.0007832852555)
 df_binding['PBE0DMC'] = df_pbe0dmc['energy'].values - 2.0*atom_pbe0dmc
 
 print(df_pbe0dmc)
@@ -136,7 +137,9 @@ bind_cc_ccECP = bind_cc_ccECP.values
 df_binding['CC-so-ccECP'] = bind_cc_ccECP
 
 df_ccECP_pbe0dmc = raw2unc('FPSODMC/pbe0-so-ccECP/raw_opt.dat')
-atom_ccECP_pbe0dmc = ufloat(-146.9218445, 0.000546270773)
+#atom_ccECP_pbe0dmc = ufloat(-146.9218445, 0.000546270773)
+#atom_ccECP_pbe0dmc = ufloat(-146.9255776, 0.000688587029)
+atom_ccECP_pbe0dmc = ufloat(-146.9225916, 0.000688587029)
 df_binding['ccECP_PBE0DMC'] = df_ccECP_pbe0dmc['energy'].values - 2.0*atom_ccECP_pbe0dmc
 
 

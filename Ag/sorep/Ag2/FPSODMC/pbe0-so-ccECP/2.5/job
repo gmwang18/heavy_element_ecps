@@ -1,18 +1,27 @@
-#!/bin/bash -l
-#SBATCH -J Ag2_OPT
-#SBATCH -q debug
-#SBATCH -N 8
-#SBATCH -C haswell
-#SBATCH -t 00:30:00
-#SBATCH -o so_qwalk.o%j
+#!/bin/bash
+#COBALT -t 03:00:00
+#COBALT -n 128
+#COBALT -A PSFMat_2               
+#COBALT -o myqwalk.o%j         
+#COBALT -q default
+#COBALT --attrs mcdram=cache:numa=quad
 
 HOME=`pwd`
 
 
-#srun -n 512 -c 1 --cpu_bind=threads qwalk-so Ag2.hf
 
-srun -n 512 -c 1 --cpu_bind=threads qwalk-so Ag2.opt 
 
-sed 's/OPTIMIZEBASIS//g' Ag2.opt.wfout > fixed_basis.wfout
+#aprun -n 8192 -N 64 qwalk-so Ag2.df
+aprun -n 8192 -N 64 qwalk-so Ag2.opt2
 
-srun -n 512 -c 1 --cpu_bind=threads qwalk-so Ag2.linear
+python add3bodyjs.py
+
+aprun -n 8192 -N 64 qwalk-so Ag2.opt3
+
+sed 's/OPTIMIZEBASIS//g' Ag2.opt3.wfout > fixed_basis.wfout
+
+aprun -n 8192 -N 64 qwalk-so Ag2.linear
+
+aprun -n 8192 -N 64 qwalk-so Ag2.dmc
+
+

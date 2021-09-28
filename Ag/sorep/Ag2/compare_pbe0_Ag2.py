@@ -139,7 +139,7 @@ df_binding['CC-so-ccECP'] = bind_cc_ccECP
 df_ccECP_pbe0dmc = raw2unc('FPSODMC/pbe0-so-ccECP/raw_opt.dat')
 #atom_ccECP_pbe0dmc = ufloat(-146.9218445, 0.000546270773)
 #atom_ccECP_pbe0dmc = ufloat(-146.9255776, 0.000688587029)
-atom_ccECP_pbe0dmc = ufloat(-146.9225916, 0.000688587029)
+atom_ccECP_pbe0dmc = ufloat(-146.9182272, 0.0006987436501)
 df_binding['ccECP_PBE0DMC'] = df_ccECP_pbe0dmc['energy'].values - 2.0*atom_ccECP_pbe0dmc
 
 
@@ -175,9 +175,9 @@ ax.set_xlabel('Bond length [\AA]')
 ax.set_ylabel('Binding energy $-D_e$ [eV]')
 De_exp = -1.66
 ax.axhline(De_exp, color='r', linestyle='-', linewidth=0.7, label='Exper. $-D_{e}$')
-ax.axvline(2.6549, color='r', linestyle='-', linewidth=0.7, label='Exper. $r_{eq}$')
-ax.axvline(2.48, color='r', linestyle='-', linewidth=0.7)
-ax.axvline(2.53350, color='r', linestyle='-', linewidth=0.7)
+#ax.axvline(2.6549, color='r', linestyle='-', linewidth=0.7, label='Exper. $r_{eq}$')
+#ax.axvline(2.48, color='r', linestyle='-', linewidth=0.7)
+#ax.axvline(2.53350, color='r', linestyle='-', linewidth=0.7)
 
 for column in df_binding:
         if column == "Z":
@@ -229,8 +229,8 @@ for column in df_binding:
                 
 ax.axvline(stu_dmc_bind_geo, color='#984ea3', linestyle='--', linewidth=0.7, dashes=(4,4), label='MDFSTU. $r_{eq}$')
 ax.axvline(ccecp_dmc_bind_geo, color='#339933', linestyle='--', linewidth=0.7, dashes=(4,4), label='so-ccECP. $r_{eq}$')
-ax.axvline(stu_cc_bind_geo, color='#984ea3', linestyle='-', linewidth=0.7, label='MDFSTU. $r_{eq}$')
-ax.axvline(ccecp_cc_bind_geo, color='#339933', linestyle='-', linewidth=0.7, label='so-ccECP. $r_{eq}$')
+#ax.axvline(stu_cc_bind_geo, color='#984ea3', linestyle='-', linewidth=0.7, label='MDFSTU. $r_{eq}$')
+#ax.axvline(ccecp_cc_bind_geo, color='#339933', linestyle='-', linewidth=0.7, label='so-ccECP. $r_{eq}$')
 #ax.legend(loc='best', prop={'size': 12})
 ax.legend(loc='upper right', prop={'size': 10.5})
 ax.tick_params(direction='in', length=6.0)

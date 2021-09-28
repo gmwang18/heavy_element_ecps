@@ -73,7 +73,7 @@ def pd_mad(errors):	# Handle MAD with error bars
 toev = 27.211386245988
 pd.options.display.float_format = "{:,.3f}".format
 #elements = ["I", "Bi"]
-elements = ["I", "Bi", "Au", "Ag"]
+elements = ["I", "Bi", "Au", "Ag", "W"]
 ecps = ["STU", "ccECP"]
 
 ### =======================================

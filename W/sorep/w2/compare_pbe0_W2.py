@@ -170,7 +170,7 @@ ax.set_xlabel('Bond length [\AA]')
 ax.set_ylabel('Binding energy $-D_e$ [eV]')
 De_exp = -5.0
 ax.axhline(De_exp, color='r', linestyle='-', linewidth=0.7, label='Exper. $-D_{e}$')
-ax.axhspan(-6.0, -4.0, alpha=0.25, color='gray')
+ax.axhspan(-6.0, -4.0, alpha=0.25, color='darksalmon')
 
 for column in df_binding:
         if column == "Z":

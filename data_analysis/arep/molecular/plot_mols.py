@@ -34,6 +34,7 @@ for mol in systems:
 
 ### === Equilibrium positions to be plotted === 
 req = {
+'TeH_QZ': 1.6, # Tentative
 'AgH_5Z': 1.6, # Tentative
 'AgO_5Z': 2.0, # Tentative
 'AuH_TZ': 1.6, # Tentative

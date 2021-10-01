@@ -61,43 +61,47 @@ def get_data(atom):
 	#df.dropna(inplace=True)
 	return df
 
-def plot(atom):
-	print('Atom: {}'.format(atom))
-	fig, ax1 = init()
-	df = get_data(atom)
-	
-	ax1.axhspan(0.000, 0.043, alpha=0.25, color='gray')
-	ax1.axhline(0.0,linewidth=1.0,color='black')
-	ax1.set_xlabel('Core Approximations')
-	ax1.set_ylabel('(L)MAD [eV]')
-	x = df.index.values
-	y1 = df["MAD"].values
-	y2 = df["LMAD"].values
-	ax1.plot(x,y1,**styles["MAD"])
-	ax1.plot(x,y2,**styles["LMAD"])
-	plt.xticks(rotation = 35, fontsize=16)
+def plot(atom,show=False,savefig=True):
+    print('Atom: {}'.format(atom))
+    fig, ax1 = init()
+    df = get_data(atom)
+    
+    ax1.axhspan(0.000, 0.043, alpha=0.25, color='gray')
+    ax1.axhline(0.0,linewidth=1.0,color='black')
+    ax1.set_xlabel('Core Approximations')
+    ax1.set_ylabel('(L)MAD [eV]')
+    x = df.index.values
+    y1 = df["MAD"].values
+    y2 = df["LMAD"].values
+    ax1.plot(x,y1,**styles["MAD"])
+    ax1.plot(x,y2,**styles["LMAD"])
+    plt.xticks(rotation = 35, fontsize=16)
+    
+    ax1 = plt.gca()
+    ax2 = ax1.twinx()
+    ax2.tick_params(direction='in', length=6, width=2, which='major', pad=5)
+    ax2.tick_params(direction='in', length=4, width=1, which='minor', pad=5)
+    ax2.grid(b=None, which='major', axis='both', alpha=0.0)
+    ax2.set_ylabel(r'WMAD [\%]')
+    y3 = df["WMAD"].values
+    ax2.axhline(0.0,linewidth=0.5,color='black', alpha=0)
+    ax2.plot(x,y3,**styles["WMAD"])
+    
+    lines_1, labels_1 = ax1.get_legend_handles_labels()
+    lines_2, labels_2 = ax2.get_legend_handles_labels()
+    
+    lines = lines_1 + lines_2
+    labels = labels_1 + labels_2
 
-	ax1 = plt.gca()
-	ax2 = ax1.twinx()
-	ax2.tick_params(direction='in', length=6, width=2, which='major', pad=5)
-	ax2.tick_params(direction='in', length=4, width=1, which='minor', pad=5)
-	ax2.grid(b=None, which='major', axis='both', alpha=0.0)
-	ax2.set_ylabel(r'WMAD [\%]')
-	y3 = df["WMAD"].values
-	ax2.axhline(0.0,linewidth=0.5,color='black', alpha=0)
-	ax2.plot(x,y3,**styles["WMAD"])
-
-	lines_1, labels_1 = ax1.get_legend_handles_labels()
-	lines_2, labels_2 = ax2.get_legend_handles_labels()
-	
-	lines = lines_1 + lines_2
-	labels = labels_1 + labels_2
-
-	ax2.legend(lines, labels, frameon=True, fontsize=16.0, handlelength=2.50, labelspacing=0.40, handletextpad=0.4, loc='best', facecolor='white', framealpha=1.00, edgecolor='#f2f2f2')
+    ax2.legend(lines, labels, frameon=True, fontsize=16.0, handlelength=2.50, labelspacing=0.40, handletextpad=0.4, loc='best', facecolor='white', framealpha=1.00, edgecolor='#f2f2f2')
 	#ax2.annotate("%s" % atom, xy=(0.05, 0.15), xycoords='axes fraction')
 	#plt.legend(loc='best', ncol=1)
-	plt.savefig('atom_figs/'+atom+'_spectrum.pdf')
-	plt.show()
+    if savefig:
+        plt.savefig('atom_figs/'+atom+'_spectrum.pdf')
+    #end if
+    if show:
+        plt.show()
+    #end if
 
 
 #### Average MADs plot
@@ -113,8 +117,13 @@ df = df.groupby(df.index).mean()
 df = df.sort_values(by="WMAD", ascending=False, axis=0)
 #print(df)
 df.to_csv("all.csv", float_format="%.4f")
-atoms.append("all")
+#atoms.append("all")
 
-for atom in atoms:
-	plot(atom)
-
+for atomi,atom in enumerate(atoms):
+    print(atom)
+    if atomi==len(atoms)-1:
+        show=True
+    else:
+        show=False
+    #end if
+    plot(atom,show=show)

@@ -50,6 +50,7 @@ req = {
 'IrO_TZ': 1.7,
 'PdH_TZ': 1.5,
 'PdO_TZ': 1.8,
+'TeO_QZ': 1.8114,
 }
 
 def init():
@@ -95,28 +96,37 @@ def get_data(mol):
     #print(ecps)
     return df,ecps
 
-def plot(mol):
-   print('Molecule: {}'.format(mol))
-   fig, ax = init()
-   df, ecps = get_data(mol)
+def plot(mol,savefig=True,show=False):
+    print('Molecule: {}'.format(mol))
+    fig, ax = init()
+    df, ecps = get_data(mol)
 
-   ax.axhspan(-0.043, 0.043, alpha=0.25, color='gray')
-   ax.axhline(0.0,linewidth=1.0,color='black')
-   ax.set_xlabel('Bond Length (\AA)')
-   ax.set_ylabel('Discrepancy $\Delta(r)$ (eV)')
-   for i,ecp in enumerate(ecps):
-       	x = df.index.values
-       	y = df[ecp].values - df['AE'].values
-       	plt.plot(x,y,**styles[ecp])
-   ax.set_xlim((x[0],x[-1]))
+    ax.axhspan(-0.043, 0.043, alpha=0.25, color='gray')
+    ax.axhline(0.0,linewidth=1.0,color='black')
+    ax.set_xlabel('Bond Length (\AA)')
+    ax.set_ylabel('Discrepancy $\Delta(r)$ (eV)')
+    for i,ecp in enumerate(ecps):
+        x = df.index.values
+        y = df[ecp].values - df['AE'].values
+        plt.plot(x,y,**styles[ecp])
+    ax.set_xlim((x[0],x[-1]))
 
-   ax.axvline(req[mol],color='black',linestyle='--',linewidth=1.5,dashes=(2,2))
-   plt.legend(loc='best', ncol=2)
-   
-   plt.savefig('mol_figs/'+mol+'.pdf')
-   plt.show()
+    ax.axvline(req[mol],color='black',linestyle='--',linewidth=1.5,dashes=(2,2))
+    plt.legend(loc='best', ncol=2)
+    
+    if savefig:
+        plt.savefig('mol_figs/'+mol+'.pdf')
+    #end if
+    if show:
+        plt.show()
+    #end if
 
-for mol in mols:
-	plot(mol)
-
+for moli,mol in enumerate(mols):
+    if moli==len(mols)-1:
+        show=True
+    else:
+        show=False
+    #end if
+    plot(mol,savefig=True,show=show)
+#end for
 

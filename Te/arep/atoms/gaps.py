@@ -1,0 +1,73 @@
+#! /usr/bin/env python
+
+import pickle 
+import pandas as pd
+import numpy as np
+
+pps = '''
+UC        UC/dkh/basis/run.table1.csv
+BFD       BFD/dkh/basis/run.table1.csv
+MDFSTU    MDFSTU/dkh/basis/run.table1.csv
+MWBSTU    MWBSTU/dkh/basis/run.table1.csv
+CRENBS    CRENBS/dkh/basis/run.table1.csv
+SBKJC     SBKJC/dkh/basis/run.table1.csv
+LANL2     LANL2/dkh/basis/run.table1.csv
+ccECP     ccECP/dkh/basis/run.table1.csv
+'''.split()
+pps = np.array(pps)
+pps.shape = len(pps)//2,2
+
+###==================================================
+
+remove_index = [9]
+lmad_index = [2,3,6]
+
+###==================================================
+
+toev = 27.211386245988
+pd.options.display.float_format = '{:,.4f}'.format
+
+df = pd.DataFrame()
+
+ae = pd.read_csv("AE/dkh/basis/run.table1.csv", sep='\s*,\s*', engine='python')
+df['AE'] = ae['CCSD'].values-ae['CCSD'].values[0]
+
+for ppi,pp in enumerate(pps[:,1]):
+    ecp = pd.read_csv(pp, sep='\s*,\s*', engine='python')
+    df[pps[ppi][0]] = ecp['CCSD'].values-ecp['CCSD'].values[0]
+
+### Drop some undesired states:
+df = df.drop(index=remove_index)
+
+diffs = df.copy()*toev
+diffs = diffs[1:]  # Getting rid of ground state
+ae_gaps = diffs['AE']  # Save AE values before subtracting
+diffs = diffs.sub(ae_gaps, axis=0)
+
+mad = diffs.copy().abs().mean()
+diffs.loc['MAD'] = mad
+
+lmad = diffs.copy().loc[lmad_index].abs().mean()
+diffs.loc['LMAD'] = lmad
+
+weight = np.sqrt(ae_gaps.abs())
+wmad = diffs.copy().abs().div(weight, axis=0).mean()*100
+diffs.loc['WMAD'] = wmad
+
+diffs['AE'] = ae_gaps  # Revert back to AE gaps
+
+### Sorting everything except AE
+ecp_sorted = diffs.iloc[:,1:].sort_values(by="WMAD", ascending=False, axis=1)
+final_sorted = pd.concat([diffs.iloc[:,0:1], ecp_sorted], axis=1)
+#print(final_sorted)
+print(final_sorted.to_latex())
+
+### Write MADs for later analysis
+spectral = final_sorted.loc["MAD":"WMAD"]
+#spectral = spectral.rename(columns={"CRENBS":"CRENBL"}) # Specific to Bi only
+spectral = spectral.T
+spectral = spectral[1:] # Getting rid of AE
+#print(spectral)
+spectral.to_csv("Te.csv", float_format="%.4f")
+
+

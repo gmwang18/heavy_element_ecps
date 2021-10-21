@@ -73,7 +73,7 @@ def pd_mad(errors):	# Handle MAD with error bars
 toev = 27.211386245988
 pd.options.display.float_format = "{:,.3f}".format
 #elements = ["I", "Bi"]
-elements = ["I", "Bi", "Au", "Ag", "W"]
+elements = ["I", "Bi", "Au", "Ag", "W", "Te"]
 ecps = ["STU", "ccECP"]
 
 ### =======================================
@@ -88,8 +88,8 @@ for element in elements:
 		df["FPSODMC/" + ecp] = df["Expt."] - df["FPSODMC/" + ecp] 
 		df["FPSODMC/" + ecp] = df["FPSODMC/" + ecp][df["Expt."].notnull()]
 
-		if element == 'I' and element == 'Bi':
-			df.loc["MAD", "FPSODMC/" + ecp] = pd_mad(df[df["Ref"] == 0]["FPSODMC/" + ecp].values)
+		if element == 'I' or element == 'Bi' or element == 'Te':
+			df.loc["MAD", "FPSODMC/" + ecp] = pd_mad(df[(df["Ref"] == 0) & (df["Expt."])]["FPSODMC/" + ecp].values)
 		else:
 
 			if any('CCSD' in column for column in df.columns):

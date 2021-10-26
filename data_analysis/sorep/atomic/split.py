@@ -229,7 +229,7 @@ def plot_cosci_mad():
 	ax.set_title('ECP to AE')
 
 	plt.legend(loc='upper left', handletextpad=0.1)
-
+	plt.savefig('mad-COSCI.pdf')
 	plt.show()
 
 
@@ -258,7 +258,7 @@ def plot_all_mad():
 	ax.set_title('ECP to Expt. ')
 
 	plt.legend(loc='upper left', handletextpad=0.1)
-
+	plt.savefig('mad-FPDMC.pdf')
 	plt.show()
 
 pd_separate(df_mad['MAD(J-states)/STU'])

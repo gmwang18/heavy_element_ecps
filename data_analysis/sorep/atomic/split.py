@@ -52,7 +52,7 @@ linestyles = {
 'ccECP'      :{'color':'#009900','linestyle':'-'},
 }
 pointstyles = {
-'STU'      :{'label': 'STU',     'color':'#ff7f00','marker': 'o'},
+'STU'      :{'label': 'MDFSTU',     'color':'#ff7f00','marker': 'o'},
 'ccECP'    :{'label': r'ccECP',  'color':'#009900','marker': 'd'},
 }
 
@@ -165,8 +165,8 @@ for i, element in enumerate(elements):
 			stu_all_mad[i] = df.loc["MAD", "FPSODMC/STU"]
 			ccecp_all_mad[i] = df.loc["MAD", "FPSODMC/ccECP"]
 
-			#mult_start_idx = df.index[df["Ref"] == 1][1]
-			#df.loc["mult-MAD", "FPSODMC/" + ecp] = pd_mad(df[df["Ref"] == 0]["FPSODMC/" + ecp][df["Expt."].notnull()].iloc[mult_start_idx:].values)
+			# mult_start_idx = df.index[df["Ref"] == 1][1]
+			# df.loc["mult-MAD", "FPSODMC/" + ecp] = pd_mad(df[df["Ref"] == 0]["FPSODMC/" + ecp][df["Expt."].notnull()].iloc[mult_start_idx:].values)
 		else:
 
 			if any('CCSD' in column for column in df.columns):
@@ -226,7 +226,7 @@ def plot_cosci_mad():
 	ax.set_xticks(ielement)
 	ax.set_xticklabels(elements)
 	ax.set_ylabel('MAD/COSCI (eV)')
-	ax.set_title('ECP to AE')
+	# ax.set_title('ECP to AE')
 
 	plt.legend(loc='upper left', handletextpad=0.1)
 	plt.savefig('mad-COSCI.pdf')
@@ -255,7 +255,7 @@ def plot_all_mad():
 	ax.set_xticks(ielement)
 	ax.set_xticklabels(elements)
 	ax.set_ylabel('MAD/FPSODMC (eV)')
-	ax.set_title('ECP to Expt. ')
+	# ax.set_title('ECP to Expt. ')
 
 	plt.legend(loc='upper left', handletextpad=0.1)
 	plt.savefig('mad-FPDMC.pdf')

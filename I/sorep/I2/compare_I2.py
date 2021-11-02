@@ -67,7 +67,7 @@ def init():
     lines = {'linewidth':1.50}
     axes = {'linewidth': 3}
     tick = {'major.size': 2, 'major.width':2}
-    legend = {'frameon':False, 'fontsize':13.0, 'handlelength':1.80, 'labelspacing':0.15, 'handletextpad':0.20}
+    legend = {'frameon':False, 'fontsize':13.0, 'handlelength':1.50, 'labelspacing':0.15, 'handletextpad':0.20}
 
     mpl.rc('font',**font)
     mpl.rc('lines',**lines)
@@ -146,13 +146,13 @@ mu=m1*m2/(m1+m2)
 wconv=tocm*bohr/np.sqrt(amu)
 
 styles = {
-'CC'           :{'label':'UCCSD(T)/RHF (AREP-MDFSTU)', 'color':'#984ea3', 'fmt':'s',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
+'CC'           :{'label':'UCCSD(T)/RHF(AREP-MDFSTU)', 'color':'#984ea3', 'fmt':'s',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'CC_fit'       :{                               'color':'#984ea3',               'linestyle':'--','dashes': (8,2),                                                                },
-'COSCIDMC'     :{'label':'FPSODMC/COSCI (REP-MDFSTU)', 'color':'#984ea3', 'fmt':'o',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
+'COSCIDMC'     :{'label':'FPSODMC/COSCI(SOREP-MDFSTU)', 'color':'#984ea3', 'fmt':'o',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'COSCIDMC_fit' :{                               'color':'#984ea3',               'linestyle':'--','dashes': (1,1),                                                                },
-'CC-so-ccECP'           :{'label':'UCCSD(T)/RHF/ (AREP-ccECP)', 'color':'#339933', 'fmt':'.',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
+'CC-so-ccECP'           :{'label':'UCCSD(T)/RHF/(AREP-ccECP)', 'color':'#339933', 'fmt':'.',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'CC-so-ccECP_fit'       :{                               'color':'#339933',               'linestyle':'--','dashes': (8,2),                                                                },
-'ccECP_COSCIDMC'     :{'label':'FPSODMC/COSCI (REP-so-ccECP)', 'color':'#339933', 'fmt':'*',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
+'ccECP_COSCIDMC'     :{'label':'FPSODMC/COSCI(SOREP-ccECP)', 'color':'#339933', 'fmt':'*',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'ccECP_COSCIDMC_fit' :{                               'color':'#339933',               'linestyle':'--','dashes': (1,1),                                                                },
         }
 
@@ -164,8 +164,8 @@ ax.grid(b=None, which='major', axis='both', alpha=0.1)
 ax.set_xlabel('Bond length [\AA]')
 ax.set_ylabel('Binding energy $-D_e$ [eV]')
 De_exp = -(1.54238 + 0.0132167)
-ax.axhline(De_exp, color='r', linestyle='-', linewidth=0.7, label='Exper. $-D_{e}$')
-ax.axvline(2.6655, color='r', linestyle='-', linewidth=0.7, label='Exper. $r_{eq}$')
+ax.axhline(De_exp, color='r', linestyle='-', linewidth=0.7, label='Expt. $-D_{e}$')
+ax.axvline(2.6655, color='r', linestyle='-', linewidth=0.7, label='Expt. $r_{eq}$')
 
 for column in df_binding:
         if column == "Z":
@@ -209,7 +209,7 @@ for column in df_binding:
                 ax.plot(x, y*toev, **styles[column+'_fit'])
                 
 ax.axvline(stu_bind_geo, color='#984ea3', linestyle='--', linewidth=0.7, dashes=(4,4), label='MDFSTU. $r_{eq}$')
-ax.axvline(ccecp_bind_geo, color='#339933', linestyle='--', linewidth=0.7, dashes=(4,4), label='so-ccECP. $r_{eq}$')
+ax.axvline(ccecp_bind_geo, color='#339933', linestyle='--', linewidth=0.7, dashes=(4,4), label='ccECP. $r_{eq}$')
 #ax.legend(loc='best', prop={'size': 12})
 ax.legend(loc='upper right', prop={'size': 10.5})
 ax.tick_params(direction='in', length=6.0)

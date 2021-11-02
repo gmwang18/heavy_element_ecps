@@ -67,7 +67,7 @@ def init():
     lines = {'linewidth':1.50}
     axes = {'linewidth': 3}
     tick = {'major.size': 2, 'major.width':2}
-    legend = {'frameon':False, 'fontsize':13.0, 'handlelength':1.80, 'labelspacing':0.15, 'handletextpad':0.20}
+    legend = {'frameon':False, 'fontsize':13.0, 'handlelength':1.50, 'labelspacing':0.15, 'handletextpad':0.20}
 
     mpl.rc('font',**font)
     mpl.rc('lines',**lines)
@@ -152,11 +152,11 @@ wconv=tocm*bohr/np.sqrt(amu)
 styles = {
 'CC'           :{'label':'UCCSD(T)/RHF (AREP-MDFSTU)', 'color':'#984ea3', 'fmt':'s',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'CC_fit'       :{                               'color':'#984ea3',               'linestyle':'--','dashes': (8,2),                                                                },
-'PBE0DMC'     :{'label':'FPSODMC/PBE0 (REP-MDFSTU)', 'color':'#984ea3', 'fmt':'o',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
+'PBE0DMC'     :{'label':'FPSODMC/PBE0 (SOREP-MDFSTU)', 'color':'#984ea3', 'fmt':'o',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'PBE0DMC_fit' :{                               'color':'#984ea3',               'linestyle':'--','dashes': (1,1),                                                                },
 'CC-so-ccECP'           :{'label':'UCCSD(T)/RHF (AREP-ccECP)', 'color':'#339933', 'fmt':'.',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'CC-so-ccECP_fit'       :{                               'color':'#339933',               'linestyle':'--','dashes': (8,2),                                                                },
-'ccECP_PBE0DMC'     :{'label':'FPSODMC/PBE0 (REP-so-ccECP)', 'color':'#339933', 'fmt':'*',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
+'ccECP_PBE0DMC'     :{'label':'FPSODMC/PBE0 (SOREP-ccECP)', 'color':'#339933', 'fmt':'*',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
 'ccECP_PBE0DMC_fit' :{                               'color':'#339933',               'linestyle':'--','dashes': (1,1),                                                                },
         }
 
@@ -171,8 +171,8 @@ ax.grid(b=None, which='major', axis='both', alpha=0.1)
 ax.set_xlabel('Bond length [\AA]')
 ax.set_ylabel('Binding energy $-D_e$ [eV]')
 De_exp = -2.29
-ax.axhline(De_exp, color='r', linestyle='-', linewidth=0.7, label='Exper. $-D_{e}$')
-ax.axvline(2.4719, color='r', linestyle='-', linewidth=0.7, label='Exper. $r_{eq}$')
+ax.axhline(De_exp, color='r', linestyle='-', linewidth=0.7, label='Expt. $-D_{e}$')
+ax.axvline(2.4719, color='r', linestyle='-', linewidth=0.7, label='Expt. $r_{eq}$')
 ax.axhspan(De_exp-0.02, De_exp+0.02, alpha=0.25, color='salmon')
 
 for column in df_binding:
@@ -225,7 +225,7 @@ for column in df_binding:
 
 ax.set_ylim(-2.4, -1.1)
 ax.axvline(stu_dmc_bind_geo, color='#984ea3', linestyle='--', linewidth=0.7, dashes=(4,4), label='MDFSTU. $r_{eq}$')
-ax.axvline(ccecp_dmc_bind_geo, color='#339933', linestyle='--', linewidth=0.7, dashes=(4,4), label='so-ccECP. $r_{eq}$')
+ax.axvline(ccecp_dmc_bind_geo, color='#339933', linestyle='--', linewidth=0.7, dashes=(4,4), label='ccECP. $r_{eq}$')
 #ax.axvline(stu_cc_bind_geo, color='#984ea3', linestyle='-', linewidth=0.7, label='MDFSTU. $r_{eq}$')
 #ax.axvline(ccecp_cc_bind_geo, color='#339933', linestyle='-', linewidth=0.7, label='so-ccECP. $r_{eq}$')
 #ax.legend(loc='best', prop={'size': 12})

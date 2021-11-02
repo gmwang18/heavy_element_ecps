@@ -173,7 +173,7 @@ def plot_style1():
     ax3.set_xticks(iatoms)
     ax3.set_xticklabels(atoms)
 
-    ax2.set_ylabel(r'WMAD [\%]')
+    ax3.set_ylabel(r'WMAD [\%]')
     ax3.legend(ncol=2,loc='best',handletextpad=0.1)
     # plt.savefig('(l)mad.pdf')
     plt.show()

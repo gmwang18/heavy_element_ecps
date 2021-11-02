@@ -313,7 +313,7 @@ def plot_all_mad():
 		#ax.plot(ielement, df_mad['MAD(CCSD)/{}'.format(calc)], **linestyles[calc])
 	ax.set_xticks(ielement)
 	ax.set_xticklabels(elements)
-	ax.set_ylabel('MAD/FPSODMC (eV)')
+	ax.set_ylabel('MAD (COSCI or FPSODMC) (eV)')
 	# ax.set_title('ECP to Expt. ')
 
 	plt.legend(loc='upper left', handletextpad=0.1)

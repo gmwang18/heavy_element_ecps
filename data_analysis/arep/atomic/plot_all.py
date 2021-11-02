@@ -134,7 +134,7 @@ def plot_style1():
     ax1.set_xticks(iatoms)
     ax1.set_xticklabels(atoms)
 
-    ax1.set_ylabel('(L)MAD (eV)')
+    ax1.set_ylabel('LMAD (eV)')
     ax1.legend(ncol=1,loc='best',handletextpad=0.1)
     # plt.savefig('(l)mad.pdf')
     plt.show()
@@ -153,7 +153,7 @@ def plot_style1():
     ax2.set_xticks(iatoms)
     ax2.set_xticklabels(atoms)
 
-    ax2.set_ylabel('LMAD (eV)')
+    ax2.set_ylabel('MAD (eV)')
     ax2.legend(ncol=1,loc='upper left',handletextpad=0.1)
     # plt.savefig('(l)mad.pdf')
     plt.show()

@@ -20,7 +20,7 @@ from uncertainties import ufloat_fromstr
 
 def mpl_init():
     font = {'family' : 'serif',
-            'size': 20}
+            'size': 14}
     lines = {'linewidth':2,'markersize':8}
     axes = {'linewidth': 3}
     xtick = {'major.size': 5,
@@ -44,6 +44,7 @@ def mpl_init():
     mpl.rcParams.update({'figure.autolayout':True})
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
+    ax1.grid(b=None, which='major', axis='both', alpha=0.10)
     return fig,ax1
 
 
@@ -51,10 +52,22 @@ linestyles = {
 'STU'        :{'color':'#ff7f00','linestyle':'-'},
 'ccECP'      :{'color':'#009900','linestyle':'-'},
 }
+
+linestyles_dashed = {
+'STU'        :{'color':'#ff7f00','linestyle':'--'},
+'ccECP'      :{'color':'#009900','linestyle':'--'},
+}
+
 pointstyles = {
-'STU'      :{'label': 'MDFSTU',     'color':'#ff7f00','marker': 'o'},
+'STU'      :{'label': 'MDFSTU',  'color':'#ff7f00','marker': 'o'},
 'ccECP'    :{'label': r'ccECP',  'color':'#009900','marker': 'd'},
 }
+
+pointstyles_no_label = {
+'STU'      :{'color':'#ff7f00','marker': 'o'},
+'ccECP'    :{'color':'#009900','marker': 'd'},
+}
+
 
 
 ### =================== FUNCTIONS ======================
@@ -233,7 +246,7 @@ def plot_cosci_mad():
 	plt.show()
 
 
-def plot_all_mad():
+def plot_fp_mad():
 
 	fig, ax = mpl_init()
 
@@ -261,7 +274,61 @@ def plot_all_mad():
 	plt.savefig('mad-FPDMC.pdf')
 	plt.show()
 
+
+
+
+def plot_all_mad():
+
+	fig, ax = mpl_init()
+
+	ielement = [i for i, element in enumerate(elements)]
+	ax.set_xlim(-0.5, len(ielement)-0.5)
+	ax.axhline(0.0, color='black')
+	ax.axhspan(0, 0.043, alpha=0.25, color='gray')
+	for calc in ['STU', 'ccECP']:
+		ax.scatter(ielement, df_mad['MAD(COSCI)/{}'.format(calc)], **pointstyles_no_label[calc])
+		ax.plot(ielement, df_mad['MAD(COSCI)/{}'.format(calc)], **linestyles_dashed[calc])
+	ax.set_xticks(ielement)
+	ax.set_xticklabels(elements)
+	ax.set_ylabel('MAD/COSCI (eV)')
+	# ax.set_title('ECP to AE')
+
+	plt.legend(loc='upper left', handletextpad=0.1)
+
+
+	ielement = [i for i, element in enumerate(elements)]
+	ax.set_xlim(-0.5, len(ielement)-0.5)
+	ax.axhline(0.0, color='black')
+	ax.axhspan(0, 0.043, alpha=0.25, color='gray')
+	for calc in ['STU', 'ccECP']:
+		main_values, main_errors = pd_separate(df_mad['MAD(All-states)/{}'.format(calc)])
+		tran_values, tran_errors = pd_separate(df_mad['MAD(J-states)/{}'.format(calc)])
+		for i, v in enumerate(tran_values):
+			if math.isnan(v):
+				tran_values[i] = main_values[i]
+				tran_errors[i] = main_errors[i]
+		ax.scatter(ielement, tran_values, **pointstyles[calc])
+		ax.plot(ielement, tran_values, **linestyles[calc])
+		#ax.scatter(ielement, df_mad['MAD(CCSD)/{}'.format(calc)], **pointstyles[calc])
+		#ax.plot(ielement, df_mad['MAD(CCSD)/{}'.format(calc)], **linestyles[calc])
+	ax.set_xticks(ielement)
+	ax.set_xticklabels(elements)
+	ax.set_ylabel('MAD/FPSODMC (eV)')
+	# ax.set_title('ECP to Expt. ')
+
+	plt.legend(loc='upper left', handletextpad=0.1)
+	plt.savefig('mad-all.pdf')
+	plt.show()
+
+
+
 pd_separate(df_mad['MAD(J-states)/STU'])
 
-plot_cosci_mad()
-plot_all_mad()
+if len(sys.argv) != 2:
+	plot_cosci_mad()
+	plot_fp_mad()
+elif sys.argv[1] == 'all':
+	plot_all_mad()
+else:
+	print('Need to provide what to plot')
+	sys.exit()

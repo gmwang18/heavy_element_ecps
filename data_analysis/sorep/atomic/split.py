@@ -145,7 +145,7 @@ def pd_separate(udf_column):
 toev = 27.211386245988
 pd.options.display.float_format = "{:,.3f}".format
 #elements = ["I", "Bi"]
-elements = ["I", "Te", "Bi", "Au", "Ag", "W", "Mo", "Ir"]
+elements = ["I", "Te", "Bi", "Au", "Ag", "W", "Mo", "Pd", "Ir"]
 ecps = ["STU", "ccECP"]
 
 df_mad = pd.DataFrame()

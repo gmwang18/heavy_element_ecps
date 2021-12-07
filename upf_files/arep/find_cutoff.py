@@ -16,7 +16,10 @@ ecp_valence = {			# Number of electrions in the system
 #"S_He"		:14,
 #"Cl_He"	:15,
 #"Ar_He"	:16,
-"Pd"		:18, 
+#"Au"		:19, 
+#"I"		:7, 
+#"Te"		:6, 
+"W"		:14, 
 }
 wfc_initial = 20.0		# Don't check for wfc values (Ry) smaller than this
 conv_elec_deriv = 5.0E-8	# dE/(d(wfc) * N_e) : Energy change per electron per 1 Ry wfc change. 5E-8 seems reasoanble.

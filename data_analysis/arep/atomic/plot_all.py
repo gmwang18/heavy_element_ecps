@@ -136,7 +136,7 @@ def plot_style1():
 
     ax1.set_ylabel('LMAD (eV)')
     ax1.legend(ncol=1,loc='best',handletextpad=0.1)
-    # plt.savefig('(l)mad.pdf')
+    plt.savefig('atom_figs/lmad.pdf')
     plt.show()
 
     fig, ax2 = mpl_init()
@@ -155,7 +155,7 @@ def plot_style1():
 
     ax2.set_ylabel('MAD (eV)')
     ax2.legend(ncol=1,loc='upper left',handletextpad=0.1)
-    # plt.savefig('(l)mad.pdf')
+    plt.savefig('atom_figs/mad.pdf')
     plt.show()
 
 
@@ -175,7 +175,7 @@ def plot_style1():
 
     ax3.set_ylabel(r'WMAD [\%]')
     ax3.legend(ncol=2,loc='best',handletextpad=0.1)
-    # plt.savefig('(l)mad.pdf')
+    plt.savefig('atom_figs/wmad.pdf')
     plt.show()
 
 

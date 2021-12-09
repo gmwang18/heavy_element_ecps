@@ -1,0 +1,12 @@
+#!/bin/bash -l
+#SBATCH -J coefficients
+#SBATCH -q debug
+#SBATCH -N 1
+#SBATCH -C haswell
+#SBATCH -t 00:15:00
+#SBATCH -o slurm.out
+
+module load molpro
+
+molpro -s -n 16 atom.com
+

@@ -1,0 +1,1781 @@
+
+ Primary working directories    : /global/cscratch1/sd/haihan
+ Secondary working directories  : /global/cscratch1/sd/haihan
+ Wavefunction directory         : /global/homes/h/haihan/wfu/
+ Main file repository           : /global/cscratch1/sd/haihan/
+
+ SHA1      : 19cd028119e0e09f93f0674bd8af7968d9b3eff6
+ NAME      : 2015.1.36
+ ARCHNAME  : linux/x86_64
+ FC        : /opt/cray/pe/craype/2.5.14/bin/ftn
+ BLASLIB   : -L/opt/intel/compilers_and_libraries_2018.1.163/linux/mkl/lib/intel64 -Wl,-_start-group -lmkl_intel_ilp64 -lmkl_intel_thread -lmkl_core -Wl,-_end-group -liomp5
+ id        : lbl
+
+ Nodes     nprocs
+ nid01037    15
+ Number of processes for MPI-2 version of Molpro:   nprocs(total)=   16   nprocs(compute)=   15   nprocs(helper)=    1
+
+ Using customized tuning parameters: mindgm=7; mindgv=16; mindgc=1; mindgr=1; noblas=0; minvec=7
+ default implementation of scratch files=sf  
+
+ ***,W
+ memory,512,m
+ 
+ gthresh,twoint=1.e-12
+ gprint,basis,orbitals
+ 
+ angstrom
+ geometry={
+ 1                                                                               ! Number of atoms
+ W 0.0 0.0 0.0
+ }
+ 
+                                                                                 !!! Initial guesses from BFD
+ f_par=[0.169200, 2.554374]
+ g_par=[0.353300, 3.061138]
+ h_par=[0.683400, 3.000000]
+ 
+ proc opt_basis
+ 
+                                                                                 !Calculate the exponents
+ N=3                                                                             ! Adjust to get enough exponents
+ do i=1,N
+ f_exp(i)=f_par(1)*f_par(2)^(i-1)
+ g_exp(i)=g_par(1)*g_par(2)^(i-1)
+ h_exp(i)=h_par(1)*h_par(2)^(i-1)
+ enddo
+ 
+ basis={
+ Including file /global/u2/h/haihan/Research/HZECP/W_basis/cc_qz/ecp.molpro
+ Including file /global/u2/h/haihan/Research/HZECP/W_basis/cc_qz/basis.molpro
+ 
+ f,W,f_exp(1),f_exp(2),f_exp(3)
+ g,W,g_exp(1),g_exp(2)
+ h,W,h_exp(1)
+ 
+ }
+ 
+ {rhf
+  start,atden
+  print,orbitals=2
+  wf,14,1,4
+  occ,3,1,1,1,1,1,1,0
+  closed,2,1,1,0,1,0,0,0
+  sym,1,1,1,3,2
+  orbital,4202.2
+ }
+ pop
+ {multi
+  start,4202.2
+  occ,4,1,1,1,1,1,1,0
+  closed,2,1,1,0,1,0,0,0
+  wf,14,1,4;state,2
+  wf,14,4,4;state,1
+  wf,14,6,4;state,1
+  wf,14,7,4;state,1
+  natorb,ci,print
+  orbital,5202.2
+ }
+ {rhf,nitord=1,maxit=0
+  start,5202.2
+  wf,14,1,4
+  occ,3,1,1,1,1,1,1,0
+  closed,2,1,1,0,1,0,0,0
+ }
+ 
+ data,rename,4202.2,4302.2
+ data,rename,5202.2,5302.2
+ 
+ {uccsd(t);maxit,100;core}
+ eval=energy
+ 
+ endproc
+ 
+ {minimize,eval,f_par(1),f_par(2),g_par(1),g_par(2),h_par(1)
+ method,bfgs,proc=opt_basis,thresh=5e-5,vstep=1e-3
+ maxit,100}
+ 
+
+ Variables initialized (889), CPU time= 0.01 sec
+ Commands  initialized (702), CPU time= 0.01 sec, 572 directives.
+ Default parameters read. Elapsed time= 0.17 sec
+
+ Checking input...
+ Passed
+1
+
+
+                                         ***  PROGRAM SYSTEM MOLPRO  ***
+                                       Copyright, TTI GmbH Stuttgart, 2015
+                                    Version 2015.1 linked Dec 29 2018 15:55:43
+
+
+ **********************************************************************************************************************************
+ LABEL *   W                                                                             
+  64 bit mpp version                                                                     DATE: 08-Dec-21          TIME: 20:23:39  
+ **********************************************************************************************************************************
+
+ SHA1:             19cd028119e0e09f93f0674bd8af7968d9b3eff6
+ **********************************************************************************************************************************
+
+ THRESHOLDS:
+
+ ZERO    =  1.00D-12  ONEINT  =  1.00D-12  TWOINT  =  1.00D-12  PREFAC  =  1.00D-14  LOCALI  =  1.00D-09  EORDER  =  1.00D-04
+ ENERGY  =  0.00D+00  ETEST   =  0.00D+00  EDENS   =  0.00D+00  THRDEDEF=  1.00D-06  GRADIENT=  1.00D-02  STEP    =  1.00D-03
+ ORBITAL =  1.00D-05  CIVEC   =  1.00D-05  COEFF   =  1.00D-04  PRINTCI =  5.00D-02  PUNCHCI =  9.90D+01  OPTGRAD =  3.00D-04
+ OPTENERG=  1.00D-06  OPTSTEP =  3.00D-04  THRGRAD =  1.00D-10  COMPRESS=  1.00D-11  VARMIN  =  1.00D-07  VARMAX  =  1.00D-03
+ THRDOUB =  0.00D+00  THRDIV  =  1.00D-05  THRRED  =  1.00D-07  THRPSP  =  1.00D+00  THRDC   =  1.00D-10  THRCS   =  1.00D-10
+ THRNRM  =  1.00D-08  THREQ   =  0.00D+00  THRDE   =  1.00D+00  THRREF  =  1.00D-05  SPARFAC =  1.00D+00  THRDLP  =  1.00D-07
+ THRDIA  =  1.00D-10  THRDLS  =  1.00D-07  THRGPS  =  0.00D+00  THRKEX  =  0.00D+00  THRDIS  =  2.00D-01  THRVAR  =  1.00D-10
+ THRLOC  =  1.00D-06  THRGAP  =  1.00D-06  THRLOCT = -1.00D+00  THRGAPT = -1.00D+00  THRORB  =  1.00D-06  THRMLTP =  0.00D+00
+ THRCPQCI=  1.00D-10  KEXTA   =  0.00D+00  THRCOARS=  0.00D+00  SYMTOL  =  1.00D-06  GRADTOL =  1.00D-06  THROVL  =  1.00D-08
+ THRORTH =  1.00D-08  GRID    =  1.00D-06  GRIDMAX =  1.00D-03  DTMAX   =  0.00D+00  THROCCDE=  1.00D-01  THROCCDE=  1.00D-01
+
+
+
+ ZUNIT=ANG
+ 
+
+Geometry recognized as XYZ
+
+ SETTING F_PAR(1)       =         0.16920000                                  
+ SETTING F_PAR(2)       =         2.55437400                                  
+ SETTING G_PAR(1)       =         0.35330000                                  
+ SETTING G_PAR(2)       =         3.06113800                                  
+ SETTING H_PAR(1)       =         0.68340000                                  
+ SETTING H_PAR(2)       =         3.00000000                                  
+
+ Variable memory set to  512000000 words,  buffer space   230000 words
+
+
+
+ PROGRAM * MINIMIZE (General minimization)     Authors: H.-J. Werner, P.J. Knowles, K.A. Peterson
+
+ Minimize EVAL with respect to:        F_PAR(1)  F_PAR(2)  G_PAR(1)  G_PAR(2)  H_PAR(1)  
+ Method BFGS will be used
+ Variables are optimized in the space of (x/x0)
+
+
+ Minimization using procedure=OPT_BASIS
+
+ *** Long output written to logfile /global/u2/h/haihan/Research/HZECP/W_basis/cc_qz/atom.log ***
+
+
+ BFGS update of inverse hessian 
+
+ PROGRAM * MINIMIZE (General minimization)     Authors: H.-J. Werner, P.J. Knowles, K.A. Peterson
+
+
+ Results for BFGS iteration    1       Current function value  =        -67.123302494
+                                     Previous function value =          0.000000000
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.169200       -0.0292498
+ BFGS       F_PAR(2)                  2.554374       -0.0510143
+ BFGS       G_PAR(1)                  0.353300       -0.0248388
+ BFGS       G_PAR(2)                  3.061138       -0.0224171
+ BFGS       H_PAR(1)                  0.683400       -0.0110163
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    2       Current function value  =        -67.132510981
+                                     Previous function value =        -67.123302494
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.192840       -0.0023487
+ BFGS       F_PAR(2)                  2.785796        0.0054153
+ BFGS       G_PAR(1)                  0.406508       -0.0107849
+ BFGS       G_PAR(2)                  3.477208       -0.0073072
+ BFGS       H_PAR(1)                  0.729047       -0.0106054
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    3       Current function value  =        -67.134720158
+                                     Previous function value =        -67.132510981
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.195963       -0.0028199
+ BFGS       F_PAR(2)                  2.766928        0.0038068
+ BFGS       G_PAR(1)                  0.449152       -0.0017604
+ BFGS       G_PAR(2)                  3.722051        0.0031884
+ BFGS       H_PAR(1)                  0.813106       -0.0095616
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    4       Current function value  =        -67.136631816
+                                     Previous function value =        -67.134720158
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.204031       -0.0017906
+ BFGS       F_PAR(2)                  2.742697        0.0054658
+ BFGS       G_PAR(1)                  0.483988        0.0015090
+ BFGS       G_PAR(2)                  3.726435        0.0072399
+ BFGS       H_PAR(1)                  0.949786       -0.0079804
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    5       Current function value  =        -67.138549083
+                                     Previous function value =        -67.136631816
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.214933       -0.0011864
+ BFGS       F_PAR(2)                  2.686720        0.0053601
+ BFGS       G_PAR(1)                  0.516272        0.0017696
+ BFGS       G_PAR(2)                  3.544869        0.0071679
+ BFGS       H_PAR(1)                  1.086466       -0.0062526
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    6       Current function value  =        -67.140326984
+                                     Previous function value =        -67.138549083
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.227556       -0.0012405
+ BFGS       F_PAR(2)                  2.599808        0.0027527
+ BFGS       G_PAR(1)                  0.545353        0.0001316
+ BFGS       G_PAR(2)                  3.227284        0.0032522
+ BFGS       H_PAR(1)                  1.223146       -0.0044942
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    7       Current function value  =        -67.141366776
+                                     Previous function value =        -67.140326984
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.241730       -0.0013206
+ BFGS       F_PAR(2)                  2.508010       -0.0003550
+ BFGS       G_PAR(1)                  0.579451       -0.0011941
+ BFGS       G_PAR(2)                  2.930232       -0.0011140
+ BFGS       H_PAR(1)                  1.359826       -0.0027619
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    8       Current function value  =        -67.141856587
+                                     Previous function value =        -67.141366776
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.256876       -0.0009570
+ BFGS       F_PAR(2)                  2.433334       -0.0019931
+ BFGS       G_PAR(1)                  0.621525       -0.0008840
+ BFGS       G_PAR(2)                  2.755110       -0.0022984
+ BFGS       H_PAR(1)                  1.496506       -0.0012301
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    9       Current function value  =        -67.141993989
+                                     Previous function value =        -67.141856587
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.264893       -0.0003852
+ BFGS       F_PAR(2)                  2.411119       -0.0012701
+ BFGS       G_PAR(1)                  0.644988        0.0000352
+ BFGS       G_PAR(2)                  2.741013       -0.0007468
+ BFGS       H_PAR(1)                  1.577539       -0.0004619
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   10       Current function value  =        -67.142008467
+                                     Previous function value =        -67.141993989
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.267146       -0.0000548
+ BFGS       F_PAR(2)                  2.411761       -0.0003570
+ BFGS       G_PAR(1)                  0.650400        0.0003604
+ BFGS       G_PAR(2)                  2.752766       -0.0000082
+ BFGS       H_PAR(1)                  1.602647       -0.0002453
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   11       Current function value  =        -67.142010875
+                                     Previous function value =        -67.142008467
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.267514        0.0000579
+ BFGS       F_PAR(2)                  2.413983        0.0000268
+ BFGS       G_PAR(1)                  0.649985        0.0003865
+ BFGS       G_PAR(2)                  2.758287        0.0000922
+ BFGS       H_PAR(1)                  1.608569       -0.0001947
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   12       Current function value  =        -67.142015598
+                                     Previous function value =        -67.142010875
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.267719        0.0002274
+ BFGS       F_PAR(2)                  2.419010        0.0006599
+ BFGS       G_PAR(1)                  0.646135        0.0003518
+ BFGS       G_PAR(2)                  2.773494        0.0001576
+ BFGS       H_PAR(1)                  1.618262       -0.0001115
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   13       Current function value  =        -67.142020838
+                                     Previous function value =        -67.142015598
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.267334        0.0003079
+ BFGS       F_PAR(2)                  2.423548        0.0010280
+ BFGS       G_PAR(1)                  0.638594        0.0002310
+ BFGS       G_PAR(2)                  2.796409        0.0001226
+ BFGS       H_PAR(1)                  1.627190       -0.0000343
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   14       Current function value  =        -67.142025197
+                                     Previous function value =        -67.142020838
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.266378        0.0002288
+ BFGS       F_PAR(2)                  2.424887        0.0008462
+ BFGS       G_PAR(1)                  0.629149        0.0000564
+ BFGS       G_PAR(2)                  2.822634        0.0000169
+ BFGS       H_PAR(1)                  1.633058        0.0000178
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   15       Current function value  =        -67.142026640
+                                     Previous function value =        -67.142025197
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.265714        0.0000705
+ BFGS       F_PAR(2)                  2.422265        0.0003182
+ BFGS       G_PAR(1)                  0.625227       -0.0000134
+ BFGS       G_PAR(2)                  2.833236       -0.0000235
+ BFGS       H_PAR(1)                  1.632903        0.0000178
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   16       Current function value  =        -67.142026836
+                                     Previous function value =        -67.142026640
+ Current variables and gradients:
+ BFGS       F_PAR(1)                  0.265585       -0.0000065
+ BFGS       F_PAR(2)                  2.420161        0.0000344
+ BFGS       G_PAR(1)                  0.625318       -0.0000048
+ BFGS       G_PAR(2)                  2.833034       -0.0000100
+ BFGS       H_PAR(1)                  1.631511        0.0000060
+
+ PROGRAM * MINIMIZE (General minimization)     Authors: H.-J. Werner, P.J. Knowles, K.A. Peterson
+
+
+ Minimization of EVAL using the BFGS method has converged after   16 iterations
+
+
+ Running procedure=OPT_BASIS
+ SETTING N              =         3.00000000                                  
+
+ DO I                   =         1.00000000   
+ SETTING F_EXP(1)       =         0.26558492                                  
+ SETTING G_EXP(1)       =         0.62531818                                  
+ SETTING H_EXP(1)       =         1.63151096                                  
+
+ DO I                   =         2.00000000   
+ SETTING F_EXP(2)       =         0.64275836                                  
+ SETTING G_EXP(2)       =         1.77154761                                  
+ SETTING H_EXP(2)       =         4.89453289                                  
+
+ DO I                   =         3.00000000   
+ SETTING F_EXP(3)       =         1.55557893                                  
+ SETTING G_EXP(3)       =         5.01885449                                  
+ SETTING H_EXP(3)       =        14.68359866                                  
+ SETTING BASIS          =    USERDEF
+
+
+ Current variables in basis input:
+
+ Set= 1  F_EXP(1)            =       0.26558492
+ Set= 1  F_EXP(2)            =       0.64275836
+ Set= 1  F_EXP(3)            =       1.55557893
+ Set= 1  G_EXP(1)            =       0.62531818
+ Set= 1  G_EXP(2)            =       1.77154761
+ Set= 1  H_EXP(1)            =       1.63151096
+
+ Recomputing integrals since basis changed
+
+
+ Using spherical harmonics
+
+
+
+ PROGRAM * SEWARD (Integral evaluation for generally contracted gaussian basis sets)     Author: Roland Lindh, 1990
+
+ Geometry written to block  1 of record 700
+
+ Orientation using atomic masses  
+ Molecule type: Atom
+ Symmetry elements: X,Y,Z
+ Rotational constants:       0.0000000      0.0000000      0.0000000 GHz  (calculated with average atomic masses)
+
+ Point group  D2h 
+
+
+
+ ATOMIC COORDINATES
+
+ NR  ATOM    CHARGE       X              Y              Z
+
+   1  W      14.00    0.000000000    0.000000000    0.000000000
+
+
+          W   CORE POTENTIAL
+
+          g POTENTIAL
+
+ POWERS             1              3              2              2
+ EXPONENTIALS   10.18896       9.478240       10.14688       5.491651    
+ COEFFICIENTS   14.00000       142.6454      -100.0787     -0.9415780    
+
+          s - g POTENTIAL
+
+ POWERS             2              2
+ EXPONENTIALS   11.27396       8.410924    
+ COEFFICIENTS   420.4798       39.58494    
+
+          p - g POTENTIAL
+
+ POWERS             2              2              4
+ EXPONENTIALS   8.517824       1.608091       10.07349    
+ COEFFICIENTS   320.8772     -0.4728210      0.1129290    
+
+          d - g POTENTIAL
+
+ POWERS             2              2              4
+ EXPONENTIALS   6.059286       1.104853       6.262477    
+ COEFFICIENTS   158.0780     -0.2832990     -0.4594900    
+
+          f - g POTENTIAL
+
+ POWERS             2              2
+ EXPONENTIALS   2.075342       1.845947    
+ COEFFICIENTS   7.745405       6.916005    
+
+
+ BASIS DATA
+
+   Nr Sym  Nuc  Type         Exponents   Contraction coefficients
+
+    1.1 Ag    1  1s          74.376481    -0.001943    0.000543   -0.000723    0.001189   -0.003448
+    2.1 Ag                   39.115990     0.017833   -0.005268    0.007492   -0.012299    0.012403
+    3.1 Ag                   20.571835    -0.117540    0.036666   -0.054596    0.090706    0.012715
+    4.1 Ag                   10.819115     0.471463   -0.153622    0.233521   -0.397491   -0.193600
+    5.1 Ag                    5.689976    -0.655046    0.225025   -0.341100    0.605795    0.057617
+                              2.992465    -0.399173    0.140074   -0.249111    0.501906    1.980190
+                              1.573794     0.440734   -0.169850    0.263863   -0.857207   -3.521248
+                              0.827688     0.743098   -0.392735    0.951309   -2.459031   -1.542366
+                              0.435297     0.261234   -0.230076    0.314455    3.142185    9.303153
+                              0.228931     0.028154    0.050209   -1.462869    1.378958   -9.669727
+                              0.120399    -0.001891    0.441577   -0.753064   -2.606927    2.092967
+                              0.063320     0.001524    0.452557    0.479974   -0.912496    3.747935
+                              0.033301    -0.000367    0.285977    0.913763    1.669934   -2.554118
+    6.1 Ag    1  3d0         61.907933    -0.000024
+                             32.585172     0.000233
+                             17.151169    -0.002245
+                              9.027499     0.020877
+                              4.751614    -0.090172
+                              2.501007     0.023170
+                              1.316402     0.205899
+                              0.692887     0.321552
+                              0.364700     0.323472
+                              0.191960     0.230789
+                              0.101038     0.111668
+                              0.053181     0.026522
+                              0.027992     0.001600
+    7.1 Ag    1  3d2+        61.907933    -0.000024
+                             32.585172     0.000233
+                             17.151169    -0.002245
+                              9.027499     0.020877
+                              4.751614    -0.090172
+                              2.501007     0.023170
+                              1.316402     0.205899
+                              0.692887     0.321552
+                              0.364700     0.323472
+                              0.191960     0.230789
+                              0.101038     0.111668
+                              0.053181     0.026522
+                              0.027992     0.001600
+    8.1 Ag    1  3d0         61.907933     0.000005
+                             32.585172    -0.000160
+                             17.151169     0.002296
+                              9.027499    -0.024432
+                              4.751614     0.112596
+                              2.501007    -0.039514
+                              1.316402    -0.295539
+                              0.692887    -0.461445
+                              0.364700    -0.080208
+                              0.191960     0.499620
+                              0.101038     0.418172
+                              0.053181     0.115203
+                              0.027992     0.006691
+    9.1 Ag    1  3d2+        61.907933     0.000005
+                             32.585172    -0.000160
+                             17.151169     0.002296
+                              9.027499    -0.024432
+                              4.751614     0.112596
+                              2.501007    -0.039514
+                              1.316402    -0.295539
+                              0.692887    -0.461445
+                              0.364700    -0.080208
+                              0.191960     0.499620
+                              0.101038     0.418172
+                              0.053181     0.115203
+                              0.027992     0.006691
+   10.1 Ag    1  3d0         61.907933    -0.000179
+                             32.585172     0.000632
+                             17.151169     0.000545
+                              9.027499    -0.026852
+                              4.751614     0.145145
+                              2.501007    -0.035419
+                              1.316402    -0.610909
+                              0.692887    -0.499162
+                              0.364700     1.209396
+                              0.191960     0.263814
+                              0.101038    -0.665665
+                              0.053181    -0.302443
+                              0.027992    -0.034465
+   11.1 Ag    1  3d2+        61.907933    -0.000179
+                             32.585172     0.000632
+                             17.151169     0.000545
+                              9.027499    -0.026852
+                              4.751614     0.145145
+                              2.501007    -0.035419
+                              1.316402    -0.610909
+                              0.692887    -0.499162
+                              0.364700     1.209396
+                              0.191960     0.263814
+                              0.101038    -0.665665
+                              0.053181    -0.302443
+                              0.027992    -0.034465
+   12.1 Ag    1  3d0         61.907933    -0.001192
+                             32.585172     0.005075
+                             17.151169    -0.011115
+                              9.027499    -0.011167
+                              4.751614     0.167220
+                              2.501007     0.015095
+                              1.316402    -1.515591
+                              0.692887     1.242898
+                              0.364700     1.191021
+                              0.191960    -2.283323
+                              0.101038     0.787104
+                              0.053181     0.389678
+                              0.027992     0.120442
+   13.1 Ag    1  3d2+        61.907933    -0.001192
+                             32.585172     0.005075
+                             17.151169    -0.011115
+                              9.027499    -0.011167
+                              4.751614     0.167220
+                              2.501007     0.015095
+                              1.316402    -1.515591
+                              0.692887     1.242898
+                              0.364700     1.191021
+                              0.191960    -2.283323
+                              0.101038     0.787104
+                              0.053181     0.389678
+                              0.027992     0.120442
+   14.1 Ag    1  5g0          0.625318     1.000000
+   15.1 Ag    1  5g4+         0.625318     1.000000
+   16.1 Ag    1  5g2+         0.625318     1.000000
+   17.1 Ag    1  5g0          1.771548     1.000000
+   18.1 Ag    1  5g4+         1.771548     1.000000
+   19.1 Ag    1  5g2+         1.771548     1.000000
+    1.2 B3u   1  2px         70.819882    -0.000490    0.000163    0.000303   -0.000287   -0.003145
+    2.2 B3u                  37.221301     0.003813   -0.001343   -0.002446   -0.000323    0.012985
+    3.2 B3u                  19.562660    -0.025616    0.009623    0.017437    0.019041   -0.015558
+    4.2 B3u                  10.281684     0.138740   -0.054556   -0.100369   -0.154508   -0.104533
+    5.2 B3u                   5.403817    -0.324560    0.133038    0.254215    0.432420    0.377080
+                              2.840122    -0.052031    0.016039    0.008313    0.127307    0.719006
+                              1.492703     0.389641   -0.166103   -0.306300   -1.400487   -4.461602
+                              0.784530     0.505922   -0.285080   -0.886702   -0.505955    6.226316
+                              0.412331     0.253444   -0.196871    0.536764    3.530620   -3.033959
+                              0.216712     0.053377    0.313765    1.436864   -2.620064   -2.069095
+                              0.113899     0.005287    0.600814   -0.560326   -0.404750    4.178160
+                              0.059863     0.001309    0.278010   -0.664182    0.899083   -2.215449
+                              0.031462    -0.000050    0.026886   -0.091688    0.172905    0.040468
+    6.2 B3u   1  4f1+         0.265585     1.000000
+    7.2 B3u   1  4f3+         0.265585     1.000000
+    8.2 B3u   1  4f1+         0.642758     1.000000
+    9.2 B3u   1  4f3+         0.642758     1.000000
+   10.2 B3u   1  4f1+         1.555579     1.000000
+   11.2 B3u   1  4f3+         1.555579     1.000000
+   12.2 B3u   1  6h1+         1.631511     1.000000
+   13.2 B3u   1  6h3+         1.631511     1.000000
+   14.2 B3u   1  6h5+         1.631511     1.000000
+    1.3 B2u   1  2py         70.819882    -0.000490    0.000163    0.000303   -0.000287   -0.003145
+    2.3 B2u                  37.221301     0.003813   -0.001343   -0.002446   -0.000323    0.012985
+    3.3 B2u                  19.562660    -0.025616    0.009623    0.017437    0.019041   -0.015558
+    4.3 B2u                  10.281684     0.138740   -0.054556   -0.100369   -0.154508   -0.104533
+    5.3 B2u                   5.403817    -0.324560    0.133038    0.254215    0.432420    0.377080
+                              2.840122    -0.052031    0.016039    0.008313    0.127307    0.719006
+                              1.492703     0.389641   -0.166103   -0.306300   -1.400487   -4.461602
+                              0.784530     0.505922   -0.285080   -0.886702   -0.505955    6.226316
+                              0.412331     0.253444   -0.196871    0.536764    3.530620   -3.033959
+                              0.216712     0.053377    0.313765    1.436864   -2.620064   -2.069095
+                              0.113899     0.005287    0.600814   -0.560326   -0.404750    4.178160
+                              0.059863     0.001309    0.278010   -0.664182    0.899083   -2.215449
+                              0.031462    -0.000050    0.026886   -0.091688    0.172905    0.040468
+    6.3 B2u   1  4f1-         0.265585     1.000000
+    7.3 B2u   1  4f3-         0.265585     1.000000
+    8.3 B2u   1  4f1-         0.642758     1.000000
+    9.3 B2u   1  4f3-         0.642758     1.000000
+   10.3 B2u   1  4f1-         1.555579     1.000000
+   11.3 B2u   1  4f3-         1.555579     1.000000
+   12.3 B2u   1  6h1-         1.631511     1.000000
+   13.3 B2u   1  6h3-         1.631511     1.000000
+   14.3 B2u   1  6h5-         1.631511     1.000000
+    1.4 B1g   1  3d2-        61.907933    -0.000024    0.000005   -0.000179   -0.001192
+    2.4 B1g                  32.585172     0.000233   -0.000160    0.000632    0.005075
+    3.4 B1g                  17.151169    -0.002245    0.002296    0.000545   -0.011115
+    4.4 B1g                   9.027499     0.020877   -0.024432   -0.026852   -0.011167
+                              4.751614    -0.090172    0.112596    0.145145    0.167220
+                              2.501007     0.023170   -0.039514   -0.035419    0.015095
+                              1.316402     0.205899   -0.295539   -0.610909   -1.515591
+                              0.692887     0.321552   -0.461445   -0.499162    1.242898
+                              0.364700     0.323472   -0.080208    1.209396    1.191021
+                              0.191960     0.230789    0.499620    0.263814   -2.283323
+                              0.101038     0.111668    0.418172   -0.665665    0.787104
+                              0.053181     0.026522    0.115203   -0.302443    0.389678
+                              0.027992     0.001600    0.006691   -0.034465    0.120442
+    5.4 B1g   1  5g2-         0.625318     1.000000
+    6.4 B1g   1  5g4-         0.625318     1.000000
+    7.4 B1g   1  5g2-         1.771548     1.000000
+    8.4 B1g   1  5g4-         1.771548     1.000000
+    1.5 B1u   1  2pz         70.819882    -0.000490    0.000163    0.000303   -0.000287   -0.003145
+    2.5 B1u                  37.221301     0.003813   -0.001343   -0.002446   -0.000323    0.012985
+    3.5 B1u                  19.562660    -0.025616    0.009623    0.017437    0.019041   -0.015558
+    4.5 B1u                  10.281684     0.138740   -0.054556   -0.100369   -0.154508   -0.104533
+    5.5 B1u                   5.403817    -0.324560    0.133038    0.254215    0.432420    0.377080
+                              2.840122    -0.052031    0.016039    0.008313    0.127307    0.719006
+                              1.492703     0.389641   -0.166103   -0.306300   -1.400487   -4.461602
+                              0.784530     0.505922   -0.285080   -0.886702   -0.505955    6.226316
+                              0.412331     0.253444   -0.196871    0.536764    3.530620   -3.033959
+                              0.216712     0.053377    0.313765    1.436864   -2.620064   -2.069095
+                              0.113899     0.005287    0.600814   -0.560326   -0.404750    4.178160
+                              0.059863     0.001309    0.278010   -0.664182    0.899083   -2.215449
+                              0.031462    -0.000050    0.026886   -0.091688    0.172905    0.040468
+    6.5 B1u   1  4f0          0.265585     1.000000
+    7.5 B1u   1  4f2+         0.265585     1.000000
+    8.5 B1u   1  4f0          0.642758     1.000000
+    9.5 B1u   1  4f2+         0.642758     1.000000
+   10.5 B1u   1  4f0          1.555579     1.000000
+   11.5 B1u   1  4f2+         1.555579     1.000000
+   12.5 B1u   1  6h2+         1.631511     1.000000
+   13.5 B1u   1  6h4+         1.631511     1.000000
+   14.5 B1u   1  6h0          1.631511     1.000000
+    1.6 B2g   1  3d1+        61.907933    -0.000024    0.000005   -0.000179   -0.001192
+    2.6 B2g                  32.585172     0.000233   -0.000160    0.000632    0.005075
+    3.6 B2g                  17.151169    -0.002245    0.002296    0.000545   -0.011115
+    4.6 B2g                   9.027499     0.020877   -0.024432   -0.026852   -0.011167
+                              4.751614    -0.090172    0.112596    0.145145    0.167220
+                              2.501007     0.023170   -0.039514   -0.035419    0.015095
+                              1.316402     0.205899   -0.295539   -0.610909   -1.515591
+                              0.692887     0.321552   -0.461445   -0.499162    1.242898
+                              0.364700     0.323472   -0.080208    1.209396    1.191021
+                              0.191960     0.230789    0.499620    0.263814   -2.283323
+                              0.101038     0.111668    0.418172   -0.665665    0.787104
+                              0.053181     0.026522    0.115203   -0.302443    0.389678
+                              0.027992     0.001600    0.006691   -0.034465    0.120442
+    5.6 B2g   1  5g1+         0.625318     1.000000
+    6.6 B2g   1  5g3+         0.625318     1.000000
+    7.6 B2g   1  5g1+         1.771548     1.000000
+    8.6 B2g   1  5g3+         1.771548     1.000000
+    1.7 B3g   1  3d1-        61.907933    -0.000024    0.000005   -0.000179   -0.001192
+    2.7 B3g                  32.585172     0.000233   -0.000160    0.000632    0.005075
+    3.7 B3g                  17.151169    -0.002245    0.002296    0.000545   -0.011115
+    4.7 B3g                   9.027499     0.020877   -0.024432   -0.026852   -0.011167
+                              4.751614    -0.090172    0.112596    0.145145    0.167220
+                              2.501007     0.023170   -0.039514   -0.035419    0.015095
+                              1.316402     0.205899   -0.295539   -0.610909   -1.515591
+                              0.692887     0.321552   -0.461445   -0.499162    1.242898
+                              0.364700     0.323472   -0.080208    1.209396    1.191021
+                              0.191960     0.230789    0.499620    0.263814   -2.283323
+                              0.101038     0.111668    0.418172   -0.665665    0.787104
+                              0.053181     0.026522    0.115203   -0.302443    0.389678
+                              0.027992     0.001600    0.006691   -0.034465    0.120442
+    5.7 B3g   1  5g1-         0.625318     1.000000
+    6.7 B3g   1  5g3-         0.625318     1.000000
+    7.7 B3g   1  5g1-         1.771548     1.000000
+    8.7 B3g   1  5g3-         1.771548     1.000000
+    1.8 Au    1  4f2-         0.265585     1.000000
+    2.8 Au    1  4f2-         0.642758     1.000000
+    3.8 Au    1  4f2-         1.555579     1.000000
+    4.8 Au    1  6h4-         1.631511     1.000000
+    5.8 Au    1  6h2-         1.631511     1.000000
+
+ NUCLEAR CHARGE:                   14
+ NUMBER OF PRIMITIVE AOS:         211
+ NUMBER OF SYMMETRY AOS:          167
+ NUMBER OF CONTRACTIONS:           90   (  19Ag  +  14B3u +  14B2u +   8B1g +  14B1u +   8B2g +   8B3g +   5Au  )
+ NUMBER OF CORE ORBITALS:           4   (   1Ag  +   1B3u +   1B2u +   0B1g +   1B1u +   0B2g +   0B3g +   0Au  )
+ NUMBER OF VALENCE ORBITALS:        6   (   3Ag  +   0B3u +   0B2u +   1B1g +   0B1u +   1B2g +   1B3g +   0Au  )
+
+
+ NUCLEAR REPULSION ENERGY    0.00000000
+
+
+ Maximum number of basis and dump records reached. Truncating dump files before previous basis set!
+
+ EXTRA SYMMETRY OF AOS IN SYMMETRY 1:   1 1 1 1 1 2 3 2 3 2   3 2 3 4 5 6 4 5 6
+ EXTRA SYMMETRY OF AOS IN SYMMETRY 2:   1 1 1 1 1 2 3 2 3 2   3 4 5 6
+ EXTRA SYMMETRY OF AOS IN SYMMETRY 3:   1 1 1 1 1 2 3 2 3 2   3 4 5 6
+ EXTRA SYMMETRY OF AOS IN SYMMETRY 4:   1 1 1 1 2 3 2 3
+ EXTRA SYMMETRY OF AOS IN SYMMETRY 5:   1 1 1 1 1 2 3 2 3 2   3 4 5 6
+ EXTRA SYMMETRY OF AOS IN SYMMETRY 6:   1 1 1 1 2 3 2 3
+ EXTRA SYMMETRY OF AOS IN SYMMETRY 7:   1 1 1 1 2 3 2 3
+ EXTRA SYMMETRY OF AOS IN SYMMETRY 8:   1 1 1 2 3
+
+ Eigenvalues of metric
+
+         1 0.510E+00 0.510E+00 0.510E+00 0.982E+00 0.994E+00 0.994E+00 0.999E+00 0.100E+01
+         2 0.175E+00 0.175E+00 0.791E+00 0.791E+00 0.999E+00 0.100E+01 0.100E+01 0.100E+01
+         3 0.175E+00 0.175E+00 0.791E+00 0.791E+00 0.999E+00 0.100E+01 0.100E+01 0.100E+01
+         4 0.510E+00 0.510E+00 0.994E+00 0.100E+01 0.100E+01 0.101E+01 0.149E+01 0.149E+01
+         5 0.175E+00 0.175E+00 0.791E+00 0.791E+00 0.999E+00 0.100E+01 0.100E+01 0.100E+01
+         6 0.510E+00 0.510E+00 0.994E+00 0.100E+01 0.100E+01 0.101E+01 0.149E+01 0.149E+01
+         7 0.510E+00 0.510E+00 0.994E+00 0.100E+01 0.100E+01 0.101E+01 0.149E+01 0.149E+01
+         8 0.175E+00 0.791E+00 0.100E+01 0.100E+01 0.203E+01
+
+
+ Contracted 2-electron integrals neglected if value below      1.0D-12
+ AO integral compression algorithm  1   Integral accuracy      1.0D-12
+
+     10.224 MB (compressed) written to integral file ( 70.3%)
+
+     Node minimum: 0.262 MB, node maximum: 1.311 MB
+
+
+ NUMBER OF SORTED TWO-ELECTRON INTEGRALS:      75648.     BUFFER LENGTH:  32768
+ NUMBER OF SEGMENTS:   1  SEGMENT LENGTH:      75648      RECORD LENGTH: 524288
+
+ Memory used in sort:       0.63 MW
+
+ SORT1 READ     1797248. AND WROTE       53130. INTEGRALS IN      1 RECORDS. CPU TIME:     0.07 SEC, REAL TIME:     0.08 SEC
+ SORT2 READ      785431. AND WROTE     1106050. INTEGRALS IN     30 RECORDS. CPU TIME:     0.09 SEC, REAL TIME:     0.11 SEC
+
+ Node minimum:       67730.  Node maximum:       80004. integrals
+
+ OPERATOR DM      FOR CENTER  0  COORDINATES:    0.000000    0.000000    0.000000
+
+
+ **********************************************************************************************************************************
+ DATASETS  * FILE   NREC   LENGTH (MB)   RECORD NAMES
+              1      19       19.97       500      610      700      900      950      970     1029      129      960     1100   
+                                          VAR    BASINP    GEOM    SYMINP    ZMAT    AOBASIS   BASIS     P2S    ABASIS      S 
+                                         1400     1410     1420     1200     1210     1080     1600     1650     1700   
+                                           T        V       ECP      H0       H01     AOSYM     SMH    MOLCAS    OPER   
+
+              2     120      222.50       200      700     1000      520     4302     5302     2101     1001     4302     5302   
+                                        OPTIONS   GEOM     BASIS   MCVARS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2102     1002     4302     5302     2103     1003     4302     5302     2104     1004   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2105     1005     4302     5302     2106     1006     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2107     1007     4302     5302     2108     1008     4302     5302     2109     1009   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2110     1010     4302     5302     2111     1011     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2112     1012     4302     5302     2113     1013     4302     5302     2114     1014   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2115     1015     4302     5302     2116     1016     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2117     1017     4302     5302     2118     1018     4302     5302     2119     1019   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2120     1020     4302     5302     2121     1021     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2122     1022     4302     5302     2123     1023     4302     5302     2124     1024   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2125     1025     4302     5302     2126     1026     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2127     1027     4302     5302     2128     1028     4302     5302     2129     1029   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+
+ PROGRAMS   *        TOTAL       INT  UCCSD(T)      DATA      DATA       RHF     MULTI       POP       RHF       INT  UCCSD(T)
+ CPU TIMES  *       456.75      0.95      0.82      0.00      0.00      0.16      0.39      0.00      0.16      1.06      0.98
+ REAL TIME  *       774.05 SEC
+ DISK USED  *         3.95 GB      
+ SF USED    *        25.36 MB      
+ GA USED    *         0.00 MB       (max)       0.00 MB       (current)
+ **********************************************************************************************************************************
+
+
+ PROGRAM * RHF-SCF (OPEN SHELL)       Authors: W. Meyer, H.-J. Werner
+
+
+ NUMBER OF ELECTRONS:       9+    5-    SPACE SYMMETRY=1    SPIN SYMMETRY: Quintet 
+ CONVERGENCE THRESHOLDS:    1.00E-05 (Density)    1.00E-07 (Energy)
+ MAX. NUMBER OF ITERATIONS:       60
+ INTERPOLATION TYPE:            DIIS
+ INTERPOLATION STEPS:              2 (START)      1 (STEP)
+ LEVEL SHIFTS:                 -0.60 (CLOSED) -0.30 (OPEN) 
+
+ Number of closed-shell orbitals:    5 (   2   1   1   0   1   0   0   0 )
+ Number of open-shell orbitals:      4 (   1   0   0   1   0   1   1   0 )
+
+
+ 
+ Extra symmetries of mos in symmetry 1:   1   1   3   2
+
+   Atom=W  basis=cc-pVTZ-PP        lmin=0  lmax=2
+
+ Orbital guess generated from atomic densities. Full valence occupancy:    4   1   1   1   1   1   1   0
+
+
+ Molecular orbital dump at record        4202.2
+
+ ITERATION    DDIFF          GRAD             ENERGY        2-EL.EN.            DIPOLE MOMENTS         DIIS   ORB.
+    1      0.000D+00      0.000D+00       -66.65476747     90.046918    0.00000    0.00000    0.00000    0    start
+    2      0.000D+00      0.104D-01       -66.68946960     92.196883    0.00000    0.00000    0.00000    1    diag,B
+    3      0.652D-02      0.448D-02       -66.69365751     92.379902    0.00000    0.00000    0.00000    2    diag,B
+    4      0.187D-02      0.219D-02       -66.69575782     92.555031    0.00000    0.00000    0.00000    3    diag,B
+    5      0.213D-02      0.739D-03       -66.69611231     92.562629    0.00000    0.00000    0.00000    4    diag,B
+    6      0.110D-02      0.416D-03       -66.69627888     92.521293    0.00000    0.00000    0.00000    5    diag,B
+    7      0.104D-02      0.236D-03       -66.69634760     92.508341    0.00000    0.00000    0.00000    6    fixocc
+    8      0.768D-03      0.146D-03       -66.69637972     92.505110    0.00000    0.00000    0.00000    7    diag,B
+    9      0.615D-03      0.854D-04       -66.69639166     92.518606    0.00000    0.00000    0.00000    8    diag,B
+   10      0.472D-03      0.297D-04       -66.69639254     92.519064    0.00000    0.00000    0.00000    9    orth
+   11      0.135D-03      0.520D-05       -66.69639256     92.519410    0.00000    0.00000    0.00000    9    diag,B
+   12      0.206D-04      0.199D-05       -66.69639257     92.519299    0.00000    0.00000    0.00000    9    diag,B
+   13      0.258D-05      0.101D-05       -66.69639257     92.519307    0.00000    0.00000    0.00000    0    orth
+
+ Final alpha occupancy:   3   1   1   1   1   1   1   0
+ Final beta  occupancy:   2   1   1   0   1   0   0   0
+
+ !RHF STATE 1.1 Energy                -66.696392566445
+ Nuclear energy                         0.00000000
+ One-electron energy                 -112.95604627
+ Two-electron energy                   46.25965371
+ Virial quotient                       -2.91909278
+ !RHF STATE 1.1 Dipole moment           0.00000000     0.00000000     0.00000000
+ Dipole moment /Debye                   0.00000000     0.00000000     0.00000000
+
+ ELECTRON ORBITALS
+ =================
+
+
+   Orb  Occ    Energy  Couls-En    Coefficients
+
+                                   1 1s      1 1s      1 1s      1 1s      1 1s      1 3d0     1 3d2+    1 3d0     1 3d2+    1 3d0  
+                                   1 3d2+    1 3d0     1 3d2+    1 5g0     1 5g4+    1 5g2+    1 5g0     1 5g4+    1 5g2+ 
+
+   1.1   2    -3.4286  -14.5232  0.999993  0.000039 -0.000033  0.000018  0.000004  0.002631  0.000026 -0.002053 -0.000006 -0.001211
+                                -0.000003 -0.000552 -0.000001 -0.001117 -0.000000  0.000002 -0.000003  0.000000  0.000000
+
+   2.1   2    -0.2623   -4.6857  0.000021  0.997959  0.000239  0.000027 -0.000017  0.062089  0.000385  0.014174  0.000051 -0.001488
+                                -0.000009  0.000903  0.000003 -0.000194  0.000000  0.000003 -0.000449  0.000000  0.000001
+
+   3.1   +    -0.3613   -6.8035 -0.000029 -0.000468  0.000075  0.000007 -0.000002  0.001292  0.999977 -0.000000 -0.000293  0.000002
+                                 0.000055 -0.000000  0.000002 -0.000008  0.000000  0.006160 -0.000001  0.000001  0.001368
+
+   4.1   0     0.0435   -5.6674 -0.002210 -0.063341 -0.010503 -0.007275  0.003233  0.967395 -0.001279  0.214900 -0.000278 -0.100515
+                                 0.000132  0.036608 -0.000048 -0.001602  0.000000 -0.000003 -0.000205  0.000000 -0.000000
+
+   5.1   0     0.1231   -2.4620 -0.000006 -0.018613  0.836026  0.498502 -0.230407  0.011558 -0.000082  0.005563 -0.000023 -0.005806
+                                 0.000007  0.002125 -0.000003  0.002252  0.000000 -0.000004  0.000196  0.000000 -0.000000
+
+                                   1 2px     1 2px     1 2px     1 2px     1 2px     1 4f1+    1 4f3+    1 4f1+    1 4f3+    1 4f1+ 
+                                   1 4f3+    1 6h1+    1 6h3+    1 6h5+ 
+
+   1.2   2    -1.9238  -11.2679  0.999974  0.000041  0.000004  0.000006  0.000009  0.001651 -0.000002  0.004609  0.000004  0.002082
+                                 0.000003  0.000343 -0.000001  0.000000
+
+   2.2   0     0.0516   -3.2766 -0.000655  0.919658 -0.347716  0.167582 -0.071494  0.010818 -0.000003  0.000738 -0.000005  0.000044
+                                -0.000001 -0.000121  0.000000 -0.000000
+
+   3.2   0     0.4080   -3.0224 -0.000814  0.388147  0.740570 -0.492055  0.241358  0.022174 -0.000009  0.001042 -0.000006  0.000310
+                                -0.000002 -0.000180  0.000000 -0.000000
+
+                                   1 2py     1 2py     1 2py     1 2py     1 2py     1 4f1-    1 4f3-    1 4f1-    1 4f3-    1 4f1- 
+                                   1 4f3-    1 6h1-    1 6h3-    1 6h5- 
+
+   1.3   2    -1.9238  -11.2678  0.999974  0.000049  0.000009  0.000006  0.000008  0.001643 -0.000002  0.004601  0.000004  0.002081
+                                 0.000003  0.000342 -0.000001  0.000000
+
+   2.3   0     0.0516   -3.2766 -0.000661  0.919670 -0.347691  0.167572 -0.071489  0.010790 -0.000003  0.000729 -0.000005  0.000042
+                                -0.000001 -0.000121  0.000000 -0.000000
+
+   3.3   0     0.4080   -3.0223 -0.000820  0.388123  0.740583 -0.492057  0.241359  0.022112 -0.000009  0.001032 -0.000006  0.000306
+                                -0.000002 -0.000180  0.000000 -0.000000
+
+                                   1 3d2-    1 3d2-    1 3d2-    1 3d2-    1 5g2-    1 5g4-    1 5g2-    1 5g4- 
+
+   1.4   +    -0.3613   -6.8035  0.999978 -0.000293  0.000055  0.000002  0.006160  0.000000  0.001368  0.000001
+
+   2.4   0     0.2737   -2.6673 -0.004039  0.778174 -0.579017  0.243311 -0.001390 -0.000001 -0.000600 -0.000001
+
+   3.4   0     1.0358   -2.8670 -0.003174  0.610901  0.607836 -0.507289 -0.001052  0.000000 -0.001321 -0.000003
+
+                                   1 2pz     1 2pz     1 2pz     1 2pz     1 2pz     1 4f0     1 4f2+    1 4f0     1 4f2+    1 4f0  
+                                   1 4f2+    1 6h2+    1 6h4+    1 6h0  
+
+   1.5   2    -1.9299  -11.2791  0.999984 -0.002259 -0.001534 -0.000201  0.000248 -0.003321  0.000004 -0.002761  0.000011  0.000254
+                                 0.000005 -0.000001  0.000000  0.000428
+
+   2.5   0     0.0494   -3.2787  0.000977  0.919974 -0.347423  0.166584 -0.071177 -0.008366  0.000018 -0.003557  0.000000 -0.000565
+                                -0.000000  0.000000 -0.000000 -0.000163
+
+   3.5   0     0.4057   -3.0222  0.001060  0.387358  0.741213 -0.492010  0.240786 -0.018894  0.000038 -0.004307  0.000001 -0.001410
+                                -0.000000  0.000000 -0.000000 -0.000248
+
+                                   1 3d1+    1 3d1+    1 3d1+    1 3d1+    1 5g1+    1 5g3+    1 5g1+    1 5g3+ 
+
+   1.6   +    -0.3885   -6.8692  0.999964 -0.014691  0.004175 -0.000516  0.000702  0.000008  0.000365  0.000002
+
+   2.6   0     0.2699   -2.6562  0.009681  0.781565 -0.575334  0.240767 -0.000254 -0.000002 -0.000247 -0.000001
+
+   3.6   0     1.0260   -2.8592  0.002786  0.606773  0.612285 -0.506859  0.000741 -0.000002 -0.001079 -0.000003
+
+                                   1 3d1-    1 3d1-    1 3d1-    1 3d1-    1 5g1-    1 5g3-    1 5g1-    1 5g3- 
+
+   1.7   +    -0.3885   -6.8690  0.999964 -0.014645  0.004167 -0.000515  0.000696  0.000008  0.000365  0.000002
+
+   2.7   0     0.2699   -2.6563  0.009641  0.781555 -0.575345  0.240774 -0.000254 -0.000002 -0.000247 -0.000001
+
+   3.7   0     1.0261   -2.8593  0.002764  0.606785  0.612271 -0.506861  0.000743 -0.000002 -0.001080 -0.000003
+
+                                   1 4f2-    1 4f2-    1 4f2-    1 6h4-    1 6h2- 
+
+   1.8   0     0.7883   -3.2122  1.045645 -0.091162  0.060523  0.000001  0.000484
+
+   2.8   0     2.2425   -1.9360 -0.866563  1.404061 -0.096412  0.000004  0.001648
+
+ HOMO      3.1    -0.361337 =      -9.8325eV
+ LUMO      4.1     0.043531 =       1.1846eV
+ LUMO-HOMO         0.404868 =      11.0170eV
+
+
+ **********************************************************************************************************************************
+ DATASETS  * FILE   NREC   LENGTH (MB)   RECORD NAMES
+              1      19       19.97       500      610      700      900      950      970     1029      129      960     1100   
+                                          VAR    BASINP    GEOM    SYMINP    ZMAT    AOBASIS   BASIS     P2S    ABASIS      S 
+                                         1400     1410     1420     1200     1210     1080     1600     1650     1700   
+                                           T        V       ECP      H0       H01     AOSYM     SMH    MOLCAS    OPER   
+
+              2     121      225.02       200      700     1000      520     4302     5302     2101     1001     4302     5302   
+                                        OPTIONS   GEOM     BASIS   MCVARS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2102     1002     4302     5302     2103     1003     4302     5302     2104     1004   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2105     1005     4302     5302     2106     1006     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2107     1007     4302     5302     2108     1008     4302     5302     2109     1009   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2110     1010     4302     5302     2111     1011     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2112     1012     4302     5302     2113     1013     4302     5302     2114     1014   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2115     1015     4302     5302     2116     1016     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2117     1017     4302     5302     2118     1018     4302     5302     2119     1019   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2120     1020     4302     5302     2121     1021     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2122     1022     4302     5302     2123     1023     4302     5302     2124     1024   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2125     1025     4302     5302     2126     1026     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2127     1027     4302     5302     2128     1028     4302     5302     2129     1029   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4202   
+                                          RHF  
+
+ PROGRAMS   *        TOTAL       RHF       INT  UCCSD(T)      DATA      DATA       RHF     MULTI       POP       RHF       INT
+ CPU TIMES  *       457.03      0.28      0.95      0.82      0.00      0.00      0.16      0.39      0.00      0.16      1.06
+ REAL TIME  *       774.77 SEC
+ DISK USED  *         3.95 GB      
+ SF USED    *        25.36 MB      
+ GA USED    *         0.00 MB       (max)       0.00 MB       (current)
+ **********************************************************************************************************************************
+
+
+ PROGRAM * POP (Mulliken population analysis)
+
+ 
+ Density matrix read from record         4202.2  Type=RHF/CHARGE (state 1.1)
+ 
+ Population analysis by basis function type
+
+ Unique atom        s        p        d        f        g    Total    Charge
+   1  W       3.99183  5.99973  4.00807  0.00027  0.00010 14.00000  + 0.00000
+
+
+ **********************************************************************************************************************************
+ DATASETS  * FILE   NREC   LENGTH (MB)   RECORD NAMES
+              1      19       19.97       500      610      700      900      950      970     1029      129      960     1100   
+                                          VAR    BASINP    GEOM    SYMINP    ZMAT    AOBASIS   BASIS     P2S    ABASIS      S 
+                                         1400     1410     1420     1200     1210     1080     1600     1650     1700   
+                                           T        V       ECP      H0       H01     AOSYM     SMH    MOLCAS    OPER   
+
+              2     121      225.02       200      700     1000      520     4302     5302     2101     1001     4302     5302   
+                                        OPTIONS   GEOM     BASIS   MCVARS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2102     1002     4302     5302     2103     1003     4302     5302     2104     1004   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2105     1005     4302     5302     2106     1006     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2107     1007     4302     5302     2108     1008     4302     5302     2109     1009   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2110     1010     4302     5302     2111     1011     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2112     1012     4302     5302     2113     1013     4302     5302     2114     1014   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2115     1015     4302     5302     2116     1016     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2117     1017     4302     5302     2118     1018     4302     5302     2119     1019   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2120     1020     4302     5302     2121     1021     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2122     1022     4302     5302     2123     1023     4302     5302     2124     1024   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2125     1025     4302     5302     2126     1026     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2127     1027     4302     5302     2128     1028     4302     5302     2129     1029   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4202   
+                                          RHF  
+
+ PROGRAMS   *        TOTAL       POP       RHF       INT  UCCSD(T)      DATA      DATA       RHF     MULTI       POP       RHF
+ CPU TIMES  *       457.04      0.01      0.28      0.95      0.82      0.00      0.00      0.16      0.39      0.00      0.16
+ REAL TIME  *       774.78 SEC
+ DISK USED  *         3.95 GB      
+ SF USED    *        25.36 MB      
+ GA USED    *         0.00 MB       (max)       0.00 MB       (current)
+ **********************************************************************************************************************************
+
+
+ Current variables in basis input:
+
+ Set= 1  F_EXP(1)            =       0.26558492
+ Set= 1  F_EXP(2)            =       0.64275836
+ Set= 1  F_EXP(3)            =       1.55557893
+ Set= 1  G_EXP(1)            =       0.62531818
+ Set= 1  G_EXP(2)            =       1.77154761
+ Set= 1  H_EXP(1)            =       1.63151096
+
+ PROGRAM * MULTI (Direct Multiconfiguration SCF)       Authors: P.J. Knowles, H.-J. Werner (1984)     S.T. Elbert (1988)
+
+
+ Number of closed-shell orbitals:   5 (   2   1   1   0   1   0   0   0 )
+ Number of active  orbitals:        5 (   2   0   0   1   0   1   1   0 )
+ Number of external orbitals:      80 (  15  13  13   7  13   7   7   5 )
+
+ State symmetry 1
+
+ Number of electrons:     4    Spin symmetry=Quintet   Space symmetry=1
+ Number of states:        2
+ Number of CSFs:          2   (2 determinants, 5 intermediate states)
+
+ State symmetry 2
+
+ Number of electrons:     4    Spin symmetry=Quintet   Space symmetry=4
+ Number of states:        1
+ Number of CSFs:          1   (1 determinants, 5 intermediate states)
+
+ State symmetry 3
+
+ Number of electrons:     4    Spin symmetry=Quintet   Space symmetry=6
+ Number of states:        1
+ Number of CSFs:          1   (1 determinants, 5 intermediate states)
+
+ State symmetry 4
+
+ Number of electrons:     4    Spin symmetry=Quintet   Space symmetry=7
+ Number of states:        1
+ Number of CSFs:          1   (1 determinants, 5 intermediate states)
+
+ Molecular orbitals read from record     4202.2  Type=RHF/CANONICAL (state 1.1)
+ *** IN SYMMETRY 1 ORBITAL  1 SYMMETRY CONTAMINATION OF 0.755D-02 HAS BEEN REMOVED
+ *** IN SYMMETRY 1 ORBITAL  2 SYMMETRY CONTAMINATION OF 0.740D-01 HAS BEEN REMOVED
+ *** IN SYMMETRY 1 ORBITAL  3 SYMMETRY CONTAMINATION OF 0.932D-02 HAS BEEN REMOVED
+ *** IN SYMMETRY 1 ORBITAL  4 SYMMETRY CONTAMINATION OF 0.639D-01 HAS BEEN REMOVED
+
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 1:   1 1 3 2 1 3 2 1 3 2   6 4 5 1 3 2 4 6 5
+ *** IN SYMMETRY 2 ORBITAL  1 SYMMETRY CONTAMINATION OF 0.862D-02 HAS BEEN REMOVED
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 2:   1 1 1 3 2 1 3 2 1 2   3 4 5 6
+ *** IN SYMMETRY 3 ORBITAL  1 SYMMETRY CONTAMINATION OF 0.860D-02 HAS BEEN REMOVED
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 3:   1 1 1 3 2 1 3 2 1 2   3 4 5 6
+ *** IN SYMMETRY 4 ORBITAL  1 SYMMETRY CONTAMINATION OF 0.747D-02 HAS BEEN REMOVED
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 4:   1 1 1 2 3 1 2 3
+ *** IN SYMMETRY 5 ORBITAL  1 SYMMETRY CONTAMINATION OF 0.671D-02 HAS BEEN REMOVED
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 5:   1 1 1 3 2 1 3 2 1 3   2 6 4 5
+ *** IN SYMMETRY 6 ORBITAL  1 SYMMETRY CONTAMINATION OF 0.106D-02 HAS BEEN REMOVED
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 6:   1 1 1 3 2 1 2 3
+ *** IN SYMMETRY 7 ORBITAL  1 SYMMETRY CONTAMINATION OF 0.105D-02 HAS BEEN REMOVED
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 7:   1 1 1 3 2 1 2 3
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 8:   1 1 1 3 2
+
+ Wavefunction dump at record             5202.2
+
+ Convergence thresholds  0.10E-01 (gradient)  0.10E-05 (energy)  0.10E-02 (step length)
+
+ Weight factors for state symmetry  1:    0.20000   0.20000
+ Weight factors for state symmetry  2:    0.20000
+ Weight factors for state symmetry  3:    0.20000
+ Weight factors for state symmetry  4:    0.20000
+
+ Number of orbital rotations:      124   (     4 Core/Active     69 Core/Virtual   0 Active/Active     51 Active/Virtual)
+ Total number of variables:        131
+
+
+ ITER. MIC  NCI  NEG     ENERGY(VAR)     ENERGY(PROJ)   ENERGY CHANGE     GRAD(0)  GRAD(ORB)   GRAD(CI)     STEP       TIME
+
+   1   26   16    0     -66.67189596     -66.69384201   -0.02194604    0.10668943 0.00000000 0.00000000  0.25D+00      0.18
+   2   23   20    0     -66.69378335     -66.69381256   -0.00002920    0.00627130 0.00000000 0.00000000  0.66D-02      0.21
+   3   23   20    0     -66.69381259     -66.69381259   -0.00000000    0.00001172 0.00000000 0.00000000  0.12D-04      0.26
+
+ ** WVFN ****  CONVERGENCE REACHED, FINAL GRADIENT:  0.50D-10
+
+
+
+ Results for state 1.1
+ =====================
+
+ !MCSCF STATE 1.1 Energy              -66.693812591458
+ Nuclear energy                         0.00000000
+ Kinetic energy                        22.84209928
+ One electron energy                 -112.94622941
+ Two electron energy                   46.25241682
+ Virial ratio                           3.91977597
+
+ !MCSCF STATE 1.1 Dipole moment         0.00000000     0.00000000     0.00000000
+ Dipole moment /Debye                   0.00000000     0.00000000     0.00000000
+
+ Results for state 2.1
+ =====================
+
+ !MCSCF STATE 2.1 Energy              -66.693812591458
+ Nuclear energy                         0.00000000
+ Kinetic energy                        22.84209928
+ One electron energy                 -112.94622941
+ Two electron energy                   46.25241682
+ Virial ratio                           3.91977597
+
+ !MCSCF STATE 2.1 Dipole moment         0.00000000     0.00000000     0.00000000
+ Dipole moment /Debye                   0.00000000     0.00000000     0.00000000
+
+
+
+ Results for state 1.4
+ =====================
+
+ !MCSCF STATE 1.4 Energy              -66.693812591458
+ Nuclear energy                         0.00000000
+ Kinetic energy                        22.84209928
+ One electron energy                 -112.94622941
+ Two electron energy                   46.25241682
+ Virial ratio                           3.91977597
+
+ !MCSCF STATE 1.4 Dipole moment         0.00000000     0.00000000     0.00000000
+ Dipole moment /Debye                   0.00000000     0.00000000     0.00000000
+
+
+
+ Results for state 1.6
+ =====================
+
+ !MCSCF STATE 1.6 Energy              -66.693812591458
+ Nuclear energy                         0.00000000
+ Kinetic energy                        22.84209928
+ One electron energy                 -112.94622941
+ Two electron energy                   46.25241682
+ Virial ratio                           3.91977597
+
+ !MCSCF STATE 1.6 Dipole moment         0.00000000     0.00000000     0.00000000
+ Dipole moment /Debye                   0.00000000     0.00000000     0.00000000
+
+
+
+ Results for state 1.7
+ =====================
+
+ !MCSCF STATE 1.7 Energy              -66.693812591458
+ Nuclear energy                         0.00000000
+ Kinetic energy                        22.84209928
+ One electron energy                 -112.94622941
+ Two electron energy                   46.25241682
+ Virial ratio                           3.91977597
+
+ !MCSCF STATE 1.7 Dipole moment         0.00000000     0.00000000     0.00000000
+ Dipole moment /Debye                   0.00000000     0.00000000     0.00000000
+
+ State-averaged charge density matrix saved on record  5202.2 (density set 1)
+
+
+ NATURAL ORBITALS (state averaged)
+ =================================
+
+   Orb     Occ        Energy       Coefficients
+
+                                   1 1s      1 1s      1 1s      1 1s      1 1s      1 3d0     1 3d2+    1 3d0     1 3d2+    1 3d0  
+                                   1 3d2+    1 3d0     1 3d2+    1 5g0     1 5g4+    1 5g2+    1 5g0     1 5g4+    1 5g2+ 
+
+   1.1  2.00000    -3.429690     1.000000  0.000000 -0.000000  0.000001  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000
+
+   2.1  2.00000    -0.262212     0.000196  0.999991  0.000496  0.000041 -0.000047  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000
+
+   3.1  0.80000    -0.057547     0.000000  0.000000  0.000000  0.000000  0.000000  1.000011  0.000000 -0.007363  0.000000  0.002033
+                                 0.000000 -0.000269  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000
+
+   4.1  0.80000    -0.057547     0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  1.000011  0.000000 -0.007363  0.000000
+                                 0.002033  0.000000 -0.000269  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000
+
+                                   1 2px     1 2px     1 2px     1 2px     1 2px     1 4f1+    1 4f3+    1 4f1+    1 4f3+    1 4f1+ 
+                                   1 4f3+    1 6h1+    1 6h3+    1 6h5+ 
+
+   1.2  2.00000    -1.926730     1.000000 -0.000802 -0.000564 -0.000079  0.000089  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000
+
+                                   1 2py     1 2py     1 2py     1 2py     1 2py     1 4f1-    1 4f3-    1 4f1-    1 4f3-    1 4f1- 
+                                   1 4f3-    1 6h1-    1 6h3-    1 6h5- 
+
+   1.3  2.00000    -1.926730     1.000000 -0.000802 -0.000564 -0.000079  0.000089  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000
+
+                                   1 3d2-    1 3d2-    1 3d2-    1 3d2-    1 5g2-    1 5g4-    1 5g2-    1 5g4- 
+
+   1.4  0.80000    -0.057547     1.000011 -0.007363  0.002033 -0.000269  0.000000  0.000000  0.000000  0.000000
+
+                                   1 2pz     1 2pz     1 2pz     1 2pz     1 2pz     1 4f0     1 4f2+    1 4f0     1 4f2+    1 4f0  
+                                   1 4f2+    1 6h2+    1 6h4+    1 6h0  
+
+   1.5  2.00000    -1.926730     1.000000 -0.000802 -0.000564 -0.000079  0.000089  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000
+
+                                   1 3d1+    1 3d1+    1 3d1+    1 3d1+    1 5g1+    1 5g3+    1 5g1+    1 5g3+ 
+
+   1.6  0.80000    -0.057547     1.000011 -0.007363  0.002033 -0.000269  0.000000  0.000000  0.000000  0.000000
+
+                                   1 3d1-    1 3d1-    1 3d1-    1 3d1-    1 5g1-    1 5g3-    1 5g1-    1 5g3- 
+
+   1.7  0.80000    -0.057547     1.000011 -0.007363  0.002033 -0.000269  0.000000  0.000000  0.000000  0.000000
+ 
+
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 1:   1 1 2 3 1 3 2 1 3 2   4 6 5 1 3 2 4 6 5
+ EXTRA SYMMETRY OF MOS IN SYMMETRY 5:   1 1 1 2 3 1 3 2 1 2   3 6 4 5
+
+ Natural orbital dump (state averaged) at molpro section  5202.2    (Orbital set 2)
+
+
+ CI vector for state symmetry 1
+ ==============================
+
+ 0a a a a          0.0000000   1.0000000
+ a0 a a a          1.0000000   0.0000000
+
+ TOTAL ENERGIES                       -66.69381259   -66.69381259
+
+ CI vector for state symmetry 2
+ ==============================
+
+ aa 0 a a          1.0000000
+
+ TOTAL ENERGIES                       -66.69381259
+
+ CI vector for state symmetry 3
+ ==============================
+
+ aa a 0 a          1.0000000
+
+ TOTAL ENERGIES                       -66.69381259
+
+ CI vector for state symmetry 4
+ ==============================
+
+ aa a a 0          1.0000000
+
+ TOTAL ENERGIES                       -66.69381259
+
+
+
+ **********************************************************************************************************************************
+ DATASETS  * FILE   NREC   LENGTH (MB)   RECORD NAMES
+              1      20       20.69       500      610      700      900      950      970     1029      129      960     1100   
+                                          VAR    BASINP    GEOM    SYMINP    ZMAT    AOBASIS   BASIS     P2S    ABASIS      S 
+                                         1400     1410     1420     1200     1210     1080     1600     1650     1700     1380   
+                                           T        V       ECP      H0       H01     AOSYM     SMH    MOLCAS    OPER     JKOP   
+
+              2     122      227.56       200      700     1000      520     4302     5302     2101     1001     4302     5302   
+                                        OPTIONS   GEOM     BASIS   MCVARS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2102     1002     4302     5302     2103     1003     4302     5302     2104     1004   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2105     1005     4302     5302     2106     1006     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2107     1007     4302     5302     2108     1008     4302     5302     2109     1009   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2110     1010     4302     5302     2111     1011     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2112     1012     4302     5302     2113     1013     4302     5302     2114     1014   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2115     1015     4302     5302     2116     1016     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2117     1017     4302     5302     2118     1018     4302     5302     2119     1019   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2120     1020     4302     5302     2121     1021     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2122     1022     4302     5302     2123     1023     4302     5302     2124     1024   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2125     1025     4302     5302     2126     1026     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2127     1027     4302     5302     2128     1028     4302     5302     2129     1029   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4202     5202   
+                                          RHF     MCSCF   
+
+ PROGRAMS   *        TOTAL     MULTI       POP       RHF       INT  UCCSD(T)      DATA      DATA       RHF     MULTI       POP
+ CPU TIMES  *       457.34      0.30      0.01      0.28      0.95      0.82      0.00      0.00      0.16      0.39      0.00
+ REAL TIME  *       775.68 SEC
+ DISK USED  *         3.95 GB      
+ SF USED    *        25.36 MB      
+ GA USED    *         0.00 MB       (max)       0.00 MB       (current)
+ **********************************************************************************************************************************
+
+
+ Current variables in basis input:
+
+ Set= 1  F_EXP(1)            =       0.26558492
+ Set= 1  F_EXP(2)            =       0.64275836
+ Set= 1  F_EXP(3)            =       1.55557893
+ Set= 1  G_EXP(1)            =       0.62531818
+ Set= 1  G_EXP(2)            =       1.77154761
+ Set= 1  H_EXP(1)            =       1.63151096
+
+ PROGRAM * RHF-SCF (OPEN SHELL)       Authors: W. Meyer, H.-J. Werner
+
+
+ NUMBER OF ELECTRONS:       9+    5-    SPACE SYMMETRY=1    SPIN SYMMETRY: Quintet 
+ CONVERGENCE THRESHOLDS:    1.00E-05 (Density)    1.00E-07 (Energy)
+ MAX. NUMBER OF ITERATIONS:        0
+ INTERPOLATION TYPE:            DIIS
+ INTERPOLATION STEPS:              2 (START)      1 (STEP)
+ LEVEL SHIFTS:                 -0.60 (CLOSED) -0.30 (OPEN) 
+
+ Number of closed-shell orbitals:    5 (   2   1   1   0   1   0   0   0 )
+ Number of open-shell orbitals:      4 (   1   0   0   1   0   1   1   0 )
+
+
+ Molecular orbitals read from record     5202.2  Type=MCSCF/NATURAL (state averaged)
+
+ Molecular orbital dump at record        2130.2
+
+ ITERATION    DDIFF          GRAD             ENERGY        2-EL.EN.            DIPOLE MOMENTS         DIIS   ORB.
+    1      0.000D+00      0.000D+00       -66.69381259     92.504834    0.00000    0.00000    0.00000    0    start
+
+ Final alpha occupancy:   3   1   1   1   1   1   1   0
+ Final beta  occupancy:   2   1   1   0   1   0   0   0
+
+ !RHF STATE 1.1 Energy                -66.693812591458
+ Nuclear energy                         0.00000000
+ One-electron energy                 -112.94622941
+ Two-electron energy                   46.25241682
+ Virial quotient                       -2.91977597
+ !RHF STATE 1.1 Dipole moment           0.00000000     0.00000000     0.00000000
+ Dipole moment /Debye                   0.00000000     0.00000000     0.00000000
+
+ ELECTRON ORBITALS
+ =================
+
+
+   Orb  Occ    Energy  Couls-En    Coefficients
+
+                                   1 1s      1 1s      1 1s      1 1s      1 1s      1 3d0     1 3d2+    1 3d0     1 3d2+    1 3d0  
+                                   1 3d2+    1 3d0     1 3d2+    1 5g0     1 5g4+    1 5g2+    1 5g0     1 5g4+    1 5g2+ 
+
+   1.1   2    -3.4297  -14.5244  1.000000  0.000000 -0.000000  0.000001  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000
+
+   2.1   2    -0.2622   -4.6795  0.000196  0.999991  0.000496  0.000041 -0.000047  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000
+
+   3.1   +    -0.0575   -6.5189  0.000000  0.000000  0.000000  0.000000  0.000000  1.000011  0.000000 -0.007363  0.000000  0.002033
+                                 0.000000 -0.000269  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000
+
+                                   1 2px     1 2px     1 2px     1 2px     1 2px     1 4f1+    1 4f3+    1 4f1+    1 4f3+    1 4f1+ 
+                                   1 4f3+    1 6h1+    1 6h3+    1 6h5+ 
+
+   1.2   2    -1.9267  -11.2729  1.000000 -0.000802 -0.000564 -0.000079  0.000089  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000
+
+                                   1 2py     1 2py     1 2py     1 2py     1 2py     1 4f1-    1 4f3-    1 4f1-    1 4f3-    1 4f1- 
+                                   1 4f3-    1 6h1-    1 6h3-    1 6h5- 
+
+   1.3   2    -1.9267  -11.2729  1.000000 -0.000802 -0.000564 -0.000079  0.000089  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000
+
+                                   1 3d2-    1 3d2-    1 3d2-    1 3d2-    1 5g2-    1 5g4-    1 5g2-    1 5g4- 
+
+   1.4   +    -0.0575   -6.5189  1.000011 -0.007363  0.002033 -0.000269  0.000000  0.000000  0.000000  0.000000
+
+                                   1 2pz     1 2pz     1 2pz     1 2pz     1 2pz     1 4f0     1 4f2+    1 4f0     1 4f2+    1 4f0  
+                                   1 4f2+    1 6h2+    1 6h4+    1 6h0  
+
+   1.5   2    -1.9267  -11.2729  1.000000 -0.000802 -0.000564 -0.000079  0.000089  0.000000  0.000000  0.000000  0.000000  0.000000
+                                 0.000000  0.000000  0.000000  0.000000
+
+                                   1 3d1+    1 3d1+    1 3d1+    1 3d1+    1 5g1+    1 5g3+    1 5g1+    1 5g3+ 
+
+   1.6   +    -0.0575   -6.5189  1.000011 -0.007363  0.002033 -0.000269  0.000000  0.000000  0.000000  0.000000
+
+                                   1 3d1-    1 3d1-    1 3d1-    1 3d1-    1 5g1-    1 5g3-    1 5g1-    1 5g3- 
+
+   1.7   +    -0.0575   -6.5189  1.000011 -0.007363  0.002033 -0.000269  0.000000  0.000000  0.000000  0.000000
+
+ HOMO      3.1    -0.057547 =      -1.5659eV
+ LUMO      4.1    -0.057547 =      -1.5659eV
+ LUMO-HOMO         0.000000 =       0.0000eV
+
+
+ **********************************************************************************************************************************
+ DATASETS  * FILE   NREC   LENGTH (MB)   RECORD NAMES
+              1      20       20.69       500      610      700      900      950      970     1029      129      960     1100   
+                                          VAR    BASINP    GEOM    SYMINP    ZMAT    AOBASIS   BASIS     P2S    ABASIS      S 
+                                         1400     1410     1420     1200     1210     1080     1600     1650     1700     1380   
+                                           T        V       ECP      H0       H01     AOSYM     SMH    MOLCAS    OPER     JKOP   
+
+              2     123      230.11       200      700     1000      520     4302     5302     2101     1001     4302     5302   
+                                        OPTIONS   GEOM     BASIS   MCVARS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2102     1002     4302     5302     2103     1003     4302     5302     2104     1004   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2105     1005     4302     5302     2106     1006     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2107     1007     4302     5302     2108     1008     4302     5302     2109     1009   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2110     1010     4302     5302     2111     1011     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2112     1012     4302     5302     2113     1013     4302     5302     2114     1014   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2115     1015     4302     5302     2116     1016     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2117     1017     4302     5302     2118     1018     4302     5302     2119     1019   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2120     1020     4302     5302     2121     1021     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2122     1022     4302     5302     2123     1023     4302     5302     2124     1024   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2125     1025     4302     5302     2126     1026     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2127     1027     4302     5302     2128     1028     4302     5302     2129     1029   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4202     5202     2130   
+                                          RHF     MCSCF     RHF  
+
+ PROGRAMS   *        TOTAL       RHF     MULTI       POP       RHF       INT  UCCSD(T)      DATA      DATA       RHF     MULTI
+ CPU TIMES  *       457.49      0.15      0.30      0.01      0.28      0.95      0.82      0.00      0.00      0.16      0.39
+ REAL TIME  *       775.92 SEC
+ DISK USED  *         3.95 GB      
+ SF USED    *        25.36 MB      
+ GA USED    *         0.00 MB       (max)       0.00 MB       (current)
+ **********************************************************************************************************************************
+
+ 
+ RECORD   4202.2 RENAMED TO   4302.2
+
+
+ **********************************************************************************************************************************
+ DATASETS  * FILE   NREC   LENGTH (MB)   RECORD NAMES
+              1      20       20.69       500      610      700      900      950      970     1029      129      960     1100   
+                                          VAR    BASINP    GEOM    SYMINP    ZMAT    AOBASIS   BASIS     P2S    ABASIS      S 
+                                         1400     1410     1420     1200     1210     1080     1600     1650     1700     1380   
+                                           T        V       ECP      H0       H01     AOSYM     SMH    MOLCAS    OPER     JKOP   
+
+              2     123      230.11       200      700     1000      520     4302     5302     2101     1001     4302     5302   
+                                        OPTIONS   GEOM     BASIS   MCVARS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2102     1002     4302     5302     2103     1003     4302     5302     2104     1004   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2105     1005     4302     5302     2106     1006     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2107     1007     4302     5302     2108     1008     4302     5302     2109     1009   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2110     1010     4302     5302     2111     1011     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2112     1012     4302     5302     2113     1013     4302     5302     2114     1014   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2115     1015     4302     5302     2116     1016     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2117     1017     4302     5302     2118     1018     4302     5302     2119     1019   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2120     1020     4302     5302     2121     1021     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2122     1022     4302     5302     2123     1023     4302     5302     2124     1024   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2125     1025     4302     5302     2126     1026     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2127     1027     4302     5302     2128     1028     4302     5302     2129     1029   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5202     2130   
+                                          RHF     MCSCF     RHF  
+
+ PROGRAMS   *        TOTAL      DATA       RHF     MULTI       POP       RHF       INT  UCCSD(T)      DATA      DATA       RHF
+ CPU TIMES  *       457.49      0.00      0.15      0.30      0.01      0.28      0.95      0.82      0.00      0.00      0.16
+ REAL TIME  *       775.93 SEC
+ DISK USED  *         3.95 GB      
+ SF USED    *        25.36 MB      
+ GA USED    *         0.00 MB       (max)       0.00 MB       (current)
+ **********************************************************************************************************************************
+
+ 
+ RECORD   5202.2 RENAMED TO   5302.2
+
+
+ **********************************************************************************************************************************
+ DATASETS  * FILE   NREC   LENGTH (MB)   RECORD NAMES
+              1      20       20.69       500      610      700      900      950      970     1029      129      960     1100   
+                                          VAR    BASINP    GEOM    SYMINP    ZMAT    AOBASIS   BASIS     P2S    ABASIS      S 
+                                         1400     1410     1420     1200     1210     1080     1600     1650     1700     1380   
+                                           T        V       ECP      H0       H01     AOSYM     SMH    MOLCAS    OPER     JKOP   
+
+              2     123      230.11       200      700     1000      520     4302     5302     2101     1001     4302     5302   
+                                        OPTIONS   GEOM     BASIS   MCVARS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2102     1002     4302     5302     2103     1003     4302     5302     2104     1004   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2105     1005     4302     5302     2106     1006     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2107     1007     4302     5302     2108     1008     4302     5302     2109     1009   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2110     1010     4302     5302     2111     1011     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2112     1012     4302     5302     2113     1013     4302     5302     2114     1014   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2115     1015     4302     5302     2116     1016     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2117     1017     4302     5302     2118     1018     4302     5302     2119     1019   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2120     1020     4302     5302     2121     1021     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2122     1022     4302     5302     2123     1023     4302     5302     2124     1024   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2125     1025     4302     5302     2126     1026     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2127     1027     4302     5302     2128     1028     4302     5302     2129     1029   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2130   
+                                          RHF     MCSCF     RHF  
+
+ PROGRAMS   *        TOTAL      DATA      DATA       RHF     MULTI       POP       RHF       INT  UCCSD(T)      DATA      DATA
+ CPU TIMES  *       457.50      0.00      0.00      0.15      0.30      0.01      0.28      0.95      0.82      0.00      0.00
+ REAL TIME  *       775.94 SEC
+ DISK USED  *         3.95 GB      
+ SF USED    *        25.36 MB      
+ GA USED    *         0.00 MB       (max)       0.00 MB       (current)
+ **********************************************************************************************************************************
+
+
+ Current variables in basis input:
+
+ Set= 1  F_EXP(1)            =       0.26558492
+ Set= 1  F_EXP(2)            =       0.64275836
+ Set= 1  F_EXP(3)            =       1.55557893
+ Set= 1  G_EXP(1)            =       0.62531818
+ Set= 1  G_EXP(2)            =       1.77154761
+ Set= 1  H_EXP(1)            =       1.63151096
+
+ PROGRAM * CCSD (Unrestricted open-shell coupled cluster)     Authors: C. Hampel, H.-J. Werner, 1991, M. Deegan, P.J. Knowles, 1992
+
+
+ Convergence thresholds:  THRVAR = 1.00D-08  THRDEN = 1.00D-06
+
+ CCSD(T)     terms to be evaluated (factor= 1.000)
+
+
+ Number of closed-shell orbitals:   5 (   2   1   1   0   1   0   0   0 )
+ Number of active  orbitals:        4 (   1   0   0   1   0   1   1   0 )
+ Number of external orbitals:      81 (  16  13  13   7  13   7   7   5 )
+
+ Memory could be reduced to 1.74 Mwords without degradation in triples
+
+ Number of N-1 electron functions:              14
+ Number of N-2 electron functions:              91
+ Number of singly external CSFs:               187
+ Number of doubly external CSFs:             62321
+ Total number of CSFs:                       62508
+
+ Molecular orbitals read from record     2130.2  Type=RHF/CANONICAL (state 1.1)
+
+ Integral transformation finished. Total CPU:   0.22 sec, npass=  1  Memory used:   0.39 MW
+
+ Starting RMP2 calculation
+
+ ITER.      SQ.NORM     CORR.ENERGY   TOTAL ENERGY   ENERGY CHANGE        DEN1      VAR(S)    VAR(P)  DIIS     TIME
+   1      1.11802107    -0.42831806   -67.12213065    -0.42831806    -0.00192542  0.20D-03  0.12D-02  1  1     0.25
+   2      1.12190496    -0.43045426   -67.12426685    -0.00213620    -0.00002869  0.12D-04  0.21D-04  2  2     0.25
+   3      1.12251454    -0.43064503   -67.12445762    -0.00019077    -0.00000048  0.44D-06  0.17D-06  3  3     0.25
+   4      1.12256082    -0.43065337   -67.12446596    -0.00000834    -0.00000001  0.14D-07  0.39D-08  4  4     0.26
+   5      1.12256076    -0.43065288   -67.12446547     0.00000049    -0.00000000  0.20D-09  0.52D-10  5  5     0.32
+
+ Norm of t1 vector:      0.08284731      S-energy:    -0.00814509      T1 diagnostic:  0.00841141
+ Norm of t2 vector:      0.34014274      P-energy:    -0.42250779
+                                         Alpha-Beta:  -0.29171067
+                                         Alpha-Alpha: -0.09758937
+                                         Beta-Beta:   -0.03320775
+
+ Spin contamination <S**2-Sz**2-Sz>     0.01564181
+  Reference energy                    -66.693812591458
+  RHF-RMP2 correlation energy          -0.430652878015
+ !RHF-RMP2 energy                     -67.124465469473
+
+ Starting UCCSD calculation
+
+ ITER.      SQ.NORM     CORR.ENERGY   TOTAL ENERGY   ENERGY CHANGE        DEN1      VAR(S)    VAR(P)  DIIS     TIME
+   1      1.11535070    -0.41870969   -67.11252228    -0.41870969    -0.00829738  0.25D-02  0.26D-02  1  1     0.35
+   2      1.13044021    -0.42689705   -67.12070964    -0.00818736    -0.00107901  0.49D-03  0.58D-03  2  2     0.38
+   3      1.14095784    -0.42893181   -67.12274441    -0.00203476    -0.00026027  0.17D-03  0.13D-03  3  3     0.40
+   4      1.15108027    -0.43042399   -67.12423658    -0.00149218    -0.00006871  0.58D-04  0.28D-04  4  4     0.43
+   5      1.15666198    -0.43082412   -67.12463671    -0.00040013    -0.00002589  0.24D-04  0.82D-05  5  5     0.46
+   6      1.16160674    -0.43105207   -67.12486466    -0.00022795    -0.00000510  0.57D-05  0.11D-05  6  6     0.48
+   7      1.16403955    -0.43115085   -67.12496345    -0.00009878    -0.00000157  0.62D-06  0.95D-06  6  1     0.51
+   8      1.16407652    -0.43113085   -67.12494344     0.00002001    -0.00000054  0.50D-06  0.22D-06  6  2     0.53
+   9      1.16484392    -0.43115850   -67.12497110    -0.00002766    -0.00000016  0.33D-07  0.11D-06  6  4     0.55
+  10      1.16488149    -0.43115419   -67.12496678     0.00000432    -0.00000002  0.92D-08  0.14D-07  6  3     0.57
+  11      1.16495718    -0.43115682   -67.12496942    -0.00000264    -0.00000000  0.78D-09  0.31D-08  6  5     0.61
+  12      1.16498069    -0.43115792   -67.12497051    -0.00000110    -0.00000000  0.67D-10  0.69D-09  6  6     0.64
+  13      1.16499307    -0.43115901   -67.12497160    -0.00000109    -0.00000000  0.13D-10  0.18D-09  6  1     0.66
+  14      1.16499265    -0.43115897   -67.12497156     0.00000004    -0.00000000  0.34D-11  0.37D-10  6  2     0.69
+
+ Norm of t1 vector:      0.17955415      S-energy:    -0.00950430      T1 diagnostic:  0.03052044
+                                                                       D1 diagnostic:  0.09227915
+ Norm of t2 vector:      0.36435279      P-energy:    -0.42165467
+                                         Alpha-Beta:  -0.30064007
+                                         Alpha-Alpha: -0.09194441
+                                         Beta-Beta:   -0.02907019
+
+ Singles amplitudes (print threshold =  0.500E-01):
+
+         I         SYM. A    A   T(IA) [Alpha-Alpha]
+
+         2         1         3     -0.10030995
+ 
+         I         SYM. A    A   T(IA) [Beta-Beta]
+
+         2         1         1     -0.13025619
+
+ Doubles amplitudes (print threshold =  0.500E-01):
+
+         I         J         SYM. A    SYM. B    A         B      T(IJ, AB) [Alpha-Beta]
+
+         2         2         1         1         2         2     -0.05856837
+         2         2         2         2         1         1     -0.07838994
+         2         2         3         3         1         1     -0.07838994
+         2         2         5         5         1         1     -0.06706588
+         3         2         1         1         2         2      0.05658394
+
+ Spin contamination <S**2-Sz**2-Sz>     0.00989764
+
+ Memory could be reduced to 1.91 Mwords without degradation in triples
+ 
+
+  Correlated core orbitals:             1.1       1.2       1.3       1.5
+  Orbital energies:                    -3.5100   -2.0363   -2.0363   -2.0598
+ 
+  UCCSD core-core energy               -0.160967557762
+  UCCSD core-valence energy            -0.163570593098
+  UCCSD valence correlation energy     -0.106620819167
+ 
+
+ RESULTS
+ =======
+
+  Reference energy                    -66.693812591458
+  UCCSD singles energy                 -0.009504296440
+  UCCSD pair energy                    -0.421654673587
+  UCCSD correlation energy             -0.431158970027
+  Triples (T) contribution             -0.017055274448
+  Total correlation energy             -0.448214244475
+ 
+  RHF-UCCSD energy                    -67.124971561485
+  RHF-UCCSD[T] energy                 -67.142345713911
+  RHF-UCCSD-T energy                  -67.142055216224
+ !RHF-UCCSD(T) energy                 -67.142026835933
+
+ Program statistics:
+
+ Available memory in ccsd:               511999151
+ Min. memory needed in ccsd:                212087
+ Max. memory used in ccsd:                  285508
+ Max. memory used in cckext:                264769 (14 integral passes)
+ Max. memory used in cckint:                389430 ( 1 integral passes)
+
+
+
+ **********************************************************************************************************************************
+ DATASETS  * FILE   NREC   LENGTH (MB)   RECORD NAMES
+              1      20       20.69       500      610      700      900      950      970     1029      129      960     1100   
+                                          VAR    BASINP    GEOM    SYMINP    ZMAT    AOBASIS   BASIS     P2S    ABASIS      S 
+                                         1400     1410     1420     1200     1210     1080     1600     1650     1700     1380   
+                                           T        V       ECP      H0       H01     AOSYM     SMH    MOLCAS    OPER     JKOP   
+
+              2     123      230.11       200      700     1000      520     4302     5302     2101     1001     4302     5302   
+                                        OPTIONS   GEOM     BASIS   MCVARS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2102     1002     4302     5302     2103     1003     4302     5302     2104     1004   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2105     1005     4302     5302     2106     1006     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2107     1007     4302     5302     2108     1008     4302     5302     2109     1009   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2110     1010     4302     5302     2111     1011     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2112     1012     4302     5302     2113     1013     4302     5302     2114     1014   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2115     1015     4302     5302     2116     1016     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2117     1017     4302     5302     2118     1018     4302     5302     2119     1019   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2120     1020     4302     5302     2121     1021     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2122     1022     4302     5302     2123     1023     4302     5302     2124     1024   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2125     1025     4302     5302     2126     1026     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2127     1027     4302     5302     2128     1028     4302     5302     2129     1029   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2130   
+                                          RHF     MCSCF     RHF  
+
+ PROGRAMS   *        TOTAL  UCCSD(T)      DATA      DATA       RHF     MULTI       POP       RHF       INT  UCCSD(T)      DATA
+ CPU TIMES  *       458.35      0.85      0.00      0.00      0.15      0.30      0.01      0.28      0.95      0.82      0.00
+ REAL TIME  *       777.26 SEC
+ DISK USED  *         3.95 GB      
+ SF USED    *        25.36 MB      
+ GA USED    *         0.00 MB       (max)       0.00 MB       (current)
+ **********************************************************************************************************************************
+ SETTING EVAL           =       -67.14202684  AU                              
+
+ BFGS final minimum    =       -67.142026836       maximum gradient =            0.34E-04
+
+           variable                 value           gradient
+ BFGS       F_PAR(1)                0.265585       -0.0000065
+ BFGS       F_PAR(2)                2.420161        0.0000344
+ BFGS       G_PAR(1)                0.625318       -0.0000048
+ BFGS       G_PAR(2)                2.833034       -0.0000100
+ BFGS       H_PAR(1)                1.631511        0.0000060
+
+
+ **********************************************************************************************************************************
+ DATASETS  * FILE   NREC   LENGTH (MB)   RECORD NAMES
+              1      20       20.69       500      610      700      900      950      970     1029      129      960     1100   
+                                          VAR    BASINP    GEOM    SYMINP    ZMAT    AOBASIS   BASIS     P2S    ABASIS      S 
+                                         1400     1410     1420     1200     1210     1080     1600     1650     1700     1380   
+                                           T        V       ECP      H0       H01     AOSYM     SMH    MOLCAS    OPER     JKOP   
+
+              2     123      230.11       200      700     1000      520     4302     5302     2101     1001     4302     5302   
+                                        OPTIONS   GEOM     BASIS   MCVARS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2102     1002     4302     5302     2103     1003     4302     5302     2104     1004   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2105     1005     4302     5302     2106     1006     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2107     1007     4302     5302     2108     1008     4302     5302     2109     1009   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2110     1010     4302     5302     2111     1011     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2112     1012     4302     5302     2113     1013     4302     5302     2114     1014   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2115     1015     4302     5302     2116     1016     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2117     1017     4302     5302     2118     1018     4302     5302     2119     1019   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2120     1020     4302     5302     2121     1021     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2122     1022     4302     5302     2123     1023     4302     5302     2124     1024   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2125     1025     4302     5302     2126     1026     4302     5302   
+                                          RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF   
+                                         2127     1027     4302     5302     2128     1028     4302     5302     2129     1029   
+                                          RHF     BASIS     RHF     MCSCF     RHF     BASIS     RHF     MCSCF     RHF     BASIS   
+                                         4302     5302     2130   
+                                          RHF     MCSCF     RHF  
+
+ PROGRAMS   *        TOTAL  MINIMIZE      DATA      DATA       RHF     MULTI       POP       RHF       INT  UCCSD(T)      DATA
+ CPU TIMES  *       458.36      0.85      0.00      0.00      0.15      0.30      0.01      0.28      0.95      0.82      0.00
+ REAL TIME  *       777.27 SEC
+ DISK USED  *         3.95 GB      
+ SF USED    *        25.36 MB      
+ GA USED    *         0.00 MB       (max)       0.00 MB       (current)
+ **********************************************************************************************************************************
+
+ MINIMIZE/USERDEF energy=    -67.142026835933
+
+        UCCSD(T)        RHF-SCF         MULTI           RHF-SCF         UCCSD(T)        RHF-SCF         MULTI           RHF-SCF 
+    -67.14202684    -66.69381259    -66.69381259    -66.69639257    -67.14202683    -66.69381259    -66.69381259    -66.69639256
+ **********************************************************************************************************************************
+ Molpro calculation terminated
+ Variable memory released

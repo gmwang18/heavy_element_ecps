@@ -1,0 +1,389 @@
+
+ Primary working directories    : /global/cscratch1/sd/gwang18
+ Secondary working directories  : /global/cscratch1/sd/gwang18
+ Wavefunction directory         : /global/homes/g/gwang18/wfu/
+ Main file repository           : /global/cscratch1/sd/gwang18/
+
+ SHA1      : 19cd028119e0e09f93f0674bd8af7968d9b3eff6
+ NAME      : 2015.1.36
+ ARCHNAME  : linux/x86_64
+ FC        : /opt/cray/pe/craype/2.5.14/bin/ftn
+ BLASLIB   : -L/opt/intel/compilers_and_libraries_2018.1.163/linux/mkl/lib/intel64 -Wl,-_start-group -lmkl_intel_ilp64 -lmkl_intel_thread -lmkl_core -Wl,-_end-group -liomp5
+ id        : lbl
+
+ Nodes     nprocs
+ nid01181    15
+ Number of processes for MPI-2 version of Molpro:   nprocs(total)=   16   nprocs(compute)=   15   nprocs(helper)=    1
+
+ Using customized tuning parameters: mindgm=7; mindgv=16; mindgc=1; mindgr=1; noblas=0; minvec=7
+ default implementation of scratch files=sf  
+
+ ***,Bi
+ memory,512,m
+ 
+ gthresh,twoint=1.e-12
+ gprint,basis,orbitals
+ 
+ angstrom
+ geometry={
+ 1                                                                               ! Number of atoms
+ Bi 0.0 0.0 0.0
+ }
+ 
+                                                                                 !!! Initial guesses from BFD
+ s_par=[0.106821, 2.8335]
+ p_par=[0.080749, 5.1786]
+ d_par=[0.202607, 1.5000]
+ f_par=[0.300000, 3.0000]
+ 
+ proc opt_basis
+ 
+                                                                                 !Calculate the exponents
+ N=2                                                                             ! Adjust to get enough exponents
+ do i=1,N
+ s_exp(i)=s_par(1)*s_par(2)^(i-1)
+ p_exp(i)=p_par(1)*p_par(2)^(i-1)
+ d_exp(i)=d_par(1)*d_par(2)^(i-1)
+ f_exp(i)=f_par(1)*f_par(2)^(i-1)
+ enddo
+ 
+ basis={
+ Including file /global/u2/g/gwang18/projects/cc-so-ecp/bi/basis/cc_tz/ecp.molpro
+ Including file /global/u2/g/gwang18/projects/cc-so-ecp/bi/basis/cc_tz/basis.molpro
+ 
+ s,Bi,s_exp(1),s_exp(2)
+ p,Bi,p_exp(1),p_exp(2)
+ d,Bi,d_exp(1),d_exp(2)
+ f,Bi,f_exp(1)
+ 
+ }
+ 
+ {rhf
+  start,atden
+  wf,5,8,3
+  occ,1,1,1,0,1,0,0,0
+  closed,1,0,0,0,0,0,0,0
+  orbital,4202.2
+ }
+ pop
+ {multi
+  start,4202.2
+  occ,1,1,1,0,1,0,0,0
+  closed,1,0,0,0,0,0,0,0
+  wf,5,8,3;state,1
+  natorb,ci,print
+  orbital,5202.2
+ }
+ {rhf,nitord=1,maxit=0
+  start,5202.2
+  wf,5,8,3
+  occ,1,1,1,0,1,0,0,0
+  closed,1,0,0,0,0,0,0,0
+  print,orbitals=2
+ }
+ data,rename,4202.2,4302.2
+ data,rename,5202.2,5302.2
+ 
+ {uccsd(t);maxit,100;core}
+ eval=energy
+ 
+ endproc
+ 
+ {minimize,eval,s_par(1),s_par(2),p_par(1),p_par(2),d_par(1),d_par(2),f_par(1)
+ method,bfgs,proc=opt_basis,thresh=5e-5,vstep=1e-3
+ maxit,100}
+ 
+
+ Variables initialized (889), CPU time= 0.00 sec
+ Commands  initialized (702), CPU time= 0.01 sec, 572 directives.
+ Default parameters read. Elapsed time= 0.11 sec
+
+ Checking input...
+ Passed
+1
+
+
+                                         ***  PROGRAM SYSTEM MOLPRO  ***
+                                       Copyright, TTI GmbH Stuttgart, 2015
+                                    Version 2015.1 linked Dec 29 2018 15:55:43
+
+
+ **********************************************************************************************************************************
+ LABEL *   Bi                                                                            
+  64 bit mpp version                                                                     DATE: 16-Dec-21          TIME: 14:28:44  
+ **********************************************************************************************************************************
+
+ SHA1:             19cd028119e0e09f93f0674bd8af7968d9b3eff6
+ **********************************************************************************************************************************
+
+ THRESHOLDS:
+
+ ZERO    =  1.00D-12  ONEINT  =  1.00D-12  TWOINT  =  1.00D-12  PREFAC  =  1.00D-14  LOCALI  =  1.00D-09  EORDER  =  1.00D-04
+ ENERGY  =  0.00D+00  ETEST   =  0.00D+00  EDENS   =  0.00D+00  THRDEDEF=  1.00D-06  GRADIENT=  1.00D-02  STEP    =  1.00D-03
+ ORBITAL =  1.00D-05  CIVEC   =  1.00D-05  COEFF   =  1.00D-04  PRINTCI =  5.00D-02  PUNCHCI =  9.90D+01  OPTGRAD =  3.00D-04
+ OPTENERG=  1.00D-06  OPTSTEP =  3.00D-04  THRGRAD =  1.00D-10  COMPRESS=  1.00D-11  VARMIN  =  1.00D-07  VARMAX  =  1.00D-03
+ THRDOUB =  0.00D+00  THRDIV  =  1.00D-05  THRRED  =  1.00D-07  THRPSP  =  1.00D+00  THRDC   =  1.00D-10  THRCS   =  1.00D-10
+ THRNRM  =  1.00D-08  THREQ   =  0.00D+00  THRDE   =  1.00D+00  THRREF  =  1.00D-05  SPARFAC =  1.00D+00  THRDLP  =  1.00D-07
+ THRDIA  =  1.00D-10  THRDLS  =  1.00D-07  THRGPS  =  0.00D+00  THRKEX  =  0.00D+00  THRDIS  =  2.00D-01  THRVAR  =  1.00D-10
+ THRLOC  =  1.00D-06  THRGAP  =  1.00D-06  THRLOCT = -1.00D+00  THRGAPT = -1.00D+00  THRORB  =  1.00D-06  THRMLTP =  0.00D+00
+ THRCPQCI=  1.00D-10  KEXTA   =  0.00D+00  THRCOARS=  0.00D+00  SYMTOL  =  1.00D-06  GRADTOL =  1.00D-06  THROVL  =  1.00D-08
+ THRORTH =  1.00D-08  GRID    =  1.00D-06  GRIDMAX =  1.00D-03  DTMAX   =  0.00D+00  THROCCDE=  1.00D-01  THROCCDE=  1.00D-01
+
+
+
+ ZUNIT=ANG
+ 
+
+Geometry recognized as XYZ
+
+ SETTING S_PAR(1)       =         0.10682100                                  
+ SETTING S_PAR(2)       =         2.83350000                                  
+ SETTING P_PAR(1)       =         0.08074900                                  
+ SETTING P_PAR(2)       =         5.17860000                                  
+ SETTING D_PAR(1)       =         0.20260700                                  
+ SETTING D_PAR(2)       =         1.50000000                                  
+ SETTING F_PAR(1)       =         0.30000000                                  
+ SETTING F_PAR(2)       =         3.00000000                                  
+
+ Variable memory set to  512000000 words,  buffer space   230000 words
+
+
+
+ PROGRAM * MINIMIZE (General minimization)     Authors: H.-J. Werner, P.J. Knowles, K.A. Peterson
+
+ Minimize EVAL with respect to:        S_PAR(1)  S_PAR(2)  P_PAR(1)  P_PAR(2)  D_PAR(1)  
+                                       D_PAR(2)  F_PAR(1)  
+ Method BFGS will be used
+ Variables are optimized in the space of (x/x0)
+
+
+ Minimization using procedure=OPT_BASIS
+
+ *** Long output written to logfile /global/u2/g/gwang18/projects/cc-so-ecp/bi/basis/cc_tz/atom.log ***
+
+
+ BFGS update of inverse hessian 
+
+ PROGRAM * MINIMIZE (General minimization)     Authors: H.-J. Werner, P.J. Knowles, K.A. Peterson
+
+
+ Results for BFGS iteration    1       Current function value  =         -5.394142704
+                                     Previous function value =          0.000000000
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.106821       -0.0004695
+ BFGS       S_PAR(2)                  2.833500       -0.0001862
+ BFGS       P_PAR(1)                  0.080749        0.0003161
+ BFGS       P_PAR(2)                  5.178600        0.0000312
+ BFGS       D_PAR(1)                  0.202607        0.0006322
+ BFGS       D_PAR(2)                  1.500000        0.0001323
+ BFGS       F_PAR(1)                  0.300000       -0.0010494
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    2       Current function value  =         -5.394159686
+                                     Previous function value =         -5.394142704
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.107322       -0.0004014
+ BFGS       S_PAR(2)                  2.838775       -0.0001639
+ BFGS       P_PAR(1)                  0.080494        0.0001733
+ BFGS       P_PAR(2)                  5.176985        0.0000220
+ BFGS       D_PAR(1)                  0.201326        0.0005707
+ BFGS       D_PAR(2)                  1.498016        0.0001304
+ BFGS       F_PAR(1)                  0.303148       -0.0008303
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    3       Current function value  =         -5.394197362
+                                     Previous function value =         -5.394159686
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.109695       -0.0000807
+ BFGS       S_PAR(2)                  2.864456       -0.0000580
+ BFGS       P_PAR(1)                  0.079703       -0.0002793
+ BFGS       P_PAR(2)                  5.170618       -0.0000074
+ BFGS       D_PAR(1)                  0.194940        0.0003099
+ BFGS       D_PAR(2)                  1.487244        0.0001292
+ BFGS       F_PAR(1)                  0.316975        0.0000667
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    4       Current function value  =         -5.394199890
+                                     Previous function value =         -5.394197362
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.110091       -0.0000288
+ BFGS       S_PAR(2)                  2.869512       -0.0000404
+ BFGS       P_PAR(1)                  0.079841       -0.0002195
+ BFGS       P_PAR(2)                  5.170199       -0.0000033
+ BFGS       D_PAR(1)                  0.193443        0.0002592
+ BFGS       D_PAR(2)                  1.483765        0.0001293
+ BFGS       F_PAR(1)                  0.318534        0.0001599
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    5       Current function value  =         -5.394203744
+                                     Previous function value =         -5.394199890
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.110716        0.0000520
+ BFGS       S_PAR(2)                  2.879028       -0.0000124
+ BFGS       P_PAR(1)                  0.080333        0.0000099
+ BFGS       P_PAR(2)                  5.169658        0.0000121
+ BFGS       D_PAR(1)                  0.190246        0.0001616
+ BFGS       D_PAR(2)                  1.474828        0.0001271
+ BFGS       F_PAR(1)                  0.319859        0.0002347
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    6       Current function value  =         -5.394205743
+                                     Previous function value =         -5.394203744
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.110927        0.0000799
+ BFGS       S_PAR(2)                  2.884199       -0.0000022
+ BFGS       P_PAR(1)                  0.080643        0.0001559
+ BFGS       P_PAR(2)                  5.168742        0.0000215
+ BFGS       D_PAR(1)                  0.188153        0.0001033
+ BFGS       D_PAR(2)                  1.467410        0.0001217
+ BFGS       F_PAR(1)                  0.319227        0.0001921
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    7       Current function value  =         -5.394207730
+                                     Previous function value =         -5.394205743
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.110978        0.0000899
+ BFGS       S_PAR(2)                  2.889303        0.0000021
+ BFGS       P_PAR(1)                  0.080819        0.0002332
+ BFGS       P_PAR(2)                  5.166318        0.0000258
+ BFGS       D_PAR(1)                  0.185750        0.0000394
+ BFGS       D_PAR(2)                  1.457022        0.0001089
+ BFGS       F_PAR(1)                  0.317454        0.0000783
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    8       Current function value  =         -5.394208995
+                                     Previous function value =         -5.394207730
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.110874        0.0000826
+ BFGS       S_PAR(2)                  2.892708        0.0000003
+ BFGS       P_PAR(1)                  0.080719        0.0001725
+ BFGS       P_PAR(2)                  5.162959        0.0000206
+ BFGS       D_PAR(1)                  0.183993       -0.0000074
+ BFGS       D_PAR(2)                  1.447585        0.0000930
+ BFGS       F_PAR(1)                  0.315852       -0.0000252
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration    9       Current function value  =         -5.394209641
+                                     Previous function value =         -5.394208995
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.110705        0.0000671
+ BFGS       S_PAR(2)                  2.894473       -0.0000045
+ BFGS       P_PAR(1)                  0.080484        0.0000474
+ BFGS       P_PAR(2)                  5.159819        0.0000111
+ BFGS       D_PAR(1)                  0.183121       -0.0000323
+ BFGS       D_PAR(2)                  1.440887        0.0000798
+ BFGS       F_PAR(1)                  0.315188       -0.0000688
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   10       Current function value  =         -5.394209938
+                                     Previous function value =         -5.394209641
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.110544        0.0000506
+ BFGS       S_PAR(2)                  2.895173       -0.0000097
+ BFGS       P_PAR(1)                  0.080317       -0.0000389
+ BFGS       P_PAR(2)                  5.157836        0.0000045
+ BFGS       D_PAR(1)                  0.182962       -0.0000386
+ BFGS       D_PAR(2)                  1.437056        0.0000724
+ BFGS       F_PAR(1)                  0.315324       -0.0000607
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   11       Current function value  =         -5.394210217
+                                     Previous function value =         -5.394209938
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.110331        0.0000277
+ BFGS       S_PAR(2)                  2.896082       -0.0000168
+ BFGS       P_PAR(1)                  0.080209       -0.0000933
+ BFGS       P_PAR(2)                  5.155845       -0.0000002
+ BFGS       D_PAR(1)                  0.182997       -0.0000399
+ BFGS       D_PAR(2)                  1.432461        0.0000642
+ BFGS       F_PAR(1)                  0.315753       -0.0000337
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   12       Current function value  =         -5.394210567
+                                     Previous function value =         -5.394210217
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.110003       -0.0000084
+ BFGS       S_PAR(2)                  2.898044       -0.0000278
+ BFGS       P_PAR(1)                  0.080173       -0.0001111
+ BFGS       P_PAR(2)                  5.153162       -0.0000031
+ BFGS       D_PAR(1)                  0.183135       -0.0000396
+ BFGS       D_PAR(2)                  1.424802        0.0000511
+ BFGS       F_PAR(1)                  0.316364        0.0000046
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   13       Current function value  =         -5.394210882
+                                     Previous function value =         -5.394210567
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.109672       -0.0000445
+ BFGS       S_PAR(2)                  2.901083       -0.0000384
+ BFGS       P_PAR(1)                  0.080249       -0.0000718
+ BFGS       P_PAR(2)                  5.150571       -0.0000023
+ BFGS       D_PAR(1)                  0.183365       -0.0000375
+ BFGS       D_PAR(2)                  1.415837        0.0000362
+ BFGS       F_PAR(1)                  0.316811        0.0000327
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   14       Current function value  =         -5.394211085
+                                     Previous function value =         -5.394210882
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.109500       -0.0000619
+ BFGS       S_PAR(2)                  2.904397       -0.0000430
+ BFGS       P_PAR(1)                  0.080373       -0.0000082
+ BFGS       P_PAR(2)                  5.149002        0.0000008
+ BFGS       D_PAR(1)                  0.183645       -0.0000332
+ BFGS       D_PAR(2)                  1.409198        0.0000259
+ BFGS       F_PAR(1)                  0.316866        0.0000363
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   15       Current function value  =         -5.394211243
+                                     Previous function value =         -5.394211085
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.109466       -0.0000617
+ BFGS       S_PAR(2)                  2.908265       -0.0000422
+ BFGS       P_PAR(1)                  0.080475        0.0000435
+ BFGS       P_PAR(2)                  5.147942        0.0000034
+ BFGS       D_PAR(1)                  0.183970       -0.0000272
+ BFGS       D_PAR(2)                  1.404221        0.0000189
+ BFGS       F_PAR(1)                  0.316689        0.0000254
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   16       Current function value  =         -5.394211439
+                                     Previous function value =         -5.394211243
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.109521       -0.0000469
+ BFGS       S_PAR(2)                  2.914725       -0.0000363
+ BFGS       P_PAR(1)                  0.080550        0.0000807
+ BFGS       P_PAR(2)                  5.146439        0.0000048
+ BFGS       D_PAR(1)                  0.184479       -0.0000177
+ BFGS       D_PAR(2)                  1.397836        0.0000104
+ BFGS       F_PAR(1)                  0.316387        0.0000067
+
+ BFGS update of inverse hessian 
+
+ Results for BFGS iteration   17       Current function value  =         -5.394211644
+                                     Previous function value =         -5.394211439
+ Current variables and gradients:
+ BFGS       S_PAR(1)                  0.109650       -0.0000186
+ BFGS       S_PAR(2)                  2.923818       -0.0000260
+ BFGS       P_PAR(1)                  0.080551        0.0000792
+ BFGS       P_PAR(2)                  5.144314        0.0000034
+ BFGS       D_PAR(1)                  0.185146       -0.0000056
+ BFGS       D_PAR(2)                  1.390011        0.0000006
+ BFGS       F_PAR(1)                  0.316113       -0.0000102
+
+ BFGS update of inverse hessian 

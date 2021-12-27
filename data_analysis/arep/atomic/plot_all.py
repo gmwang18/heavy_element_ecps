@@ -14,7 +14,7 @@ toeV = 27.211386
 
 ### === Get the molecule names in the path ===
 systems = glob.glob("*.csv")
-atoms=['I', 'Te', 'Bi', 'Ag', 'Au', 'W', 'Mo', 'Ir']
+atoms=['I', 'Te', 'Bi', 'Ag', 'Au', 'Pd', 'Ir', 'W', 'Mo']
 ### Get rid of csv extension
 #print(atoms)
 
@@ -44,14 +44,14 @@ linestyles_dashed={
 }
 
 pointstyles = {
-'UC'          :{'label':'UC',         'color':'#ff0000','marker':'.'},
-'BFD'         :{'label':'BFD',        'color':'#0000ff','marker':','},
-'MDFSTU'      :{'label':'MDFSTU',     'color':'#ff6600','marker':'o'},
-'MWBSTU'      :{'label':'MWBSTU',     'color':'#ff33cc','marker':'x'},
-'CRENB(L/S)'  :{'label':'CRENB(L/S)', 'color':'#2f4f4f','marker':'|'},
-'SBKJC'       :{'label':'SBKJC',      'color':'#1e90ff','marker':'+'},
-'LANL2'       :{'label':'LANL2',      'color':'#a52a2a','marker':'h'},
-'ccECP'       :{'label':'ccECP',      'color':'#009900','marker':'d'},
+'UC'          :{'label':'UC',         'color':'#ff0000','marker':'s', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
+'BFD'         :{'label':'BFD',        'color':'#0000ff','marker':'P', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
+'MDFSTU'      :{'label':'MDFSTU',     'color':'#ff6600','marker':'o', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
+'MWBSTU'      :{'label':'MWBSTU',     'color':'#ff33cc','marker':'v', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
+'CRENB(L/S)'  :{'label':'CRENB(L/S)', 'color':'#2f4f4f','marker':'^', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
+'SBKJC'       :{'label':'SBKJC',      'color':'#1e90ff','marker':'>', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
+'LANL2'       :{'label':'LANL2',      'color':'#a52a2a','marker':'<', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
+'ccECP'       :{'label':'ccECP',      'color':'#009900','marker':'d', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
 }
 
 
@@ -69,10 +69,10 @@ pointstyles_no_label = {
 
 def mpl_init():
     font   = {'family' : 'serif', 'size': 16}
-    lines  = {'linewidth': 2.2}
+    lines  = {'linewidth': 1.2}
     axes   = {'linewidth': 2.0}    # border width
     tick   = {'major.size': 2, 'major.width':2}
-    legend = {'frameon':True, 'fontsize':14.0, 'handlelength':3.00, 'labelspacing':0.30, 'handletextpad':0.4, 'loc':'best', 'facecolor':'white', 'framealpha':0.25, 'edgecolor':'#f2f2f2'}
+    legend = {'frameon':True, 'fontsize':14.5, 'handlelength':3.00, 'labelspacing':0.30, 'handletextpad':0.4, 'loc':'best', 'facecolor':'white', 'framealpha':0.25, 'edgecolor':'#f2f2f2'}
     mpl.rc('font',**font)
     mpl.rc('lines',**lines)
     mpl.rc('axes',**axes)
@@ -129,13 +129,13 @@ def plot_style1():
     ax1.axhspan(0.00,0.043,alpha=0.25,color='gray')
 
     for ecp in ecps:
-        ax1.scatter(iatoms, df_lmad.loc[ecp], **pointstyles[ecp])
         ax1.plot(iatoms, df_lmad.loc[ecp], **linestyles_solid[ecp])
+        ax1.scatter(iatoms, df_lmad.loc[ecp], **pointstyles[ecp])
     ax1.set_xticks(iatoms)
     ax1.set_xticklabels(atoms)
 
     ax1.set_ylabel('LMAD (eV)')
-    ax1.legend(ncol=1,loc='best',handletextpad=0.1)
+    ax1.legend(ncol=1,loc='best',handletextpad=0.05)
     plt.savefig('atom_figs/lmad.pdf')
     plt.show()
 
@@ -147,14 +147,14 @@ def plot_style1():
 
 
     for ecp in ecps:
-        ax2.scatter(iatoms, df_mad.loc[ecp], **pointstyles[ecp])
         ax2.plot(iatoms, df_mad.loc[ecp], **linestyles_solid[ecp])
+        ax2.scatter(iatoms, df_mad.loc[ecp], **pointstyles[ecp])
 
     ax2.set_xticks(iatoms)
     ax2.set_xticklabels(atoms)
 
     ax2.set_ylabel('MAD (eV)')
-    ax2.legend(ncol=1,loc='upper left',handletextpad=0.1)
+    ax2.legend(ncol=1,loc='upper left',handletextpad=0.05)
     plt.savefig('atom_figs/mad.pdf')
     plt.show()
 
@@ -167,14 +167,13 @@ def plot_style1():
 
 
     for ecp in ecps:
-        
-        ax3.scatter(iatoms, df_wmad.loc[ecp], **pointstyles[ecp])
         ax3.plot(iatoms, df_wmad.loc[ecp], **linestyles_solid[ecp])
+        ax3.scatter(iatoms, df_wmad.loc[ecp], **pointstyles[ecp])
     ax3.set_xticks(iatoms)
     ax3.set_xticklabels(atoms)
 
     ax3.set_ylabel(r'WMAD [\%]')
-    ax3.legend(ncol=2,loc='best',handletextpad=0.1)
+    ax3.legend(ncol=2,loc='best',handletextpad=0.05)
     plt.savefig('atom_figs/wmad.pdf')
     plt.show()
 

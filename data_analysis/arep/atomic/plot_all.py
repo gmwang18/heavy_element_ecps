@@ -44,14 +44,14 @@ linestyles_dashed={
 }
 
 pointstyles = {
-'UC'          :{'label':'UC',         'color':'#ff0000','marker':'s', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
-'BFD'         :{'label':'BFD',        'color':'#0000ff','marker':'P', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
-'MDFSTU'      :{'label':'MDFSTU',     'color':'#ff6600','marker':'o', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
-'MWBSTU'      :{'label':'MWBSTU',     'color':'#ff33cc','marker':'v', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
-'CRENB(L/S)'  :{'label':'CRENB(L/S)', 'color':'#2f4f4f','marker':'^', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
-'SBKJC'       :{'label':'SBKJC',      'color':'#1e90ff','marker':'>', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
-'LANL2'       :{'label':'LANL2',      'color':'#a52a2a','marker':'<', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
-'ccECP'       :{'label':'ccECP',      'color':'#009900','marker':'d', 's':40, 'linewidths':0.1, 'edgecolor':'gray', 'alpha':1.0},
+'UC'          :{'label':'UC',         'color':'#ff0000','marker':'s', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':0.8},
+'BFD'         :{'label':'BFD',        'color':'#0000ff','marker':'P', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':0.8},
+'MDFSTU'      :{'label':'MDFSTU',     'color':'#ff6600','marker':'o', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':0.8},
+'MWBSTU'      :{'label':'MWBSTU',     'color':'#ff33cc','marker':'v', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':0.8},
+'CRENB(L/S)'  :{'label':'CRENB(L/S)', 'color':'#2f4f4f','marker':'^', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':0.8},
+'SBKJC'       :{'label':'SBKJC',      'color':'#1e90ff','marker':'>', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':0.8},
+'LANL2'       :{'label':'LANL2',      'color':'#a52a2a','marker':'<', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':0.8},
+'ccECP'       :{'label':'ccECP',      'color':'#009900','marker':'d', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':0.8},
 }
 
 

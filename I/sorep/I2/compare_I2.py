@@ -164,8 +164,8 @@ ax.grid(b=None, which='major', axis='both', alpha=0.1)
 ax.set_xlabel('Bond length [\AA]')
 ax.set_ylabel('Binding energy $-D_e$ [eV]')
 De_exp = -(1.54238 + 0.0132167)
-ax.axhline(De_exp, color='r', linestyle='-',  linewidth=1.5, label='Expt. $-D_{e}$')
-ax.axvline(2.6655, color='r', linestyle='--', linewidth=1.5, label='Expt. $r_{eq}$')
+ax.axhline(De_exp, color='r', linestyle='--', linewidth=1.5, label='Expt. $-D_{e}$')
+ax.axvline(2.6655, color='r', linestyle='-',  linewidth=1.5, label='Expt. $r_{eq}$')
 
 for column in df_binding:
         if column == "Z":
@@ -208,8 +208,8 @@ for column in df_binding:
                 y=morse(x, *popt_m)
                 ax.plot(x, y*toev, **styles[column+'_fit'])
                 
-ax.axvline(stu_bind_geo, color='#984ea3', linestyle='--', linewidth=1.5, dashes=(12,2), label='MDFSTU $r_{eq}$')
-ax.axvline(ccecp_bind_geo, color='#339933', linestyle='--', linewidth=1.5, dashes=(2,2), label='ccECP $r_{eq}$')
+ax.axvline(stu_bind_geo, color='#984ea3', linestyle='--', linewidth=1.5, dashes=(2,2), label='MDFSTU $r_{eq}$')
+ax.axvline(ccecp_bind_geo, color='#339933', linestyle='--', linewidth=1.5, dashes=(8,2), label='ccECP $r_{eq}$')
 ax.legend(loc='best')
 #ax.legend(loc='upper right', prop={'size': 10.5})
 ax.tick_params(direction='in', length=6.0)

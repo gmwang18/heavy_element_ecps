@@ -63,11 +63,11 @@ def pd_f2s(udf):   # df to df with uncertainties
     return df
 
 def init():
-    font = {'family' : 'serif', 'size': 15}
-    lines = {'linewidth':1.50}
-    axes = {'linewidth': 3}
+    font = {'family' : 'serif', 'size': 16}
+    lines = {'linewidth':2.0}
+    axes = {'linewidth': 2.0}
     tick = {'major.size': 2, 'major.width':2}
-    legend = {'frameon':False, 'fontsize':13.0, 'handlelength':1.50, 'labelspacing':0.15, 'handletextpad':0.20}
+    legend = {'frameon':True, 'fontsize':14, 'handlelength':2.30, 'labelspacing':0.30, 'handletextpad':0.5, 'loc':'best', 'facecolor':'white', 'framealpha':1.00, 'edgecolor':'#f2f2f2'}
 
     mpl.rc('font',**font)
     mpl.rc('lines',**lines)
@@ -80,7 +80,7 @@ def init():
     mpl.rcParams.update({'figure.autolayout':True})
     mpl.rcParams.update({'errorbar.capsize': 1})
     fig = plt.figure()
-    fig.set_size_inches(7.00, 5.00)   # Default 6.4, 4.8
+    fig.set_size_inches(7.17, 5.38)   # Default 6.4, 4.8
     ax1 = fig.add_subplot(111)
     return fig,ax1
 
@@ -151,14 +151,14 @@ mu=m1*m2/(m1+m2)
 wconv=tocm*bohr/np.sqrt(amu)
 
 styles = {
-'CC'           :{'label':'UCCSD(T)/RHF (AREP-MDFSTU)', 'color':'#984ea3', 'fmt':'s',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
-'CC_fit'       :{                               'color':'#984ea3',               'linestyle':'--','dashes': (8,2),                                                                },
-'PBE0DMC'     :{'label':'FPSODMC/PBE0 (SOREP-MDFSTU)', 'color':'#984ea3', 'fmt':'o',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
-'PBE0DMC_fit' :{                               'color':'#984ea3',               'linestyle':'--','dashes': (1,1),                                                                },
-'CC-so-ccECP'           :{'label':'UCCSD(T)/RHF (AREP-ccECP)', 'color':'#339933', 'fmt':'.',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
-'CC-so-ccECP_fit'       :{                               'color':'#339933',               'linestyle':'--','dashes': (8,2),                                                                },
-'ccECP_PBE0DMC'     :{'label':'FPSODMC/PBE0 (SOREP-ccECP)', 'color':'#339933', 'fmt':'*',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.2},
-'ccECP_PBE0DMC_fit' :{                               'color':'#339933',               'linestyle':'--','dashes': (1,1),                                                                },
+'CC'			:{'label':'UCCSD(T)/RHF (AREP-MDFSTU)',	'color':'#984ea3', 'fmt':'s',                                   'markersize':5, 'markeredgecolor':'#000000', 'markeredgewidth':0.1},
+'CC_fit'		:{					'color':'#984ea3',               'linestyle':'--','dashes': (1,1),                                                                },
+'PBE0DMC'		:{'label':'FPSODMC/PBE0 (SOREP-MDFSTU)','color':'#984ea3', 'fmt':'o',                                   'markersize':5, 'markeredgecolor':'#000000', 'markeredgewidth':0.1},
+'PBE0DMC_fit'		:{					'color':'#984ea3',               'linestyle':'--','dashes': (1,1),                                                                },
+'CC-so-ccECP'		:{'label':'UCCSD(T)/RHF (AREP-ccECP)',	'color':'#339933', 'fmt':'v',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.1},
+'CC-so-ccECP_fit'	:{					'color':'#339933',               'linestyle':'--','dashes': (8,2),                                                                },
+'ccECP_PBE0DMC'		:{'label':'FPSODMC/PBE0 (SOREP-ccECP)',	'color':'#339933', 'fmt':'^',                                   'markersize':6, 'markeredgecolor':'#000000', 'markeredgewidth':0.1},
+'ccECP_PBE0DMC_fit'	:{					'color':'#339933',               'linestyle':'--','dashes': (8,2),                                                                },
         }
 
 blatex=pd.DataFrame(columns=df_binding.columns,  index=["$D_e$(eV)", "$r_e$(\AA)", "$\omega_e$(cm$^{-1}$)"])
@@ -169,7 +169,7 @@ ax.grid(b=None, which='major', axis='both', alpha=0.1)
 ax.set_xlabel('Bond length [\AA]')
 ax.set_ylabel('Binding energy $-D_e$ [eV]')
 De_exp = -5.0
-ax.axhline(De_exp, color='r', linestyle='-', linewidth=0.7, label='Expt. $-D_{e}$')
+ax.axhline(De_exp, color='r', linestyle='--', linewidth=1.5, label='Expt. $-D_{e}$')
 ax.axhspan(-6.0, -4.0, alpha=0.25, color='darksalmon')
 
 for column in df_binding:
@@ -220,16 +220,17 @@ for column in df_binding:
                 y=morse(x, *popt_m)
                 ax.plot(x, y*toev, **styles[column+'_fit'])
                 
-ax.axvline(stu_dmc_bind_geo, color='#984ea3', linestyle='--', linewidth=0.7, dashes=(4,4), label='MDFSTU. $r_{eq}$')
-ax.axvline(ccecp_dmc_bind_geo, color='#339933', linestyle='--', linewidth=0.7, dashes=(4,4), label='ccECP. $r_{eq}$')
+ax.axvline(stu_dmc_bind_geo, color='#984ea3', linestyle='--', linewidth=1.5, dashes=(2,2), label='MDFSTU $r_{eq}$')
+ax.axvline(ccecp_dmc_bind_geo, color='#339933', linestyle='--', linewidth=1.5, dashes=(8,4), label='ccECP $r_{eq}$')
 #ax.axvline(stu_cc_bind_geo, color='#984ea3', linestyle='-', linewidth=0.7, label='MDFSTU. $r_{eq}$')
 #ax.axvline(ccecp_cc_bind_geo, color='#339933', linestyle='-', linewidth=0.7, label='so-ccECP. $r_{eq}$')
-#ax.legend(loc='best', prop={'size': 12})
-ax.legend(loc='upper right', prop={'size': 10.5})
+ax.legend(loc='best')
+ax.set_ylim(-6.3, 0.0)
+#ax.legend(loc='upper right', prop={'size': 10.5})
 ax.tick_params(direction='in', length=6.0)
 plt.savefig('W2_PBE0_compare_binding.pdf')
-plt.savefig('W2_PBE0_compare_binding.png', dpi=800)
-#plt.show()
+#plt.savefig('W2_PBE0_compare_binding.png', dpi=800)
+plt.show()
 
 
 blatex.insert(loc=0, column='Exp.', value=0)

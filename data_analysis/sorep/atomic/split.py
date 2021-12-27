@@ -16,36 +16,27 @@ from uncertainties import ufloat
 from uncertainties import unumpy
 from uncertainties import ufloat_fromstr
 
-
-
 def mpl_init():
-    font = {'family' : 'serif',
-            'size': 14}
-    lines = {'linewidth':2,'markersize':8}
-    axes = {'linewidth': 3}
-    xtick = {'major.size': 5,
-            'major.width':2}
-    ytick = {'major.size': 5,
-            'major.width':2,
-            'minor.visible':True,
-            'minor.size':3,
-            'minor.width':2,
-            'direction':'in'}
-    legend = {'frameon':False,
-              'fontsize':15,
-              'handlelength':2.5}
+    font   = {'family' : 'serif', 'size': 16}
+    lines  = {'linewidth': 1.2}
+    axes   = {'linewidth': 2.0}    # border width
+    tick   = {'major.size': 2, 'major.width':2}
+    legend = {'frameon':True, 'fontsize':15.5, 'handlelength':3.00, 'labelspacing':0.30, 'handletextpad':0.4, 'loc':'best', 'facecolor':'white', 'framealpha':0.25, 'edgecolor':'#f2f2f2'}
     mpl.rc('font',**font)
     mpl.rc('lines',**lines)
     mpl.rc('axes',**axes)
-    mpl.rc('xtick',**xtick)
-    mpl.rc('ytick',**ytick)
+    mpl.rc('xtick',**tick)
+    mpl.rc('ytick',**tick)
     mpl.rc('legend',**legend)
     mpl.rcParams['text.usetex'] = True
     mpl.rcParams.update({'figure.autolayout':True})
     fig = plt.figure()
-    ax1 = fig.add_subplot(111)
+    #fig.set_size_inches(7.04, 5.28)   # Default 6.4, 4.8
+    ax1 = fig.add_subplot(111) # row, column, nth plot
+    ax1.tick_params(direction='in', length=6, width=2, which='major', pad=6)
+    ax1.tick_params(direction='in', length=4, width=1, which='minor', pad=6)
     ax1.grid(b=None, which='major', axis='both', alpha=0.10)
-    return fig,ax1
+    return fig, ax1
 
 
 linestyles = {
@@ -59,8 +50,8 @@ linestyles_dashed = {
 }
 
 pointstyles = {
-'STU'      :{'label': 'MDFSTU',  'color':'#ff7f00','marker': 'o'},
-'ccECP'    :{'label': r'ccECP',  'color':'#009900','marker': 'd'},
+'STU'      :{'label': 'MDFSTU',  'color':'#ff7f00','marker': 'o', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':1.0},
+'ccECP'    :{'label': r'ccECP',  'color':'#009900','marker': 'd', 's':50, 'linewidths':0.1, 'edgecolor':'black', 'alpha':1.0},
 }
 
 pointstyles_no_label = {
@@ -234,8 +225,8 @@ def plot_cosci_mad():
 	ax.axhline(0.0, color='black')
 	ax.axhspan(0, 0.043, alpha=0.25, color='gray')
 	for calc in ['STU', 'ccECP']:
-		ax.scatter(ielement, df_mad['MAD(COSCI)/{}'.format(calc)], **pointstyles[calc])
 		ax.plot(ielement, df_mad['MAD(COSCI)/{}'.format(calc)], **linestyles[calc])
+		ax.scatter(ielement, df_mad['MAD(COSCI)/{}'.format(calc)], **pointstyles[calc])
 	ax.set_xticks(ielement)
 	ax.set_xticklabels(elements)
 	ax.set_ylabel('MAD/COSCI (eV)')
@@ -261,8 +252,8 @@ def plot_fp_mad():
 			if math.isnan(v):
 				tran_values[i] = main_values[i]
 				tran_errors[i] = main_errors[i]
-		ax.scatter(ielement, tran_values, **pointstyles[calc])
 		ax.plot(ielement, tran_values, **linestyles[calc])
+		ax.scatter(ielement, tran_values, **pointstyles[calc])
 		#ax.scatter(ielement, df_mad['MAD(CCSD)/{}'.format(calc)], **pointstyles[calc])
 		#ax.plot(ielement, df_mad['MAD(CCSD)/{}'.format(calc)], **linestyles[calc])
 	ax.set_xticks(ielement)
@@ -286,8 +277,8 @@ def plot_all_mad():
 	ax.axhline(0.0, color='black')
 	ax.axhspan(0, 0.043, alpha=0.25, color='gray')
 	for calc in ['STU', 'ccECP']:
-		ax.scatter(ielement, df_mad['MAD(COSCI)/{}'.format(calc)], **pointstyles_no_label[calc])
 		ax.plot(ielement, df_mad['MAD(COSCI)/{}'.format(calc)], **linestyles_dashed[calc])
+		ax.scatter(ielement, df_mad['MAD(COSCI)/{}'.format(calc)], **pointstyles_no_label[calc])
 	ax.set_xticks(ielement)
 	ax.set_xticklabels(elements)
 	ax.set_ylabel('MAD/COSCI (eV)')
@@ -307,8 +298,8 @@ def plot_all_mad():
 			if math.isnan(v):
 				tran_values[i] = main_values[i]
 				tran_errors[i] = main_errors[i]
-		ax.scatter(ielement, tran_values, **pointstyles[calc])
 		ax.plot(ielement, tran_values, **linestyles[calc])
+		ax.scatter(ielement, tran_values, **pointstyles[calc])
 		#ax.scatter(ielement, df_mad['MAD(CCSD)/{}'.format(calc)], **pointstyles[calc])
 		#ax.plot(ielement, df_mad['MAD(CCSD)/{}'.format(calc)], **linestyles[calc])
 	ax.set_xticks(ielement)

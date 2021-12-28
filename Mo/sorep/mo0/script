@@ -1,0 +1,164 @@
+#!/bin/bash
+
+HOME=`pwd`
+rm $HOME/workdir/*
+mkdir -p workdir
+echo ecp:
+cat params.in
+cp params.in $HOME/workdir/
+
+#This is alpha
+exp1=`grep 'e1' $HOME/workdir/params.in | awk '{print $1}'`
+exp2=`grep 'e2' $HOME/workdir/params.in | awk '{print $1}'`
+exp3=`grep 'e3' $HOME/workdir/params.in | awk '{print $1}'`
+exp4=`grep 'e4' $HOME/workdir/params.in | awk '{print $1}'`
+exp5=`grep 'e5' $HOME/workdir/params.in | awk '{print $1}'`
+exp6=`grep 'e6' $HOME/workdir/params.in | awk '{print $1}'`
+exp7=`grep 'e7' $HOME/workdir/params.in | awk '{print $1}'`
+exp8=`grep 'e8' $HOME/workdir/params.in | awk '{print $1}'`
+
+
+coeff1=`grep 'c1' $HOME/workdir/params.in | awk '{print $1}'`
+coeff2=`grep 'c2' $HOME/workdir/params.in | awk '{print $1}'`
+coeff3=`grep 'c3' $HOME/workdir/params.in | awk '{print $1}'`
+coeff4=`grep 'c4' $HOME/workdir/params.in | awk '{print $1}'`
+coeff5=`grep 'c5' $HOME/workdir/params.in | awk '{print $1}'`
+coeff6=`grep 'c6' $HOME/workdir/params.in | awk '{print $1}'`
+coeff7=`grep 'c7' $HOME/workdir/params.in | awk '{print $1}'`
+coeff8=`grep 'c8' $HOME/workdir/params.in | awk '{print $1}'`
+
+sed "s/EXP1/$exp1/g; \
+     s/EXP2/$exp2/g; \
+     s/EXP3/$exp3/g; \
+     s/EXP4/$exp4/g; \
+     s/EXP5/$exp5/g; \
+     s/EXP6/$exp6/g; \
+     s/EXP7/$exp7/g; \
+     s/EXP8/$exp8/g; \
+
+     s/COEFF1/$coeff1/g; \
+     s/COEFF2/$coeff2/g; \
+     s/COEFF3/$coeff3/g; \
+     s/COEFF4/$coeff4/g; \
+     s/COEFF5/$coeff5/g; \
+     s/COEFF6/$coeff6/g; \
+     s/COEFF7/$coeff7/g; \
+     s/COEFF8/$coeff8/g;   " pp.mol > $HOME/workdir/pp.mol
+
+
+declare -a states=("gs" "ex" "ea" "ip1" "ip2" "p1" "4p")
+declare -a mult_num=(7 5 1 5 5 2 2)
+declare -a totalstates=("gs" "ex" "ea" "ip1" "ip2")
+declare -a multistates=("gs" "ex" "ip1" "ip2" "p1" "4p")
+
+cp $HOME/ppinput/*.inp $HOME/workdir/
+cd $HOME/workdir/
+
+pam --noarch --gb=4.0 --inp=core.inp --mol=pp.mol --get 'DFCOEF=DFCOEF.core'
+
+
+num_states=${#states[@]}
+#for i in "${states[@]}"
+for (( i=0; i<$num_states; i++ ))
+do
+	state=${states[$i]}
+	
+	pam --noarch --gb=4.0 --inp=$state.inp --mol=pp.mol --put 'DFCOEF.core=DFCOEF'
+
+	lineBegin=$(grep -n 'Total Energy'  $state''*.out | head -n 1 | cut -d: -f1)
+	lineEnd=$(grep -n 'Total average' $state''*.out | head -n 1 | cut -d: -f1)
+	
+	if [ -z $lineBegin ]
+	then
+		#### Read the calculation without SO splitting ####
+		echo "$state state, No SO splitting in this state"
+		grep 'Total energy' $state''*.out | head -n 1  > energy_$state.dat
+	else
+		#### Read the calculation with SO splitting ####
+		echo "$state state, SO split reading..."
+		awk "NR>=$lineBegin&&NR<=$lineEnd{print}" $state''*.out > energy_$state.dat
+	fi
+	#### I have captured the calculation results from each state #####
+	#### Now I will capture the multiplit energies from each state ####
+
+	if [ -z $lineBegin ]
+	then
+		echo "Full shell states, Pure singlet state"
+		awk 'NR==1{print $4}' energy_$state.dat > mult_$state.dat
+		awk 'NR==1{print}' mult_$state.dat >> states_$state.spect
+	else
+		echo "I might have to read multiplet states from output and delete the degenerate states"
+		filelen=$(grep -c "" energy_$state.dat)
+		lineSOend="$[filelen - 2]"
+		awk "NR>2&&NR<$lineSOend{print $4}" energy_$state.dat | awk '{print $4}' > mult_$state.dat
+		len="$[filelen - 5]"
+
+		j=0
+		k=1
+		#for (( k=1; k<=$len; k++ ))
+		while [ $j -lt ${mult_num[$i]} ]
+		do
+			echo ${mult_num[$i]}
+			if [ $k == 1 ]
+			then 
+				last_mult_state=$(awk 'NR==1{print}' mult_$state.dat)
+				echo $last_mult_state >> states_$state.spect
+				j=$[$j+1]
+				k=$[$k+1]
+			else
+				current_mult_state=$(awk "NR==$k{print}" mult_$state.dat)
+				diff=$(bc <<< "$current_mult_state - $last_mult_state")
+				if (( $(echo "$diff > 0.00005" |bc -l) ))
+				then
+					#### last and current states are not degenerate ###
+					last_mult_state=$current_mult_state
+					j=$[$j+1]
+					echo $last_mult_state >> states_$state.spect
+				fi
+				k=$[$k+1]
+			fi
+		done	
+
+	fi
+done
+
+
+gs=`awk 'NR==1{print $1}' states_${states[0]}.spect`
+for i in "${totalstates[@]}"
+do
+	awk -v ref=$gs 'NR==1{printf("%.6f\n",($1-ref)*27.211386)}' states_$i.spect >> spect.ecp
+done
+
+for i in "${multistates[@]}"
+do
+	linenum=$(grep -c "" states_$i.spect)
+	if [ $linenum != 1 ]
+	then
+		ref=`awk 'NR==1{print $1}' states_$i.spect`
+		awk -v ref=$ref '{printf("%.6f\n",($1-ref)*27.211386)}' states_$i.spect >> spect.ecp
+	fi
+done
+
+rm mult_*
+
+
+paste -d ' ' $HOME/newspect.ae spect.ecp > spectra
+awk 'NR>=1&&NR<=5{printf("%.6f\n",($1-$2)*0.1)}' spectra > spec_diff
+awk 'NR>=6&&NR<=12{printf("%.6f\n",($1-$2)*1)}' spectra >> spec_diff
+awk 'NR>=13&&NR<=17{printf("%.6f\n",($1-$2)*1)}' spectra >> spec_diff
+awk 'NR>=18&&NR<=22{printf("%.6f\n",($1-$2)*0.5)}' spectra >> spec_diff
+awk 'NR>=23&&NR<=27{printf("%.6f\n",($1-$2)*0.5)}' spectra >> spec_diff
+awk 'NR>=28&&NR<=29{printf("%.6f\n",($1-$2)*0.2)}' spectra >> spec_diff
+awk 'NR>=30&&NR<=31{printf("%.6f\n",($1-$2)*0.2)}' spectra >> spec_diff
+
+#avg=`awk '{average+=$1;n++}END{print average/n}' spec_diff` 
+awk '{printf("%.6f\n",$1)}' spec_diff > results.out
+rm spec_diff
+cp results.out ..
+cat results.out
+cd $HOME
+awk '{sum+=$1*$1}END{print sum}' results.out >> soq
+
+rm -r $HOME/DIRAC_scratch*
+#rm workdir
+#rm -rf result

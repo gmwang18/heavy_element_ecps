@@ -1,0 +1,37 @@
+#!/bin/bash
+HOME=`pwd`
+
+declare -a states=("gs" "ex" "ea" "ip1" "ip2" "p1" "4p")
+declare -a mult_num=(7 5 1 5 5 2 2)
+
+num_states=${#states[@]}
+
+for (( i=0; i<$num_states; i++))
+do
+	state=${states[$i]}
+	num=${mult_num[$i]}
+
+	for ((j=1; j<=$num; j++))
+	do
+		cd  $HOME/../$state/state$j
+		rm Mo.dmc.*
+		rm Mo.linear.*
+		rm Mo.opt.*
+		rm so*
+	done
+done
+
+for (( i=0; i<$num_states; i++))
+do
+	state=${states[$i]}
+
+	cd $HOME/../$state/opt
+	rm *.json
+	rm *.log
+	rm *.o
+        rm *.config
+	rm *.wfout
+	rm so*
+	cp $HOME/../templates/* $HOME/../$state/opt
+done
+

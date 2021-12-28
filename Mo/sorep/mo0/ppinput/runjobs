@@ -1,0 +1,25 @@
+#!/bin/bash
+
+HOME=`pwd`
+
+#calc="ae"
+
+declare -a states=("gs" "ex" "ea" "ip1" "ip2" "p1" "4p")
+
+num_states=${#states[@]}
+
+run_core(){
+        pam --noarch --gb=4.0 --inp=core.inp --mol=pp.mol --get "DFCOEF=DFCOEF.core"
+}
+
+run_states(){
+        for i in "${states[@]}"
+        do
+                pam --noarch --gb=4.0 --inp=$i.inp --mol=pp.mol --put "DFCOEF.core=DFCOEF"  
+	wait
+        done
+}
+
+run_core
+wait
+run_states

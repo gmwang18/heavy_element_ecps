@@ -1,0 +1,124 @@
+This is a new version of donlp2 written  in ANSI C 
+based on the ANSI-C version as produced by translation of the f77 version
+by Serge Schoeffler.
+Copyright of this version remains with P. Spellucci
+Hence this version is free for research purposes, while commercial
+uses of any kind requires licensing by TUD, P. Spellucci's employer.
+For obtaining such license (requiring a quite tiny royalty) write 
+to spellucci  _at_  mathematik.tu-darmstadt.de .
+the code: 
+
+o8gene.h contains the global variables of the donlp2 file. It was included 
+in the commons tied to the o8qpdu  and following routines.
+the user part must be collected in the file userfu.c.
+
+for details see the accompanying donlp2_intv_doc.pdf
+
+What 's new ???
+
+
+
+This version uses a different function format from the one originally 
+used by donlp2 (f77,f90,ansi_c) .
+The problem format here is
+
+     min_x f(x) 
+
+subject to
+          low(i) <= x(i)      <=   up(i), i=1,..,n    
+     low(i+n) <= (Ax)_i <= up(i+n) , i=1,nlin     nlin=0 is allowed
+low(i+nlin+n) <= c(i,x)   <= up(i+n+nlin)  i=1,nonlin  , nonlin=0 is allowed
+   
+ low(i)=up(i) is allowed for any i indicating an equality constraint. 
+ low(i)=-big, up(i)=big is allowed, 
+ big is userdefined
+
+the relevant parts of the code have been changed to reflect this.  
+
+the parameters 
+   n,nlin,nonlin,big
+   low
+   up
+   gres[][j]  j=1,.,nlin (the gradients of the linear constraints, i.e. A
+                          above) 
+must  be set (or read from a file) in the basic routine user_init 
+the parameters tau0, del0, delmin etc keep there meaning and usage.
+these also must be set there.
+
+the two machine parameters DBL_MIN (smallest normalized floating point 
+number in double which is larger than zero) and DBL_EPSILON 
+(the smallest positive number for which 1+eps>1 on the fpu) 
+are defined here explicitly in o8para.h. On your system there may be a 
+file float.h containing them. In this case use this.
+the part of o8st, which computed these internally is 
+disabled by commenting, because on many systems faulty values 
+(the fpu internal precision instead of memory precision and the
+denormalized smallest nonzero) were computed.
+
+                       
+A new form of evaluation interface is used for the gradients:
+only the gradients of the nonlinear constraints must be evaluated, 
+for a given list of indices, that is grad_c_i , i in list.
+the gradients of the actual active constraints 
+(i.e. whether lower or upper bound is involved) are computed internally from 
+this information
+
+!!!!!!! important  
+the variable nres is now n+nlin+nonlin and we have up to 2*nres 
+constraints if all lower and upper bounds are finite
+but there can be only nres active constraints at most. hence the number of
+variables of the full sqp part  remains at 2*(n+nlin+nonlin).
+
+gradients to be stored are A' and grad_c ,i.e. the first nlin columns
+of gres are A' and the gradients of the c_i go to gres[][i+nlin]. 
+the sign -1 in gres[0][i] indicates active upper bound, whereas 1
+indicates active lower bound. for the equality constraints the
+sign convention is +1. 
+ 
+
+
+now donlp2 itself counts the number of evaluations of the constraints 
+(without bounds) hence this must not be done any more in the function
+evaluation part
+
+
+A  new form of finite difference approximations is used here
+with one sided differences for variables which are at their 
+bounds, such that the parameter "taubnd" is no longer used
+here. It has been left defined in order to keep older user
+codes valid. 
+
+
+
+______________________________
+| how to run the code        |
+______________________________
+
+the command "testsingle" shows how to use the code
+given a problem identifier (without the .c extension)
+it reads the corresponding file in the examples directory, stores it
+in userfu.c and then compiles it (using Makefile) and runs it. 
+results are stored back in the examples directory.
+
+---------------------------
+| Examples                |
+___________________________
+The examples directory contains examples coded according to the new convention
+together with results obtained by the author on a AMD K6 1GHz 
+under Debian Linux. 
+
+________________________________
+| checking self coded gradients |
+________________________________
+Your problem description must reside in userfu.c, without 
+the "main" and without including "o8para.h".
+if you code the gradients , you can check them using testgrad_dyn.c
+this prompts you for input (differentiation stepsize, tolerated error,
+testvalues.) 
+the command for running this is
+cat testgrad_dyn.c userfu.c > lauf.c
+gcc -otestexe lauf.c  -lm -lc   
+./testexe
+
+
+for more information read the documentation in the pdf file.

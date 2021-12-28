@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+for i in 1 
+do
+	mv Mo_state$i.slater ../state$i/Mo.slater
+done

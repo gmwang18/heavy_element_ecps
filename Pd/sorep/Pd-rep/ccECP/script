@@ -1,0 +1,45 @@
+#!/bin/bash
+
+
+#mark current directory
+HOME=pwd
+rm -r workdir
+mkdir workdir
+mkdir workdir/data
+for dir in */; do
+	for state in $dir*/; do
+		echo "$state"
+		st1=${state#*/}
+		st2=${st1#*-}
+		st3=${st2%*/}
+		echo $st3
+
+		touch workdir/$st3
+		touch workdir/er$st3
+
+		for jstate in $state*/; do
+			echo "$jstate"
+			tmp1=${jstate#*/}
+			tmp2=${tmp1#*/}
+			tmp3=${tmp2#*-}
+			tmp4=${tmp3%j*}
+			tmp5=${tmp4//-/$'/'}
+			#echo $tmp5
+			printf -v j %.6f "$(( 100000 * $tmp5 ))e-5"
+			echo $j >> workdir/js.dat 
+			i=$(($i + 1))
+			printf -v num "%03d" $i
+			so-gosling $jstate/Pd.dmc.log > workdir/data/data_$num.log
+			grep total_ workdir/data/data_$num.log | awk '{print $2}' >> workdir/energy.dat
+			grep total_ workdir/data/data_$num.log | awk '{print $2}' >> workdir/$st3
+			grep total_ workdir/data/data_$num.log | awk '{print $4}' >> workdir/error.dat
+			grep total_ workdir/data/data_$num.log | awk '{print $4}' >> workdir/er$st3
+		done
+	done
+done
+#for log in workdir/data/*; do
+#	#echo $log
+#	grep total_ $log | awk '{print $2}' >> workdir/energy.dat
+#	grep total_ $log | awk '{print $4}' >> workdir/error.dat
+#done
+

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+#mark current directory
+HOME=pwd
+toev=27.21138
+rm workdir/gaps.dat
+rm workdir/erev.dat
+ref=`awk 'NR==1{print $1}' workdir/energy.dat`
+awk -v ref=$ref '{printf("%.2f\n", 27.21138*($1-ref))}' workdir/energy.dat >> workdir/gaps.dat
+awk '{printf("%.2f\n", 27.21138*$1)}' workdir/error.dat >> workdir/erev.dat
+paste nist/energy.dat workdir/gaps.dat #> workdir/spect
+#awk '{printf("%.2f\n", $1-$2)}' workdir/spect > workdir/spectra
+#cat workdir/spectra
+

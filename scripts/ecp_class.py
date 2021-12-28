@@ -49,10 +49,12 @@ import matplotlib.pyplot as plt
 
 
 class ECP:
-	def __init__(self,Zeff=0,n=None,a=None,c=None,n_so=None,a_so=None,c_so=None,label=None,element=None,core=None):
+	def __init__(self,Zeff=0,n=None,a=None,c=None,n_so=None,a_so=None,c_so=None,label=None,element=None,core=None,L=None,L_so=None):
 		self.zeff = Zeff
 		self.element = element
 		self.core = core
+		self.L = L	# Length of AREP terms
+		self.L_so = L_so	# Length of SOREP terms
 		if n == None:
 			self.n = []
 		else:
@@ -81,6 +83,7 @@ class ECP:
 			self.label = 'ecp'
 		else:
 			self.label = label
+
 	def read_ecp(self,filename):
 		f=open(filename,'r')
 		z,n = f.readline().split()[0:2]
@@ -106,22 +109,33 @@ class ECP:
 			self.alpha.append(A)
 			self.coeff.append(C)
 		f.close()
+
 	def read_ecp_so(self,filename):
 		f=open(filename,'r')
-		z,n,n_so = f.readline().split()
-		self.zeff = int(z)
-		n = int(n)
-		n_so = int(n_so)
+		header = f.readline().split()
+		so_terms = False
+		if len(header) == 3:
+			#print("ECP input with spin-orbit terms detected. Using SOREP form.")
+			so_terms = True
+		self.zeff = int(header[0])
+		L = int(header[1])
+		if so_terms == True:
+			L_so = int(header[2])
+		else:
+			L_so = 0
+		if so_terms == True:
+			assert (L-L_so) == 2, "Number of AREP channels and SOREP channels seem incompatible! Please check if SOREP terms are correctly provided."
 		nterms = []
 		nterms_so = []
-		assert (n-n_so) == 2, "Number of AREP channels and SOREP channels seem incompatible! Please check if SOREP terms are correctly provided."
 		line = f.readline().split()
-		assert (n_so + n) == len(line), "Total number of AREP+SOREP terms incompatible in the header section of the ECP! Please check for consistency."
-		for i in range(n):
+		assert (L_so + L) == len(line), "Total number of AREP+SOREP terms incompatible in the header section of the ECP! Please check for consistency."
+		self.L = L
+		self.L_so = L_so
+		for i in range(L):
 			nterms.append(int(line[i]))
-		for i in range(n, n_so+n):
+		for i in range(L, L_so+L):
 			nterms_so.append(int(line[i]))
-		for i in range(n):
+		for i in range(L):
 			N=[]
 			A=[]
 			C=[]
@@ -136,7 +150,7 @@ class ECP:
 			self.n.append(N)
 			self.alpha.append(A)
 			self.coeff.append(C)
-		for i in range(n_so):
+		for i in range(L_so):
 			N_so=[]
 			A_so=[]
 			C_so=[]
@@ -152,11 +166,13 @@ class ECP:
 			self.alpha_so.append(A_so)
 			self.coeff_so.append(C_so)
 		f.close()
+
 	def print_ecp(self):
 		print('Zeff: {}'.format(self.zeff))
 		print('n: {}'.format(self.n))
 		print('alpha: {}'.format(self.alpha))
 		print('coeff: {}'.format(self.coeff))
+
 	def print_ecp_so(self):
 		print('Zeff: {}'.format(self.zeff))
 		print('n: {}'.format(self.n))
@@ -165,6 +181,7 @@ class ECP:
 		print('n_so: {}'.format(self.n_so))
 		print('alpha_so: {}'.format(self.alpha_so))
 		print('coeff_so: {}'.format(self.coeff_so))
+
 	def write_ecp(self,filename):
 		f = open(filename,'w')
 		f.write('{} {}\n'.format(self.zeff,len(self.n)))
@@ -176,6 +193,7 @@ class ECP:
 				f.write('{} {} {}'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
 				f.write('\n')
 		f.close()
+
 	def plot_ecp(self,rmax):
 		import matplotlib.pyplot as plt
 		npts=100
@@ -187,6 +205,7 @@ class ECP:
 		plt.plot(x,y,label='local')
 		plt.legend(frameon=False)
 		plt.show()
+
 	def plot_density(self,rmax):
 		import matplotlib.pyplot as plt
 		npts=100
@@ -194,153 +213,209 @@ class ECP:
 		y = [ self.get_density(x[i]) for i in range(npts) ]
 		plt.plot(x,y)
 		plt.show()
+
 	def eval_channel(self,l,r):
 		n = np.array(self.n[l])
 		a = np.array(self.alpha[l])
 		c = np.array(self.coeff[l])
 		tmp = c*r**(n-2)*np.exp(-a*r**2)
 		return tmp.sum()
+
 	def eval_local(self,r):
 		tmp = self.eval_channel(-1,r)
 		return tmp - self.zeff/r
+
 	def eval_channel_lap(self,l,r):
 		n = np.array(self.n[l])
 		a = np.array(self.alpha[l])
 		c = np.array(self.coeff[l])
 		tmp = c*np.exp(-a*r**2)*r**(n-4)*(2.-3.*n+n**2+2.*a*(1.-2.*n)*r**2+4.*a**2*r**4)
 		return tmp.sum()
+
 	def get_density(self,r):
 		return -0.25/np.pi*self.eval_channel_lap(-1,r)
 	
 	def write_molpro(self,filename):
 		f = open(filename,'w')
+		n = self.n.copy()
+		coeff = self.coeff.copy()
+		alpha = self.alpha.copy()
+		if self.L_so != 0:
+			n_so = self.n_so.copy()
+			coeff_so = self.coeff_so.copy()
+			alpha_so = self.alpha_so.copy()
+		else:
+			n_so = []
 		### Write Header
-		f.write('{},{},{},{},{}\n'.format('ECP',self.element,str(self.core),str(len(self.n)-1),'0'))
+		f.write('{},{},{},{},{}\n'.format('ECP',self.element,str(self.core),str(len(n)-1), str(len(n_so))))
 		### Write Gaussians
-		n = self.n  # A pointer to self.n
-		n = n.insert(0, n.pop()) # Move last item to the front
-		alpha = self.alpha
-		alpha = alpha.insert(0, alpha.pop())
-		coeff = self.coeff
-		coeff = coeff.insert(0, coeff.pop())
-		for i in range(len(self.n)):
-			f.write('{}\n'.format(len(self.n[i])))
-			for j in range(len(self.n[i])):
-				f.write('{}, {:11.6f}, {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+		n = n[-1:] + n[:-1]   # Move last item to the front
+		alpha = alpha[-1:] + alpha[:-1]   # Move last item to the front
+		coeff = coeff[-1:] + coeff[:-1]   # Move last item to the front
+		for i in range(self.L):
+			f.write('{}\n'.format(len(n[i])))
+			for j in range(len(n[i])):
+				f.write('{}, {:11.6f}, {:11.6f}\n'.format(n[i][j],alpha[i][j],coeff[i][j]))
+		if self.L_so != 0:
+			for i in range(self.L_so):
+				f.write('{}\n'.format(len(n_so[i])))
+				for j in range(len(n_so[i])):
+					f.write('{}, {:11.6f}, {:11.6f}\n'.format(n_so[i][j],alpha_so[i][j],coeff_so[i][j]))
 		f.close()
 
 	def write_nwchem(self,filename):
 		f = open(filename,'w')
+		n = self.n.copy()
+		alpha = self.alpha.copy()
+		coeff = self.coeff.copy()
+		if self.L_so != 0:
+			n_so = self.n_so.copy()
+			coeff_so = self.coeff_so.copy()
+			alpha_so = self.alpha_so.copy()
+		else:
+			n_so = []
 		### Write Header
+		f.write('ecp\n')
 		f.write('{} {} {}\n'.format(self.element,"nelec",str(self.core)))
 		### Write Gaussians
-		n = self.n  # A pointer to self.n
-		n = n.insert(0, n.pop()) # Move last item to the front
-		alpha = self.alpha
-		alpha = alpha.insert(0, alpha.pop())
-		coeff = self.coeff
-		coeff = coeff.insert(0, coeff.pop())
+		n = n[-1:] + n[:-1]   # Move last item to the front
+		alpha = alpha[-1:] + alpha[:-1]   # Move last item to the front
+		coeff = coeff[-1:] + coeff[:-1]   # Move last item to the front
 		ell = ["ul", "s", "p", "d", "f", "g", "h", "i"]
-		for i in range(len(self.n)):
+		for i in range(self.L):
 			f.write('{} {}\n'.format(self.element, ell[i]))
-			for j in range(len(self.n[i])):
-				f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+			for j in range(len(n[i])):
+				f.write('{} {:11.6f} {:11.6f}\n'.format(n[i][j],alpha[i][j],coeff[i][j]))
+		f.write('end\n\n')
+		if self.L_so != 0:
+			f.write('so\n')
+			for i in range(self.L_so):
+				f.write('{} {}\n'.format(self.element, ell[i+2]))
+				for j in range(len(n_so[i])):
+					f.write('{} {:11.6f} {:11.6f}\n'.format(n_so[i][j],alpha_so[i][j],coeff_so[i][j]))
+			f.write('end\n')
 		f.close()
 
 	def write_gamess(self,filename):
 		f = open(filename,'w')
+		n = self.n.copy()
+		alpha = self.alpha.copy()
+		coeff = self.coeff.copy()
 		### Write Header
-		f.write('{} {} {} {}\n'.format(self.element+"-ccECP","GEN",str(self.core),str(len(self.n)-1)))
+		f.write('{} {} {} {}\n'.format(self.element+"-ccECP","GEN",str(self.core),str(len(n)-1)))
 		### Write Gaussians
-		n = self.n  # A pointer to self.n
-		n = n.insert(0, n.pop()) # Move last item to the front
-		alpha = self.alpha
-		alpha = alpha.insert(0, alpha.pop())
-		coeff = self.coeff
-		coeff = coeff.insert(0, coeff.pop())
-		for i in range(len(self.n)):
-			f.write('{}\n'.format(len(self.n[i])))
-			for j in range(len(self.n[i])):
-				f.write('{:11.6f} {} {:11.6f}\n'.format(self.coeff[i][j],self.n[i][j],self.alpha[i][j]))
+		n = n[-1:] + n[:-1]   # Move last item to the front
+		alpha = alpha[-1:] + alpha[:-1]   # Move last item to the front
+		coeff = coeff[-1:] + coeff[:-1]   # Move last item to the front
+		for i in range(len(n)):
+			f.write('{}\n'.format(len(n[i])))
+			for j in range(len(n[i])):
+				f.write('{:11.6f} {} {:11.6f}\n'.format(coeff[i][j],n[i][j],alpha[i][j]))
 		f.close()
 
-	def write_qwalk(self,filename):
-		f = open(filename,'w')
-		### Write Header
-		f.write('{} {}\n'.format(0.0,str(len(self.n) + len(self.n_so))))
-		for i in range(len(self.n)):
-			if i==0 or i==len(self.n)-1: # ell=s or ell=local. No SOREP
-				f.write('{} '.format(str(len(self.n[i]))))
-			else:
-				f.write('{} '.format(str(len(self.n[i])+len(self.n_so[i-1])))) # (ell + 1/2)
-				f.write('{} '.format(str(len(self.n[i])+len(self.n_so[i-1])))) # (ell - 1/2)
-		f.write('\n')
-		### Write Gaussians
-		for i in range(len(self.n)):
-			if i==0 or i==len(self.n)-1: # ell=s or ell=local. No SOREP
-				for j in range(len(self.n[i])):
-					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
-			else:
-				for j in range(len(self.n[i])): # Unchanged AREP part for (ell + 1/2)
-					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
-				for k in range(len(self.n_so[i-1])): # SOREP contribution to (ell + 1/2)
-					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n_so[i-1][k],self.alpha_so[i-1][k],(i/2)*self.coeff_so[i-1][k]))
-				for j in range(len(self.n[i])): # Unchanged AREP part for (ell - 1/2)
-					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
-				for k in range(len(self.n_so[i-1])): # SOREP contribution to (ell - 1/2)
-					f.write('{} {:11.6f} {:11.6f}\n'.format(self.n_so[i-1][k],self.alpha_so[i-1][k],(-(i+1)/2)*self.coeff_so[i-1][k]))
-		f.close()
+	def write_qwalk_so(self,filename):
+		if self.L_so == 0:
+			print("QWalk: This function is defined for SOREP only. Exiting.")
+			return
+		else:
+			f = open(filename,'w')
+			n = self.n.copy()
+			alpha = self.alpha.copy()
+			coeff = self.coeff.copy()
+			n_so = self.n_so.copy()
+			coeff_so = self.coeff_so.copy()
+			alpha_so = self.alpha_so.copy()
+			### Write Header
+			f.write('{} {}\n'.format(0.0,str(len(n) + len(n_so))))
+			for i in range(len(n)):
+				if i==0 or i==len(n)-1: # ell=s or ell=local. No SOREP
+					f.write('{} '.format(str(len(n[i]))))
+				else:
+					f.write('{} '.format(str(len(n[i])+len(n_so[i-1])))) # (ell + 1/2)
+					f.write('{} '.format(str(len(n[i])+len(n_so[i-1])))) # (ell - 1/2)
+			f.write('\n')
+			### Write Gaussians
+			for i in range(len(n)):
+				if i==0 or i==len(n)-1: # ell=s or ell=local. No SOREP
+					for j in range(len(n[i])):
+						f.write('{} {:11.6f} {:11.6f}\n'.format(n[i][j],alpha[i][j],coeff[i][j]))
+				else:
+					for j in range(len(n[i])): # Unchanged AREP part for (ell + 1/2)
+						f.write('{} {:11.6f} {:11.6f}\n'.format(n[i][j],alpha[i][j],coeff[i][j]))
+					for k in range(len(n_so[i-1])): # SOREP contribution to (ell + 1/2)
+						f.write('{} {:11.6f} {:11.6f}\n'.format(n_so[i-1][k],alpha_so[i-1][k],(i/2)*coeff_so[i-1][k]))
+					for j in range(len(n[i])): # Unchanged AREP part for (ell - 1/2)
+						f.write('{} {:11.6f} {:11.6f}\n'.format(n[i][j],alpha[i][j],coeff[i][j]))
+					for k in range(len(n_so[i-1])): # SOREP contribution to (ell - 1/2)
+						f.write('{} {:11.6f} {:11.6f}\n'.format(n_so[i-1][k],alpha_so[i-1][k],(-(i+1)/2)*coeff_so[i-1][k]))
+			f.close()
 
 	def write_dirac(self,filename):
 		f = open(filename,'w')
+		n = self.n.copy()
+		alpha = self.alpha.copy()
+		coeff = self.coeff.copy()
+		if self.L_so != 0:
+			n_so = self.n_so.copy()
+			coeff_so = self.coeff_so.copy()
+			alpha_so = self.alpha_so.copy()
+		else:
+			n_so = []
 		### Write Header
-		f.write('{} {} {} {}\n'.format('ECP',str(self.core),str(len(self.n)),str(len(self.n_so))))
+		f.write('{} {} {} {}\n'.format('ECP',str(self.core),str(len(n)),str(len(n_so))))
 		ell = ["$LOCAL", "$S", "$P", "$D", "$F", "$G", "$H", "$I"]
 		### Write AREP Gaussians
-		n = self.n  # A pointer to self.n
-		n = n.insert(0, n.pop()) # Move last item to the front
-		alpha = self.alpha
-		alpha = alpha.insert(0, alpha.pop())
-		coeff = self.coeff
-		coeff = coeff.insert(0, coeff.pop())
-		for i in range(len(self.n)):
+		n = n[-1:] + n[:-1]   # Move last item to the front
+		alpha = alpha[-1:] + alpha[:-1]   # Move last item to the front
+		coeff = coeff[-1:] + coeff[:-1]   # Move last item to the front
+		for i in range(len(n)):
 			f.write('{}\n'.format(ell[i]))
-			f.write('{}\n'.format(len(self.n[i])))
-			for j in range(len(self.n[i])):
-				f.write('{} {:11.6f} {:11.6f}\n'.format(self.n[i][j],self.alpha[i][j],self.coeff[i][j]))
+			f.write('{}\n'.format(len(n[i])))
+			for j in range(len(n[i])):
+				f.write('{} {:11.6f} {:11.6f}\n'.format(n[i][j],alpha[i][j],coeff[i][j]))
 		### Write SOREP Gaussians
-		f.write("$SPIN-ORBIT\n")
-		for i in range(len(self.n_so)):
-			f.write('{}\n'.format(ell[i+2]))
-			f.write('{}\n'.format(len(self.n_so[i])))
-			for j in range(len(self.n_so[i])):
-				f.write('{} {:11.6f} {:11.6f}\n'.format(self.n_so[i][j],self.alpha_so[i][j],self.coeff_so[i][j]))
+		if self.L_so != 0:
+			f.write("$SPIN-ORBIT\n")
+			for i in range(len(n_so)):
+				f.write('{}\n'.format(ell[i+2]))
+				f.write('{}\n'.format(len(n_so[i])))
+				for j in range(len(n_so[i])):
+					f.write('{} {:11.6f} {:11.6f}\n'.format(n_so[i][j],alpha_so[i][j],coeff_so[i][j]))
 		f.close()
+
+	def write_manuscript(self,filename):
+		f = open(filename,'w')
+		n = self.n.copy()
+		alpha = self.alpha.copy()
+		coeff = self.coeff.copy()
+		if self.L_so != 0:
+			n_so = self.n_so.copy()
+			coeff_so = self.coeff_so.copy()
+			alpha_so = self.alpha_so.copy()
+		else:
+			n_so = []
+		ell = [0, 1, 2, 3, 4, 5, 6]
+		### Write AREP Gaussians
+		for i in range(len(n)):
+			for j in range(len(n[i])):
+				f.write('{} & {} & {:11.6f} & {:11.6f}\n'.format(ell[i],n[i][j],alpha[i][j],coeff[i][j]))
+		f.write('  &   &             &            \n')
+		### Write SOREP Gaussians
+		if self.L_so != 0:
+			for i in range(len(n_so)):
+				for j in range(len(n_so[i])):
+					f.write('{} & {} & {:11.6f} & {:11.6f}\n'.format(ell[i+2],n_so[i][j],alpha_so[i][j],coeff_so[i][j]))
+		f.close()
+
 ### End of class defintion
 
-my_element = "Bi"
-my_core = 78
+my_ecp = ECP(element = "Bi", core = 78)
+my_ecp.read_ecp_so('pp.d')
 
-### WARNING: For now, read_ecp() should be called every time before write_* functions. This is because some of those functions modify the data structure. This needs to be fixed later.
-
-### AREP ECPs
-my_ecp = ECP(element = my_element, core = my_core)
-my_ecp.read_ecp('pp.d')
 my_ecp.write_molpro('pp.molpro')
-
-my_ecp = ECP(element = my_element, core = my_core)
-my_ecp.read_ecp('pp.d')
 my_ecp.write_nwchem('pp.nwchem')
-
-my_ecp = ECP(element = my_element, core = my_core)
-my_ecp.read_ecp('pp.d')
 my_ecp.write_gamess('pp.gamess')
-
-#### REP ECPs
-my_ecp = ECP(element = my_element, core = my_core)
-my_ecp.read_ecp_so('pp.d')
 my_ecp.write_dirac('pp.dirac')
+my_ecp.write_qwalk_so('pp.qwalk')
+my_ecp.write_manuscript('pp.man')
 
-my_ecp = ECP(element = my_element, core = my_core)
-my_ecp.read_ecp_so('pp.d')
-my_ecp.write_qwalk('pp.qwalk')

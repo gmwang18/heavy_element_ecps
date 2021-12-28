@@ -404,7 +404,7 @@ class ECP:
 		if self.L_so != 0:
 			for i in range(len(n_so)):
 				for j in range(len(n_so[i])):
-					f.write('{} & {} & {:11.6f} & {:11.6f}\n'.format(ell[i+2],n_so[i][j],alpha_so[i][j],coeff_so[i][j]))
+					f.write('{} & {} & {:11.6f} & {:11.6f}\n'.format(ell[i+1],n_so[i][j],alpha_so[i][j],coeff_so[i][j]))
 		f.close()
 
 ### End of class defintion

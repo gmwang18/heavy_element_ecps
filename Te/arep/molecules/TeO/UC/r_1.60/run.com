@@ -35,7 +35,7 @@ geometry={
 }
 scf=energy
 _CC_NORM_MAX=2.0
-{rccsd(t);maxit,100;core,11,5,5,2}
+{rccsd(t);maxit,100;core,12,5,5,2}
 ccsd=energy
 bind=ccsd-I_ccsd-O_ccsd
 

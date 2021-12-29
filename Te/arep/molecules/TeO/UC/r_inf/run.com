@@ -40,7 +40,7 @@ geometry={
 }
 O_scf=energy
 _CC_NORM_MAX=2.0
-{rccsd(t);maxit,100;core}
+{rccsd(t);maxit,100;core,1,0,0,0,0,0,0,0}
 O_ccsd=energy
 
 

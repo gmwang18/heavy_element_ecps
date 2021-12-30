@@ -33,25 +33,26 @@ for mol in systems:
 #print(mols)
 
 ### === Equilibrium positions to be plotted === 
+### Taken from AE Morse fits.
 req = {
-'AgH_5Z': 1.6, # Tentative
-'AgO_5Z': 2.0, # Tentative
-'AuH_TZ': 1.6, # Tentative
-'AuO_TZ': 1.9, # Tentative
-'BiH_TZ': 1.8, # Tentative
-'BiO_TZ': 1.9, # Tentative
-'MoO_TZ': 1.7,
-'MoH_TZ': 2.12,
-'IH_QZ' : 1.6020789274002896,
-'IO_QZ' : 1.8388286072136575,
-'WH_TZ' : 1.7003525781479623,
-'WO_TZ' : 1.66381039175619,
-'IrH_TZ': 1.5,
-'IrO_TZ': 1.7,
-'PdH_TZ': 1.5,
-'PdO_TZ': 1.8,
-'TeO_QZ': 1.8114,
-'TeH_QZ': 1.6490,
+'AgH_5Z': 1.605,
+'AgO_5Z': 1.993,
+'AuH_TZ': 1.5161,
+'AuO_TZ': 1.8741,
+'BiH_TZ': 1.780,
+'BiO_TZ': 1.922,
+'IH_QZ' : 1.6030,
+'IO_QZ' : 1.869,
+'IrH_TZ': 1.539,
+'IrO_TZ': 1.716,
+'MoH_TZ': 1.75,   # Temp
+'MoO_TZ': 1.705,
+'PdH_TZ': 1.5150,
+'PdO_TZ': 1.8255,
+'TeH_QZ': 1.650,
+'TeO_QZ': 1.810,
+'WH_TZ' : 1.7014,
+'WO_TZ' : 1.671,
 }
 
 def init():
@@ -59,7 +60,7 @@ def init():
     lines  = {'linewidth': 2.5}
     axes   = {'linewidth': 2.0}    # border width
     tick   = {'major.size': 2, 'major.width':2}
-    legend = {'frameon':True, 'fontsize':15.0, 'handlelength':2.30, 'labelspacing':0.30, 'handletextpad':0.4, 'loc':'best', 'facecolor':'white', 'framealpha':1.00, 'edgecolor':'#f2f2f2'}
+    legend = {'frameon':True, 'fontsize':15.0, 'handlelength':2.40, 'labelspacing':0.30, 'handletextpad':0.4, 'loc':'best', 'facecolor':'white', 'framealpha':1.00, 'edgecolor':'#f2f2f2'}
     mpl.rc('font',**font)
     mpl.rc('lines',**lines)
     mpl.rc('axes',**axes)

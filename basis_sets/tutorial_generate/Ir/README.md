@@ -24,7 +24,7 @@ Since we have already taken some HF contractions, we need to skip
 that many orbitals and take what comes next (HF and natural orbitals
 will be similar so we don't want a large overlap, namely our basis
 set should be orthogonal). For instance for `p`, I look
-at symmetry 1.2 and skip the first one and take the next two for TZ. 
+at symmetry 1.2 and skip the first one and take the next three for TZ. 
 Similarly for `d`, I look at symmetry 1.6 and skip the first one and take
 the next two for TZ. When looking at `s` (symmetry 1) we have to be careful 
 because there will be `d` mixing. Essentially we should skip all orbitals 

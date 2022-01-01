@@ -5,26 +5,26 @@ gthresh,twoint=1.0E-12
 set,dkroll=1,dkho=10,dkhp=4
 
 basis={
-include,../generate/W-contracted.basis
+include,../generate/Mo-contracted.basis
 include,../generate/H-contracted.basis
 }
 
 !These are the wf cards parameters
-ne = 75
+ne = 43
 symm = 1
 ss= 5
 
 !There are irrep cards paramters
-A1=18
-B1=9
-B2=9
-A2=4
+A1=12
+B1=5
+B2=5
+A2=2
 
 
 geometry={
     2
-    WH molecule
-    W 0.0 0.0 0.0
+    MoH molecule
+    Mo 0.0 0.0 0.0
     H 0.0 0.0 length
 }
 {rhf,nitord=20;
@@ -37,7 +37,7 @@ geometry={
 
 
 basis={
-include,../generate/W-aug-cc-pwCVTZ.basis
+include,../generate/Mo-aug-cc-pwCVTZ.basis
 include,../generate/H-aug-cc-pVTZ.basis
 }
 
@@ -54,86 +54,58 @@ include,../generate/H-aug-cc-pVTZ.basis
 scf=energy
 
 _CC_NORM_MAX=2.0
-{rccsd(t);maxit,100;core}
+{rccsd(t);maxit,100;core,7,3,3,1}
 ccsd=energy
 
 
-!basis={
-!include,../generate/W-contracted.basis
-!}
-!
-!
-!
-!geometry={
-!    1
-!    W atom
-!    W 0.0 0.0 0.0
-!}
-!{rhf;
-! start,atden;
-! wf,74,1,4;
-! occ,11,6,6,3,6,3,3,1;
-! closed,10,6,6,2,6,2,2,1;
-! sym,1,1,1,1,1,3,2,1,3,2,1,3,2
-! orbital,3202.2
-!}
-!
-!basis={
-!include,../generate/W-aug-cc-pwCVTZ.basis
-!}
-!
-!{multi
-! start,3202.2
-! occ,12,6,6,3,6,3,3,1
-! closed,10,6,6,2,6,2,2,1
-! wf,74,1,4;state,2
-! wf,74,4,4;state,1
-! wf,74,6,4;state,1
-! wf,74,7,4;state,1
-! natorb,ci,print
-! orbital,4202.2
-!}
-!
-!{rhf,nitord=1,maxdis=30,iptyp='DIIS',maxit=100; shift,-1.5,-1.0;
-! start,4202.2;
-! print,orbitals=2;
-! wf,74,1,4;
-! occ,11,6,6,3,6,3,3,1;
-! closed,10,6,6,2,6,2,2,1;
-!}
-!
-!W_scf=energy
-!_CC_NORM_MAX=2.0
-!{rccsd(t);maxit,200;thresh,coeff=1d-3,energy=1d-5;core}
-!W_ccsd=energy
-!
-!
-!basis={
-!include,../generate/H-aug-cc-pVTZ.basis
-!}
-!
-!
-!geometry={
-!   1
-!   Hydrogen
-!   H 0.0 0.0 0.0
-!}
-!{rhf;
-! start,atden
-! wf,1,1,1;
-! occ,1,0,0,0,0,0,0,0;
-! open,1.1;
-!}
-!H_scf=energy
-!_CC_NORM_MAX=2.0
-!{rccsd(t);maxit,100;core}
-!H_ccsd=energy
+
+geometry={
+    1
+    Mo atom
+    Mo 0.0 0.0 0.0
+}
+
+basis={
+include,../generate/Mo-aug-cc-pwCVTZ.basis
+}
+{rhf,
+ start,4202.2;
+ print,orbitals=2;
+ wf,42,1,6;
+ occ,9,3,3,2,3,2,2;
+ closed,6,3,3,1,3,1,1;
+}
+
+Mo_scf=energy
+_CC_NORM_MAX=2.0
+{rccsd(t);maxit,100;core,5,2,2,1,2,1,1}
+Mo_ccsd=energy
+
+
+basis={
+include,../generate/H-aug-cc-pVTZ.basis
+}
+
+
+geometry={
+   1
+   Hydrogen
+   H 0.0 0.0 0.0
+}
+{rhf;
+ start,atden
+ wf,1,1,1;
+ occ,1,0,0,0,0,0,0,0;
+ open,1.1;
+}
+H_scf=energy
+_CC_NORM_MAX=2.0
+{rccsd(t);maxit,100;core}
+H_ccsd=energy
 
 
 
-
-
-table,length,scf,ccsd !,W_scf,W_ccsd,H_scf,H_ccsd
+table,length,scf,ccsd,Mo_scf,Mo_ccsd,H_scf,H_ccsd
 save
 type,csv
 

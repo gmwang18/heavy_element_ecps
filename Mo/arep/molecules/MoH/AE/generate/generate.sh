@@ -1,12 +1,12 @@
 #!/bin/bash
 
-equil=$(echo "1.2" | bc -l)
+equil=$(echo "1.22" | bc -l)
 d=$(echo "0.10" | bc -l)
 
 HOME=`pwd`
 
 basefolder=$HOME/../
-n=8
+n=4
 
 for ((i=0; i<=n; i++))
 do
@@ -16,4 +16,5 @@ do
 	#cp $HOME/*.basis $basefolder/r_$r/
         sed 's/XZ/TZ/g' $HOME/template.com > $basefolder/r_$r/tz.com
 	sed -i "s/length/$r/g" $basefolder/r_$r/*.com
+	sed -i "s/length/$r/g" $basefolder/r_$r/job
 done

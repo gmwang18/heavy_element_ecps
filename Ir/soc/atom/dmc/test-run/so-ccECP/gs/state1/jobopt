@@ -1,0 +1,19 @@
+#!/bin/bash -l
+#SBATCH -J Au_DMC
+#SBATCH -q low
+#SBATCH -N 8
+#SBATCH -C haswell
+#SBATCH -t 00:20:00
+#SBATCH -o so_qwalk.o%j
+
+srun -n 512 -c 1 --cpu_bind=threads qwalk-so Au.hf
+
+srun -n 512 -c 1 --cpu_bind=threads qwalk-so Au.opt2
+python add3bodyjs.py
+srun -n 512 -c 1 --cpu_bind=threads qwalk-so Au.opt3
+
+sed 's/OPTIMIZEBASIS//g' Au.opt3.wfout > fixed_basis.wfout
+
+srun -n 512 -c 1 --cpu_bind=threads qwalk-so Au.linear
+
+sbatch jobdmc

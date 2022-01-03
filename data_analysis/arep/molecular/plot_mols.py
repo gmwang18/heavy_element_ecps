@@ -45,7 +45,7 @@ req = {
 'IO_QZ' : 1.869,
 'IrH_TZ': 1.539,
 'IrO_TZ': 1.716,
-'MoH_TZ': 1.75,   # Temp
+'MoH_TZ': 1.700,   # Temp
 'MoO_TZ': 1.705,
 'PdH_TZ': 1.5150,
 'PdO_TZ': 1.8255,

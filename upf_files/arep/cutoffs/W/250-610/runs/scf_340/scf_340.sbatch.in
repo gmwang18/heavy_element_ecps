@@ -1,0 +1,26 @@
+#!/bin/bash
+#SBATCH -A m2113
+#SBATCH -p regular
+#SBATCH -C haswell
+#SBATCH -J scf_340
+#SBATCH -t 00:30:00
+#SBATCH -N 1
+#SBATCH --tasks-per-node=32
+#SBATCH --cpus-per-task=2
+#SBATCH -o scf_340.out
+#SBATCH -e scf_340.err
+#SBATCH --export=ALL
+
+echo $SLURM_SUBMIT_DIR
+cd $SLURM_SUBMIT_DIR
+
+
+export HDF5_USE_FILE_LOCKING=FALSE
+module load espresso
+module unload cray-libsci
+module load cray-hdf5/1.10.2.0
+module load gcc
+module list
+
+export OMP_NUM_THREADS=1
+srun pw.x -input scf_340.in

@@ -100,6 +100,7 @@ if __name__ == "__main__":
 			atom = this_line[1]
 			ell_val = ell_labels.index(this_line[0])
 			cexps = this_line[2:]
+#			print(cexps)
 			cexps = [float(i) for i in cexps]
 			flag_exponents = 1
 
@@ -131,4 +132,4 @@ if __name__ == "__main__":
 	write_nwchem(basis, atom)
 	write_gamess(basis, atom)
 	write_dirac(basis, atom)
-	write_dirac_compact(basis, atom)
+	#write_dirac_compact(basis, atom)

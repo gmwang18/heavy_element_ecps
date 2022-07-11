@@ -252,13 +252,14 @@ class ECP:
 		n = n[-1:] + n[:-1]   # Move last item to the front
 		alpha = alpha[-1:] + alpha[:-1]   # Move last item to the front
 		coeff = coeff[-1:] + coeff[:-1]   # Move last item to the front
+		ell = ["ul", "s", "p", "d", "f", "g", "h", "i"]
 		for i in range(self.L):
-			f.write('{}\n'.format(len(n[i])))
+			f.write('{} !{}\n'.format(len(n[i]), ell[i]))
 			for j in range(len(n[i])):
 				f.write('{}, {:11.6f}, {:11.6f}\n'.format(n[i][j],alpha[i][j],coeff[i][j]))
 		if self.L_so != 0:
 			for i in range(self.L_so):
-				f.write('{}\n'.format(len(n_so[i])))
+				f.write('{} !{}-so\n'.format(len(n_so[i]), ell[i+2]))
 				for j in range(len(n_so[i])):
 					f.write('{}, {:11.6f}, {:11.6f}\n'.format(n_so[i][j],alpha_so[i][j],coeff_so[i][j]))
 		f.close()
@@ -409,13 +410,12 @@ class ECP:
 
 ### End of class defintion
 
-my_ecp = ECP(element = "I", core = 46)
-my_ecp.read_ecp_so('pp.d')
-
-my_ecp.write_molpro('I.ccECP.molpro')
-my_ecp.write_nwchem('I.ccECP.nwchem')
-my_ecp.write_gamess('I.ccECP.gamess')
-my_ecp.write_dirac('I.ccECP.dirac')
-my_ecp.write_qwalk_so('I.ccECP.qwalk')
-my_ecp.write_manuscript('I.ccECP.man')
-
+#my_ecp = ECP(element = "Ag", core = 28)
+#my_ecp.read_ecp_so('pp.d')
+#
+#my_ecp.write_molpro('Ag.ccECP.molpro')
+#my_ecp.write_nwchem('Ag.ccECP.nwchem')
+#my_ecp.write_gamess('Ag.ccECP.gamess')
+#my_ecp.write_dirac('Ag.ccECP.dirac')
+#my_ecp.write_qwalk_so('Ag.ccECP.qwalk')
+#my_ecp.write_manuscript('Ag.ccECP.man')

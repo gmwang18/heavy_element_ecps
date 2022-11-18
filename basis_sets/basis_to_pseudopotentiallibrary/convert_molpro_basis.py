@@ -68,6 +68,20 @@ def write_gamess(basis, atom):
 			f.write('{:2d} {:14.6f} {:10.6f}\n'.format(i+1,c[1][i],c[2][i]))
 	f.close()
 
+def write_gaussian(basis, atom):
+	filename = sys.argv[1].split('.')[0]
+	cardinal = sys.argv[1].split('.')[1]
+	f = open(filename+"."+cardinal+".gaussian",'w')
+	labels=['S','P','D','F','G','H','I','K']
+	f.write('{} 0\n'.format(atom))
+	for c in basis:
+		f.write('{} {} 1.00\n'.format(labels[c[0]],len(c[1])))
+		for i in range(len(c[1])):
+			f.write('{:14.6f} {:9.6f}\n'.format(c[1][i],c[2][i]))
+	f.write('****')
+	f.close()
+
+
 if __name__ == "__main__":
 
 	if len(sys.argv) < 2:
@@ -100,7 +114,6 @@ if __name__ == "__main__":
 			atom = this_line[1]
 			ell_val = ell_labels.index(this_line[0])
 			cexps = this_line[2:]
-#			print(cexps)
 			cexps = [float(i) for i in cexps]
 			flag_exponents = 1
 
@@ -130,6 +143,7 @@ if __name__ == "__main__":
 			basis.append(contraction)
 
 	write_nwchem(basis, atom)
-	write_gamess(basis, atom)
 	write_dirac(basis, atom)
+	write_gamess(basis, atom)
+	write_gaussian(basis, atom)
 	#write_dirac_compact(basis, atom)

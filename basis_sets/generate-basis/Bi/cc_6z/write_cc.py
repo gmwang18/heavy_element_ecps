@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 N=5  # Number of exp in s and p
-atom = "Te"
+atom = "Bi"
 
 params = np.array([
 0.096013,	# Lowest s exponent
